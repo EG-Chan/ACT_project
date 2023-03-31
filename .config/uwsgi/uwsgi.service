@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/.conda/envs/condaenv/bin/uwsgi -i /srv/ACT_project/settings/uwsgi/mysite.ini
+ExecStart= /home/ubuntu/.conda/envs/condaenv/bin/uwsgi -i /srv/ACT_project/settings/uwsgi/config.ini
 
 Restart=always
 KillSignal=SIGQUIT
