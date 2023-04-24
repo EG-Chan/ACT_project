@@ -17,9 +17,10 @@ def login(request): #로그인
     # POST
     id = request.POST.get('id')
     pw = request.POST.get('pw')
+    Account = Account(id=id, pw=pw)
 
     try:
-        s = account.objects.get(pk=id, pw=pw)
+        s = Account.objects.get(pk=id, pw=pw)
     except:
         return redirect('login')
 
