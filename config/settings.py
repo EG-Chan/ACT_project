@@ -27,8 +27,9 @@ SECRET_KEY = "django-insecure-zzm(^kn1w(y)-%p!0+0knr^ag%m(h*^eoe^=6ci4*p+5xblosy
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     "ec2-13-124-144-252.ap-northeast-2.compute.amazonaws.com",
-    ".predicup.store"
+    ".predicup.store",
 ]
 
 
@@ -120,7 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
