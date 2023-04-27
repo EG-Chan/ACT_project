@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from main.models import Account
 from django.http import HttpResponseRedirect
 
 def index(request):
@@ -12,12 +13,11 @@ def login(request): #로그인
     
         return render(
             request,
-            'main/main.html', 
+            'login.html', 
         )
     # POST
     id = request.POST.get('id')
     pw = request.POST.get('pw')
-    account = Account(id=id, pw=pw)
 
     try:
         s = Account.objects.get(pk=id, pw=pw)
