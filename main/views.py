@@ -22,7 +22,23 @@ def login(request): #로그인
 
 
 def logout(request):
+    del request.session['id']
     return render(request, "main/logout.html")
 
 def signup(request):
-    return render(request, 'main/signup.html')
+    if request.method == 'GET':
+        return render(request, 'main/signup.html')
+    
+    id = request.POST.get('id')
+    pw = request.POST.get('pw')
+    name = request.POST.get('name')
+    email = request.POST.get('email')
+
+    s = Account()
+    s.id = id
+    s.pw = pw
+    s.name = name
+    s.email = email
+    s.save()
+    
+    return redirect('main')
