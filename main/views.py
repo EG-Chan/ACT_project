@@ -6,24 +6,11 @@ def index(request):
     return render(request, "main/main.html")
 # Create your views here.
 
-
 def login(request): #로그인
-    # GET
-    if request.method == 'GET':
-    
-        return render(
-            request,
-            'login.html', 
-        )
-    # POST
-    id = request.POST.get('id')
-    pw = request.POST.get('pw')
+    return render(request, "main/login.html")
 
-    try:
-        s = Account.objects.get(pk=id, pw=pw)
-    except:
-        return redirect('login')
+def logout(request):
+    return render(request, "main/logout.html")
 
-    request.session['id'] = s.id
-    
-    return redirect('main')
+def signup(request):
+    return render(request, 'main/signup.html')
