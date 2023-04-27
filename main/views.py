@@ -17,7 +17,7 @@ def login(request): #로그인
     # POST
     id = request.POST.get('id')
     pw = request.POST.get('pw')
-    Account = Account(id=id, pw=pw)
+    account = Account(id=id, pw=pw)
 
     try:
         s = Account.objects.get(pk=id, pw=pw)
