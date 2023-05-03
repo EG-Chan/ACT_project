@@ -10,10 +10,17 @@ canvas,header,nav,section, footer{
     border: 0;
     font-size: 100%;
     font: inherit;
+    color: white;
     vertical-align: baseline;
 }
 
+body{
+    background-color: rgb(31, 31, 31);
+    padding: 0px 16.6vw 0px 16.6vw;
+}
+
 nav {
+    height: 50px;
     background-color: rgb(31, 31, 31);
 
     font-family: "Noto Sans KR", sans-serif;
@@ -23,14 +30,44 @@ nav {
     justify-content: space-around;
     align-items: center;
 }
-#wrapper{
-    height: auto;
-    min-height: 100%;
-    padding-bottom: 12.5vh;
+
+.wrapper{
+    min-height: calc(100vh - 12.5vh);
 }
 
-footer {
+section{
+    min-height: 500px;
+    height: 80vh;
+}
+
+.search{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.search h1{
+    font-size: 15px;
+}
+
+.search input[type=text] {
+	width: 33.3vw;
+    min-width: 350px;
+	height: 40px;
+
+    font-size: 18px;
+    color: white;
+
+    border-top: 1px;
+    border-radius: 10px;
     background-color: rgb(31, 31, 31);
+}
+
+
+
+footer {
+    background-color: rgb(60, 60, 60);
 
     font-family: "Noto Sans KR", sans-serif;
     color: white;
@@ -40,6 +77,49 @@ footer {
     align-items: center;
 
     height: 12.5vh;
-    position : relative;
+}
+
+hr {
+    background-color: rgb(60, 60, 60);
+}
+
+
+.container {
+    margin: 30px 0px 30px 0px;
+
+    display: flex;
+    justify-content: center;
+    
+}
+
+.container:nth-of-type(2) {
+    margin: 30px 0px 30px 0px;
+
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+
+.artistImageSection {
+    width: 22.5vw;
+    height: 55vh;
+    margin: 0px 10px 0px 40px;
+    background-color:rgb(92, 100, 100)
+}
+
+.resultSection {
+    width: 30vw;
+    height: 55vh;
+    margin: 0 40px 0 10px;
+    background-color:rgb(92, 100, 100)
 
 }
+
+.youtubeSection {
+    width: 50vw;
+    height: 50vh;
+    max-width: 800px;
+    max-height: 600px;
+    background-color:rgb(92, 100, 100)
+}
+

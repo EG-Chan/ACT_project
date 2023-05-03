@@ -1,54 +1,75 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends "main/main.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <title>회원가입</title>
+{% block static %}
+<link rel="stylesheet" href="/static/css/signup.css">
+{% endblock %}
 
-</head>
+{% block title %}
+<title>회원가입</title>
+{% endblock %}
 
-<body>
-    <div class="title"><h1 style="font-size: 21px;">회원가입</h1></div>
-    <div class="email">
-        <input id="email" type="text" placeholder="이메일을 입력해 주세요.">
-        <div id="emailError" class="error"></div>
-    </div>
-    <div class="name">
-        <input id="name"  type="text" placeholder="이름을 입력해 주세요.">
-        <div id="nameError" class="error"></div>
-    </div>
-    <div class="password">
-        <input id="password" type="password" placeholder="비밀번호를 입력해 주세요.">
-        <div id="passwordError" class="error"></div>
-    </div>
-    <div class="passwordCheck">
-        <input id="passwordCheck" type="password" placeholder="비밀번호를 다시 입력해 주세요.">
-        <div id="passwordCheckError" class="error"></div>
-    </div>
-    <div class="area">
-        <select id="area">
-            <option selected disabled>관심있는 음악을 선택하세요.</option>
-            <option>힙합</option>
-            <option>락</option>
-            <option>팝</option>
-        </select>
-        <div id="areaError" class="error"></div>
-    </div>
-    <div class="gender">
-        <input id="gender_man" type="radio" name="gender">남성  
-        <input id="gender_woman" type="radio" name="gender">여성
-        <div id="genderError" class="error"></div>
-    </div>
-    <div class="line">
-        <hr>
+{% block content %}
+{% if state == 0 %}
+<div class="signup_wrapper">
+    <header>
+        <h1>환영합니다</h1>
+    </header>
+    <form method="post" action="/signup/">
+        {% csrf_token %}
+        <div class="email">
+            <h1>Email</h1>
+            <input id="email" name="email" type="text" placeholder="Email">
+            <p></p>
         </div>
+        <div class="password">
+            <h1>Password</h1>
+            <input id="password" name="password" type="password" placeholder="Password">
+            <p></p>
+        </div>
+        <div class="confirmPassword">
+            <h1>Confirm Password</h1>
+            <input id="confirmPassword" type="password" placeholder="Confirm Password">
+            <p></p>
+        </div>
+        <div class="name">
+            <h1>User Name</h1>
+            <input id="name" name="name"  type="text" placeholder="Name">
+        </div>
+        <div class="gender">
+            <h1>성별</h1>
+            <input type="radio" name="gender" value="male">남성  
+            <input type="radio" name="gender" value="female">여성
+        </div>
+        <div class="genre">
+            <h1>선호장르</h1>
+            <select id="genre" name="genre">
+                <option selected disabled>관심있는 음악을 선택하세요.</option>
+                <option value="힙합">힙합</option>
+                <option value="락">락</option>
+                <option value="팝">팝</option>
+            </select>
+        </div>
+    </form>
     <div class="signUp">
-        <button id="signUpButton" onclick="signUpCheck()">가입하기</button>
+        <button id="signUpButton">가입하기</button>
     </div>
+</div>
+{% elif state == 1 %}
+<div class="signup_wrapper">
+    <header>
+        <h1>ActProject 회원가입이 완료되었습니다.</h1>
+        <p>로그인이 완료되어야 서비스를 이용하실 수 있습니다.</p>
+        <button>로그인페이지로 이동</button>
+    </header>
+</div>
+{% elif state == 2 %}
+<div class="signup_wrapper">
+    <header>
+        <h1>일시적인 오류가 발생했습니다.</h1>
+    </header>
+</div>
+{% endif %}
 
-</body>
+<script src="/static/js/signup.js"></script>
 
-</html>
+{% endblock %}

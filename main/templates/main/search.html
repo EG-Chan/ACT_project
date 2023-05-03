@@ -1,0 +1,24 @@
+{% extends "main/main.html" %}
+
+{% block static %}
+{% endblock %}
+
+{% block content %}
+<section>
+    
+    <div class="container">
+        <h1>{{spotipyDatas.tracks.items.0.name}}</h1>
+    </div>
+    
+    <div class="container">
+        <div class="artistImageSection">
+            <img src="{{spotipyDatas.tracks.items.0.album.images.1.url}}">
+        </div>
+        <div class="resultSection"></div>
+    </div>
+    
+    <div class="container">
+        <div class="youtubeSection"></div>
+    </div>
+</section>
+{% endblock %}
