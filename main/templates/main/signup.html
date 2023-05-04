@@ -14,7 +14,7 @@
     <header>
         <h1>환영합니다</h1>
     </header>
-    <form method="post" action="/signup/">
+    <form method="post" action="{% url 'main:signup' %}">
         {% csrf_token %}
         <div class="email">
             <h1>Email</h1>
@@ -52,8 +52,11 @@
     </form>
     <div class="signUp">
         <button id="signUpButton">가입하기</button>
+        <p></p>
     </div>
 </div>
+
+<script src="/static/js/signup.js"></script>
 {% elif state == 1 %}
 <div class="signup_wrapper">
     <header>
@@ -69,7 +72,5 @@
     </header>
 </div>
 {% endif %}
-
-<script src="/static/js/signup.js"></script>
 
 {% endblock %}

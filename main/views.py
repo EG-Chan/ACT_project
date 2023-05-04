@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+#
 from datetime import datetime
+import hashlib
 
 #모델
 from main.models import Account
@@ -15,23 +17,60 @@ def main(request):
 # Create your views here.
 
 def login(request): #로그인
+    # 일반적인 접속인 경우
     if request.method == "GET":
-        return render(request, "main/login.html")
-    id = request.POST.get("id")
-    pw = request.POST.get("pw")
-
-    try:
-        s = Account.objects.get(pk=id, pw=pw)
-    except:
-        return redirect("login")
+        context = {"state" : 0}
+        return render(request, "main/login.html", context=context)
     
-    request.session["info_id"] = s.id
-    return redirect("main")
+    #로그인 버튼을 누른경우
+    elif request.method == "POST":
+        context = None
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        #비밀번호 암호화
+        hlib = hashlib.sha256()
+        hlib.update(password.encode("UTF-8"))
+        password = hlib.hexdigest()
+
+        try:
+            #DB에서 email이 같은 레코드와 비교
+            user = Account.objects.get(email=email)
+            if email == user.email and password == user.password:
+                request.session["email"] = email
+                request.session["userName"] = user.name
+                context = {
+                    "sessionID" : request.session.session_key,
+                    "userName" : request.session["userName"],
+                }
+                return render(request, "main/main.html", context=context)
+            else:
+                context = {
+                    "state" : 1,
+                    "email" : email,
+                }
+                return render(request, "main/login.html", context=context)
+        
+        #없는 이메일을 입력한 경우
+        except:
+            context = {
+                "state" : 2,
+                "email" : email,
+            }
+            return render(request, "main/login.html", context=context)
+        # except:
+
+        #     context = {"state" : 3}
+        #     print("실행2")
+        #     return render(request, "main/login.html", context=context)
+            
 
 
 def logout(request):
-    del request.session["id"]
-    return render(request, "main/logout.html")
+    #세션정보 모두 삭제
+    request.session.flush()
+
+    return redirect("/")
 
 def signup(request):
     # 일반적인 접속인 경우
@@ -41,26 +80,41 @@ def signup(request):
         return render(request, "main/signup.html", context=context)
     
     # 회원가입버튼을 누른경우
-    elif request.method == "POST": 
+    elif request.method == "POST":
+        context = None
         try:
             email = request.POST.get("email")
             password = request.POST.get("password")
             name = request.POST.get("name")
             gender = request.POST.get("gender")
             genre = request.POST.get("genre")
-            # user = Account()
-            # user.email = email
-            # user.password = password
-            # user.name = name
-            # user.gender = gender
-            # user.registrationDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            # user.save()
+
+            #비밀번호 암호화
+            hlib = hashlib.sha256()
+            hlib.update(password.encode("UTF-8"))
+            hlib.hexdigest()
+
+            #DB에 저장
+            user = Account()
+            user.email = email
+            user.password = hlib.hexdigest()
+            user.name = name
+            user.gender = gender
+            user.genre = genre
+            user.registrationDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            user.save()
+
             context = {"state" : 1}
         except:
             context = {"state" : 2}
         finally:
             return render(request, "main/signup.html", context=context)
-    
+        
+def userInfo(request):
+    context = {
+        "email": request.session["email"]
+    }
+    return render(request, "main/userInfo.html", context=context)
 
 def search(request):
     if request.method == "POST":

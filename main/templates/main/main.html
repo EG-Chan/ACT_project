@@ -22,7 +22,7 @@
         <section class="search">
             <div>
                 <h1>Search</h1>
-                <form method="post" action="/search/">
+                <form method="post" action="{% url 'main:search' %}">
                     {% csrf_token %}
                     <input name="search" type="text">
                 </form>
@@ -30,7 +30,7 @@
             </div>
         </section>
         {% endblock %}
-        
+        <h1>{{ sessionID }}</h1>
     </div>
 
     {% include "main/footer.html" %}

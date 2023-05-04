@@ -1,0 +1,15 @@
+{% extends "main/main.html" %}
+
+{% block static %}
+{% endblock %}
+
+{% block content %}
+<section>
+    
+    <div class="container">
+        <h1>유저 정보</h1>
+        <p>{{request.session.email}}</p>
+    </div>
+
+</section>
+{% endblock %}
