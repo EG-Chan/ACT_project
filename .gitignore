@@ -304,3 +304,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,python,django,visualstudiocode
+
+#venv파일 무시
+.venv/

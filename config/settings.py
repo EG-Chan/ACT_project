@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "ec2-13-124-144-252.ap-northeast-2.compute.amazonaws.com",
+    ".ap-northeast-2.compute.amazonaws.com",
     ".predicup.store",
 ]
 
