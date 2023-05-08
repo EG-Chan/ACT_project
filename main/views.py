@@ -8,9 +8,9 @@ import hashlib
 from main.models import Account
 
 #스포티파이
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from spotipy.oauth2 import SpotifyOAuth
+# import spotipy
+# from spotipy.oauth2 import SpotifyClientCredentials
+# from spotipy.oauth2 import SpotifyOAuth
 
 def main(request):
     return render(request, "main/main.html")
