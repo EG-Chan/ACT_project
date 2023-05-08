@@ -26,12 +26,18 @@
 }
 
 .resultSection {
-    
     width: 30vw;
     height: 55vh;
     margin: 0 40px 0 10px;
     background-color:rgb(92, 100, 100)
 
+}
+
+.song-container {
+    width: 28vw;
+    height: 10vh;
+    margin: 0 40px 0 10px;
+    background-color:rgb(30, 100, 100)
 }
 
 .youtubeSection {
