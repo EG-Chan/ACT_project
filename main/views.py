@@ -130,3 +130,9 @@ def search(request):
 
         return render(request, "main/search.html", {"spotipyDatas":artist})
     return render(request, "main/search.html")
+
+def result(request):
+    return render(request, "main/result.html")
+
+def introduce(request):
+    return render(request, "main/introduce.html")

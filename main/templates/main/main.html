@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/main.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block static %}
-    {% endblock %}
+    {% endblock static %}
     
     {% block title %}
     <title>ACTproject</title>
-    {% endblock %}
+    {% endblock title %}
     
 </head>
 <body>
@@ -19,18 +22,19 @@
         {% include "main/nav.html" %}
 
         {% block content %}
-        <section class="search">
+        <div class="search">
             <div>
                 <h1>Search</h1>
                 <form method="post" action="{% url 'main:search' %}">
                     {% csrf_token %}
                     <input name="search" type="text">
                 </form>
-                
             </div>
-        </section>
-        {% endblock %}
+        </div>
+        {% endblock content %}
         <h1>{{ sessionID }}</h1>
+
+        
     </div>
 
     {% include "main/footer.html" %}

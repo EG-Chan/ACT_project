@@ -1,15 +1,18 @@
 {% extends "main/main.html" %}
 
+{% load static %}
 {% block static %}
-{% endblock %}
+<link rel="stylesheet" href="{% static 'css/userinfo.css' %}">
+{% endblock static %}
 
 {% block content %}
-<section>
+<div>
     
     <div class="container">
-        <h1>유저 정보</h1>
+        <h1>내 정보</h1>
         <p>{{request.session.email}}</p>
+        <h1>선호 노래 목록</h1>
     </div>
 
-</section>
-{% endblock %}
+</div>
+{% endblock content %}
