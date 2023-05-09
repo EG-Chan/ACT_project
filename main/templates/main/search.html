@@ -6,28 +6,48 @@
 {% endblock static %}
 
 {% block content %}
-<div>
+<div class="wrapper">
     
-    <div class="container">
-        <h1>{{spotipyDatas.tracks.items.0.name}}의 검색결과입니다.</h1>
+    <div class="searchResult">
+        <h1>{{search}}의 검색결과입니다.</h1>
     </div>
     
     {% for data in spotipyDatas.tracks.items %}
-        <div class="container">
-            <div>
-                <span>{{forloop.counter}}</span>
+
+    <div class="container">
+        <div class="inner">
+            <div class="number">
+                <span>{{ forloop.counter }}</span>
             </div>
-            <div>
-                <img src="{{data.album.images.1.url}}">
+
+            <div class="image">
+                <a href="{% url 'main:result' data.id %}">
+                    <img src="{{data.album.images.1.url}}">
+                </a>
             </div>
-            
-            <div>
-                <div><span>{{data.album.name}}</span></div>
-                <div><span>{{data.album.artists.0.name}}</span></div>
-                <div><span></span></div>
+            <div class="content">
+                <div>
+                    <a href="{% url 'main:result' data.id %}">
+                        <span id="title">{{ data.album.name }}</span>
+                    </a>
+                </div>
+                <div>
+                    <span id="artist">{{ data.album.artists.0.name }}</span>
+                </div>
+                <div>
+                    <span></span>
+                </div>
             </div>
         </div>
+
+        <div class="heart">
+            🧡🤍
+        </div>
+    </div>
+
     {% endfor %}
 
 </div>
 {% endblock content %}
+
+<script>
