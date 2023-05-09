@@ -1,0 +1,27 @@
+{% extends "main/main.html" %}
+{% load static %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% endblock static %}
+
+{% block content %}
+<section>
+    <div class = 'high'>
+        <div class="container1">
+
+            <div class="item1">1</div>
+            <div class="item2">2</div>
+            <div class="item3">3</div>
+
+        </div>
+        
+        <div class="container2">
+            <div class='item4'>4</div>
+        </div>
+    </div>
+    <div class="container3">
+        <div class='item5'>5</div>
+    </div>
+</section>
+{% endblock content %}
