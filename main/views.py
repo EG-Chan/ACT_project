@@ -22,6 +22,8 @@ import numpy as np
 
 # 모델 불러오기
 import joblib
+import requests
+import os
 
 def main(request):
     return render(request, "main/main.html")
@@ -247,9 +249,40 @@ def changeTempo(x):
             return x[1]
     else :
         return x[1]
-    
-def result(request, id):
-    
+def serviceCheck(service):
+    if 1 in service:
+        return '빌보드 가능성 있음'
+    else :
+        return '빌보드 가능성 거의 없음'
+def findIndie(artist_name):
+    urls = 'https://en.wikipedia.org/wiki/'
+    response = requests.get(urls + artist_name)
+    if ('indie' in response.text) or ('on TikTok' in response.text) or ('Underground' in response.text) or ('minor hit' in response.text) or \
+        ('meme' in response.text) or ('Challenge' in response.text) or ('DJ' in response.text) or ('GYM' in response.text) :
+        return 1
+    else :
+        return 0
+
+def checkIndie(artist_name, indie):
+    not_indie_list = [
+    'Taylor Swift','Lil Uzi Vert',  'The Weeknd', 'Juice WRLD', 'Pop Smoke', 'Dua Lipa',
+    'Drake', 'Future', 'Lil Baby', 'Gunna', 'Polo G', 'Bad Bunny', 'DaBaby', 'Billie Eilish',
+    'Ariana Grande', 'Harry Styles', 'BLACKPINK', 'SZA', 'Maroon 5', 'Lizzo', 'Mariah Carey', 
+    'YoungBoy Never Broke Again', 'Cardi B', 'Halsey', 'Soulja Boy', 'Travis Scott', 'Justin Bieber',
+    'Britney Spears', 'Lil Keed', 'Lady Gaga', 'Avril Lavigne', 'Olivia Rodrigo', 'J. Cole','Daddy Yankee',
+    'Lily Allen', 'Thundercat', 'Anne Marie','BTS', 'Macklemore & Ryan Lewis', 'Ella Mai', 'Imagine Dragons',
+    '24KGoldn', 'Labrinth', 'Christina Perri', 'Nicki Minaj', 'Chris Brown', 'Selena Gomez', 'Meghan Trainor', 
+    'Kesha', 'Katy Perry', 'Kelly Clarkson', 'Black Eyed Peas', 'Michael Jackson', 'KAROL G', 'Beyonce',
+    'Charlie Puth', 'Ed Sheeran', 'Roddy Ricch', 'Alicia Keys','Sia'
+    ]
+
+    if artist_name in not_indie_list:
+        return 0        
+    else :
+        return indie
+
+async def result(request, id):
+    check_ = 0
     # 스포티파이 id, secert 정보
     client_id='baa750d0d8984735b51fa1c31b643d0b'
     client_secret='42347bd6d3f8405188650673a3155594'
@@ -288,95 +321,200 @@ def result(request, id):
     genres = genreList(genres)
     genres = changeGenres(genres)
     
-    # features
-    features = sp.audio_features(tracks=id)
-    new_df = pd.DataFrame(features)[['danceability', 'energy', 'loudness', 'mode', 'speechiness',
-    'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
-    'duration_ms']]
+    # 년도 찾기
+    years_ = int(song['album']['release_date'].split('-')[0])
     
-    # new_df2 생성
-    new_dict_sp = {
-        'popularity_track':song_popularity,
-        'popularity_artist':artist_popularity,
-        'followers':followers,
-        'genres':genres,
-        # 'gender':gender,
-        # 'instr_re':instr_re,
-        # 'main_instr':main_instr,
-        # 'indie' : indie,
-        # 'bass_type' : bass_type,
-        # 'rhythm' : rhythm,
-        # 'years' : years,
-        # 'lofi' : lofi,
-        # 'english' : english,
-        # 'retro' : retro,
-        # 're_inst' : instr_re,
-    }
-    new_df2 = pd.DataFrame([new_dict_sp])
-    new_df2 = pd.concat([new_df,new_df2],axis=1)
-    
-    # tempo 전처리
-    new_df2['tempo'] = new_df2['tempo'].astype(int)
-    new_df2['half_tempo_check'] = new_df2[['genres','tempo']].apply(changeTempo,axis=1)
-    new_df2 = new_df2.drop(columns=['tempo'])
-    
-    
-    # service_1 
-    
-    # get_dumies
-    # new_df3 = pd.get_dummies(new_df2,columns=[
-    #     'bass_type', 
-    #     'english', 'gender',   'indie',
-    #     'main_instr','re_inst', 'retro', 'rhythm','years','lofi',
+    if years_ >= 2021 :
+        years = 1
+    elif years_ >= 2019 :
+        years = 2
+    elif years_ >= 2017 :
+        years = 3
+    elif years_ >= 2015 :
+        years = 4    
+    elif years_ >= 2010 :
+        years = 5 
+    elif years_ >= 2000 :
+        years = 6 
+    elif years_ >= 1990 :
+        years = 7 
+    elif years_ >= 1980 :
+        years = 8 
+    elif years_ <= 1979 :
+        years = 9 
+    else :
+        years = 10    
         
-    #     'genres',
-    # ])
-    
-    spoti_col = [
-    # 'score', 
-    'liveness', 'loudness', 'instrumentalness', 'mode',
-    'popularity', 'popularity_artist', 'speechiness', 'valence',
-    'half_tempo_check', 'duration_ms', 'energy', 'danceability',
-    'acousticness', 'followers', 'bass_type_0', 'bass_type_1',
-    'bass_type_2', 'bass_type_3', 'bass_type_4', 'english_0', 'english_1',
-    'gender_1', 'gender_2', 'gender_3', 'gender_4', 'gender_5', 'gender_6',
-    'indie_0', 'indie_1', 'main_instr_0', 'main_instr_1', 'main_instr_4',
-    're_inst_0', 're_inst_1', 're_inst_2', 're_inst_3', 're_inst_4',
-    're_inst_5', 're_inst_6', 're_inst_7', 're_inst_8', 'retro_0',
-    'retro_1', 'rhythm_0', 'rhythm_1', 'rhythm_2', 'rhythm_3', 'rhythm_4',
-    'rhythm_5', 'rhythm_6', 'rhythm_7', 'rhythm_8', 'rhythm_9', 'rhythm_10',
-    'rhythm_11', 'rhythm_12', 'rhythm_13', 'rhythm_14', 'rhythm_15',
-    'rhythm_16', 'rhythm_17', 'rhythm_18', 'years_1', 'years_2', 'years_3',
-    'years_4', 'years_5', 'years_6', 'years_7', 'years_8', 'years_9',
-    'years_10', 'lofi_0', 'lofi_1', 'genres_black', 'genres_country',
-    'genres_dance', 'genres_ect', 'genres_edm', 'genres_funk',
-    'genres_indie', 'genres_media', 'genres_newage', 'genres_pop',
-    'genres_rap', 'genres_retro', 'genres_rock']
-    # new_df3 = new_df3.reindex(columns=spoti_col, fill_value=0)
-    
-    # service_1 model
-    # model = joblib.load('./models/service1/serrvice_1_spotify_anlys_stacking_all.pkl')
-    # service_1 = model.predict(new_df3)
-    
-    
-    # mp3 저장
+    # indie 찾기
+    indie = findIndie(artist_name)
+    if followers <= 300000:
+        indie = 1
+    indie = checkIndie(artist_name, indie) 
+
+    if indie == 0:
+        indie_k = '메이저 출신'
+    else :
+        indie_k = '인디 출신'
+        
+    # 30초 미리듣기    
     src=song['preview_url']
-    out_path = f'/media/{id}.mp3'   
     
-    
-    
-    
-    # file = wget.download(src, out=out_path)
+    # from _ post
+    if request.method == 'POST':
+        check_ = 1
+        gender = request.POST['gender']
+        instr_re = request.POST['re_inst']
+        bass_type = request.POST['bass_type']
+        rhythm = request.POST['rhythm']
+        main_instr = request.POST['main_instr']
+        english = request.POST['english']
+        retro = request.POST['retro']
+        lofi = request.POST['lofi']
+        # print(bass_type,rhythm,main_instr,english,retro,lofi)
+
+        try :
+            # features
+            features = sp.audio_features(tracks=id)
+            new_df = pd.DataFrame(features)[['danceability', 'energy', 'loudness', 'mode', 'speechiness',
+            'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
+            'duration_ms']]
+            # print('indie:',indie)
+            
+            # new_df2 생성
+            new_dict_sp = {
+                'popularity_track':song_popularity,
+                'popularity_artist':artist_popularity,
+                'followers':followers,
+                'genres':genres,
+                'years' : years,
+                'indie' : indie,
+                
+                'gender':gender,
+                'main_instr':main_instr,
+                
+                'bass_type' : bass_type,
+                'rhythm' : rhythm,
+                
+                'lofi' : lofi,
+                'english' : english,
+                'retro' : retro,
+                're_inst' : instr_re,
+            }
+            new_df2 = pd.DataFrame([new_dict_sp])
+            new_df2 = pd.concat([new_df,new_df2],axis=1)
+            
+            # tempo 전처리
+            new_df2['tempo'] = new_df2['tempo'].astype(int)
+            new_df2['half_tempo_check'] = new_df2[['genres','tempo']].apply(changeTempo,axis=1)
+            new_df2 = new_df2.drop(columns=['tempo'])
+            
+            
+            # service_1 
+            
+            # get_dumies
+            new_df3 = pd.get_dummies(new_df2,columns=[
+                'bass_type', 
+                'english', 'gender',   'indie',
+                'main_instr','re_inst', 'retro', 'rhythm','years','lofi',
+                
+                'genres',
+            ])
+            # print(new_df3)
+            spoti_col = [
+            # 'score', 
+            'liveness', 'loudness', 'instrumentalness', 'mode',
+            'popularity', 'popularity_artist', 'speechiness', 'valence',
+            'half_tempo_check', 'duration_ms', 'energy', 'danceability',
+            'acousticness', 'followers', 'bass_type_0', 'bass_type_1',
+            'bass_type_2', 'bass_type_3', 'bass_type_4', 'english_0', 'english_1',
+            'gender_1', 'gender_2', 'gender_3', 'gender_4', 'gender_5', 'gender_6',
+            'indie_0', 'indie_1', 'main_instr_0', 'main_instr_1', 'main_instr_4',
+            're_inst_0', 're_inst_1', 're_inst_2', 're_inst_3', 're_inst_4',
+            're_inst_5', 're_inst_6', 're_inst_7', 're_inst_8', 'retro_0',
+            'retro_1', 'rhythm_0', 'rhythm_1', 'rhythm_2', 'rhythm_3', 'rhythm_4',
+            'rhythm_5', 'rhythm_6', 'rhythm_7', 'rhythm_8', 'rhythm_9', 'rhythm_10',
+            'rhythm_11', 'rhythm_12', 'rhythm_13', 'rhythm_14', 'rhythm_15',
+            'rhythm_16', 'rhythm_17', 'rhythm_18', 'years_1', 'years_2', 'years_3',
+            'years_4', 'years_5', 'years_6', 'years_7', 'years_8', 'years_9',
+            'years_10', 'lofi_0', 'lofi_1', 'genres_black', 'genres_country',
+            'genres_dance', 'genres_ect', 'genres_edm', 'genres_funk',
+            'genres_indie', 'genres_media', 'genres_newage', 'genres_pop',
+            'genres_rap', 'genres_retro', 'genres_rock']
+            
+            new_df3 = new_df3.reindex(columns=spoti_col, fill_value=0)
+            # pd.set_option('display.max_rows', None)
+            # pd.set_option('display.max_columns', None)
+            # print(new_df3)
+            # service_1 model
+            model = joblib.load('main\static\models\service1\serrvice_1_spotify_anlys_voting_all.pkl')
+            service_1 = model.predict(new_df3)
+            
+            service_1_k = serviceCheck(service_1)
+            # mp3 저장
+            # src=song['preview_url']
+            out_path = f'main\media\{id}.mp3'   
+            
+            file = wget.download(src, out=out_path)
+            
+            
+            # 노래 삭제
+            os.remove(out_path)
+            
+            
+            context = {
+                'service_1':service_1_k,
+                'artist_name':artist_name,
+                'song_name':song_name,
+                'album_img':album_img,
+                'artist_img':artist_img,
+                'followers':followers,
+                'years' : years_,
+                'genres': genres,
+                'id':id,
+                'src':src,
+                'check':check_,
+                'artist_popularity':artist_popularity,
+                'song_popularity':song_popularity,
+                'indie_k':indie_k,
+                
+            }
+            
+            return render(request, "main/result.html", context=context)
+        except TypeError as e:
+            print(e)
+            service_1_k = '해당 노래는 거주 국가에서 분석이 안되는 노래입니다.'
+            check_=1
+            context = {
+            'id':id,
+            'service_1':service_1_k,
+            'artist_name':artist_name,
+            'song_name':song_name,
+            'album_img':album_img,
+            'artist_img':artist_img,
+            'followers':followers,
+            'years' : years_,
+            'genres': genres,
+            'src':src,
+            'check':check_,
+            'artist_popularity':artist_popularity,
+            'song_popularity':song_popularity,
+            'indie_k':indie_k,
+            }
+            return render(request, "main/result.html", context=context)
     
     context = {
-        # 'service_1':service_1,
-        'artist_name':artist_name,
-        'song_name':song_name,
-        'album_img':album_img,
-        'artist_img':artist_img,
-        'followers':followers,
-        
-        
+    'id':id,
+    'artist_name':artist_name,
+    'song_name':song_name,
+    'album_img':album_img,
+    'artist_img':artist_img,
+    'followers':followers,
+    'years' : years_,
+    'genres': genres,
+    'src':src,
+    'check':check_,
+    'artist_popularity':artist_popularity,
+    'song_popularity':song_popularity,
+    'indie_k':indie_k,
     }
-    
     return render(request, "main/result.html", context=context)
