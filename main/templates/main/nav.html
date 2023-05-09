@@ -3,7 +3,7 @@
         <a href="/">Logo</a>
     </div>
     <div>
-        <a>소개</a>
+        <li><a href="{% url 'main:introduce' %}">소개</a></li>
     </div>
     <div>
         {% if request.session.userName %}
