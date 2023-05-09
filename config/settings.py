@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-zzm(^kn1w(y)-%p!0+0knr^ag%m(h*^eoe^=6ci4*p+5xblosy
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
+    "127.0.0.1", #최종 배포때 제거하기
     ".ap-northeast-2.compute.amazonaws.com",
     ".predicup.store",
 ]
@@ -128,4 +128,5 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# nginx의 스태틱 경로 지정
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

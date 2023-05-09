@@ -1,34 +1,33 @@
 {% extends "main/main.html" %}
 
+{% load static %}
 {% block static %}
-<link rel="stylesheet" href="/static/css/search.css">
-{% endblock %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock static %}
 
 {% block content %}
-<section>
+<div>
     
     <div class="container">
-        <h1>{{spotipyDatas.tracks.items.0.name}}</h1>
+        <h1>{{spotipyDatas.tracks.items.0.name}}의 검색결과입니다.</h1>
     </div>
     
-    <div class="container">
-        <div class="artistImageSection">
-            <img src="{{spotipyDatas.tracks.items.0.album.images.1.url}}">
-        </div>
-        <div class="resultSection">
-            <div class="song-container">
-                <img>
-                <li>번호</li>
-                <li>제목</li>
-                <li>아티스트</li>
-                <li>날짜</li>
+    {% for data in spotipyDatas.tracks.items %}
+        <div class="container">
+            <div>
+                <span>{{forloop.counter}}</span>
+            </div>
+            <div>
+                <img src="{{data.album.images.1.url}}">
+            </div>
+            
+            <div>
+                <div><span>{{data.album.name}}</span></div>
+                <div><span>{{data.album.artists.0.name}}</span></div>
+                <div><span></span></div>
             </div>
         </div>
-    </div>
-    
-    <div class="container">
-        <div class="youtubeSection"></div>
-    </div>
+    {% endfor %}
 
-</section>
-{% endblock %}
+</div>
+{% endblock content %}
