@@ -25,6 +25,13 @@ import joblib
 import requests
 import os
 
+# service2, 4 음원 분석 라이브러리
+import scipy.io.wavfile
+from scipy.fftpack import dct
+import librosa
+import tensorflow as tf
+from pydub import AudioSegment
+
 def main(request):
     return render(request, "main/main.html")
 # Create your views here.
@@ -281,6 +288,79 @@ def checkIndie(artist_name, indie):
     else :
         return indie
 
+# pre-emphasis filter 생성
+def preEmpFilter(signal):
+    # 맥시마이저 되어있는 소리를 pre-emphasis filter 로 풀어주기
+    pre_emphasis = 0.97 # 또는 0.95 0.9357
+    return np.append(signal[0], signal[1:] - pre_emphasis * signal[:-1])
+
+
+# 서비스4를 위한 전처리
+def Service4(out_path):
+    wav_info = {}
+    # 0초 ~ 16초 : 최저 4마디 기준
+    sound = AudioSegment.from_file(out_path)
+    start_time = 0 * 1000
+    end_time = (1*17.4) * 1000
+    sound = sound[start_time:end_time]
+    
+    input_wav = out_path[:-4] + '.wav'
+    #wav 파일 생성
+    sound.export(input_wav, format='wav')
+
+    # signal 뽑기
+    _, signal = scipy.io.wavfile.read(input_wav)
+    
+    # preEmp 필터 통과
+    signal = preEmpFilter(signal)
+    wav_info = {
+    'signal' : signal
+    }
+    
+    # dataframe으로 생성
+    df = pd.DataFrame([wav_info])
+    
+    # 멜스펙트럼으로 바꾸기
+    df['signal'] = df['signal'].apply(lambda x : librosa.feature.melspectrogram(y=x, sr=44100//2))
+    
+    # LSTM input shape에 맞춰서 signal 변환
+    df['signal'] = df['signal'].apply(lambda x : np.array(x.T.tolist()))
+    
+    return df
+
+def paddingData(df):
+    data = []
+    max_time_steps = 3001
+    # (samples, time_steps, features)
+    # 샘플 수, 시간, 128
+    signal = df.iloc[0]['signal']
+    time_steps, features = signal.shape
+    # if time_steps > max_time_steps:
+    #     max_time_steps = time_steps
+    signal = np.expand_dims(signal, axis=0)  # samples=1로 만듦
+    data.append(signal)
+    samples = len(data)
+    features = data[0].shape[2]
+    
+        
+    # 초기화
+    X = np.zeros((samples, max_time_steps, features))
+    
+    # sample만큼 반복
+    for k in range(samples):
+        # 패딩 작업
+        
+        time_steps = data[k].shape[1]
+
+        padding_size = max_time_steps - time_steps
+        if padding_size > 0:
+            padded_signal = np.pad(data[k], ((0, 0), (0, padding_size), (0, 0)), mode='constant')
+        else:
+            padded_signal = data[k][:,:max_time_steps,:]
+        X[k] = padded_signal
+        
+    return X
+
 async def result(request, id):
     check_ = 0
     # 스포티파이 id, secert 정보
@@ -305,7 +385,7 @@ async def result(request, id):
     # 곡 정보
     artist_name = song['artists'][0]['name']
     song_name = song['name']
-    print(artist_name,song_name)
+    # print(artist_name,song_name)
 
     # 이미지 파일
     album_img = song['album']['images'][1]['url']
@@ -370,7 +450,6 @@ async def result(request, id):
         english = request.POST['english']
         retro = request.POST['retro']
         lofi = request.POST['lofi']
-        # print(bass_type,rhythm,main_instr,english,retro,lofi)
 
         try :
             # features
@@ -378,7 +457,6 @@ async def result(request, id):
             new_df = pd.DataFrame(features)[['danceability', 'energy', 'loudness', 'mode', 'speechiness',
             'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
             'duration_ms']]
-            # print('indie:',indie)
             
             # new_df2 생성
             new_dict_sp = {
@@ -457,12 +535,34 @@ async def result(request, id):
             file = wget.download(src, out=out_path)
             
             
+            # service 4
+            model4 = tf.keras.models.load_model('main\static\models\service4\end_to_end_final32.h5')
+            
+            # 전처리
+            df4 = Service4(out_path)
+            
+            # padding
+            X4data = paddingData(df4)
+            
+            service_4 = model4.predict(X4data)
+            service_4 = round(service_4[0][0],4)
+            
             # 노래 삭제
             os.remove(out_path)
+            os.remove(out_path[:-4]+'.wav')
+            
+            # # 모델 자동 추가 학습
+            # if service_4 >= 0.5:
+            #     y4data = np.array([1])
+            # else :
+            #     y4data = np.array([0])
+            # model4.fit(X4data, y4data, epochs=10, verbose=2)
+            # model4.save('main\static\models\service4\end_to_end_final32.h5')
             
             
             context = {
                 'service_1':service_1_k,
+                'service_4':service_4,
                 'artist_name':artist_name,
                 'song_name':song_name,
                 'album_img':album_img,

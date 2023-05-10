@@ -131,7 +131,11 @@
                     <button type="submit" class="btn" style="margin-right:5px;">노래 분석 하러가기</button>
                 </form>
                 {% else %}
-                    {{service_1}}
+                    <p>스포티파이와 각종 특징을 토대로 분석한 결과 : "{{service_1}}" 으로 판별됨니다.<br></p>
+                    _service 1
+                    <p>후렴구 16초 음원을 토대로 분석한 결과 : 틱톡에서 빌보드로 올라갈 확률이 "{{service_4}}" 으로 계산되었습니다.<br></p>
+                    _service 4
+                    <p>위의 최종적인 판별 결과 : 이 노래는 로 예상됩니다.</p>
                 {% endif %}
             </div>
         </div>
