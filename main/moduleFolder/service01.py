@@ -1,16 +1,75 @@
-# service2, 4 음원 분석 라이브러리
 import requests
+import pandas as pd
+import joblib
 
+#스포티파이 데이터로 분석
 class Service:
 
-    def __init__(self):
-        pass
+    def __init__(self, id):
+        self.id = id
+        self.track = None
+        self.track_name = None
+        self.track_genres = None
+        self.track_popularity = None
+        self.track_img = None
+        self.track_year = None
+        self.track_src = None
+        self.artist = None
+        self.artist_name = None
+        self.artist_id = None
+        self.artist_spotify_url = None
+        self.artist_popularity = None
+        self.artist_img = None
+        self.artist_followers = None
+        self.artist_indie = None
+        self.dataFrame = None
+        
+    
+    def setMusicInfo(self, track, artist):
+        self.track = track
+        self.artist = artist
 
-    # step 2 genres 축양을 위한 리스트화
-    def genreList(self, genres):
+        self.artist_name = track['artists'][0]['name']
+        self.artist_id = track['artists'][0]['id']
+        self.artist_spotify_url = track['artists'][0]['external_urls']['spotify']
+        self.track_name = track['name']
+        self.track_popularity = track['popularity']
+        self.track_img = track['album']['images'][1]['url']
+        self.track_year = int(track['album']['release_date'].split('-')[0])
+        self.track_src = track['preview_url']
+
+        self.artist_popularity = artist['popularity']
+        self.track_genres = artist['genres']
+        self.artist_followers = artist['followers']['total']
+        self.artist_img = artist['images'][1]['url']
+        
+        
+        self.changeGenres()
+        self.findYear()
+        self.findIndie()
+
+    def getMusicInfo(self):
+        return {
+            "id" : self.id,
+            "track_name" : self.track_name,
+            "track_genres" : self.track_genres,
+            "track_popularity" : self.track_popularity,
+            "track_img" : self.track_img,
+            "track_year" : self.track_year,
+            "track_src" : self.track_src,
+            "artist_name" : self.artist_name,
+            "artist_id" : self.artist_id,
+            "artist_spotify_url" : self.artist_spotify_url,
+            "artist_popularity" : self.artist_popularity,
+            "artist_img" : self.artist_img,
+            "artist_followers" : self.artist_followers,
+            "artist_indie" : self.artist_indie,
+        }
+    # 장르 최소화
+    def changeGenres(self):
         genre_list = []
         # 장르별 조건 주기
-        for i in genres:
+        for i in self.track_genres:
             if i == '':
                 genre_list.append('ect')
             elif (i.find('indie') != -1) or (i.find('singer-songwriter') != -1):
@@ -60,85 +119,67 @@ class Service:
                 genre_list.append('ect')
 
         # 중복장르 제거
-        return list(set(genre_list))
+        genre_list = list(set(genre_list))
 
-    # 장르 최소화
-    def changeGenres(self, x):
-        if 'ect' in x:
-            return 'ect'
-        elif 'indie' in x:
-            return 'indie'
-        elif 'world' in x:
-            return 'world'
-        elif 'rock' in x:
-            return 'rock'
-        elif 'funk' in x:
-            return 'funk'
-        elif 'retro' in x:
-            return 'retro'
-        elif 'dance' in x:
-            return 'dance'
-        elif 'media' in x:
-            return 'media'
-        elif 'relax' in x:
-            return 'relax'
-        elif 'edm' in x:
-            return 'edm'
-        elif 'house' in x:
-            return 'edm'
-        elif 'syns' in x:
-            return 'edm'
-        elif 'black' in x:
-            return 'black'
-        elif 'rnb' in x:
-            return 'black'
-        elif 'country' in x:
-            return 'country'
-        elif 'newage' in x:
-            return 'newage'
-        elif 'rap' in x:
-            return 'rap'
+        if 'ect' in genre_list:
+            self.track_genres = 'ect'
+        elif 'indie' in genre_list:
+            self.track_genres = 'indie'
+        elif 'world' in genre_list:
+            self.track_genres = 'world'
+        elif 'rock' in genre_list:
+            self.track_genres = 'rock'
+        elif 'funk' in genre_list:
+            self.track_genres = 'funk'
+        elif 'retro' in genre_list:
+            self.track_genres = 'retro'
+        elif 'dance' in genre_list:
+            self.track_genres = 'dance'
+        elif 'media' in genre_list:
+            self.track_genres = 'media'
+        elif 'relax' in genre_list:
+            self.track_genres = 'relax'
+        elif 'edm' in genre_list or 'house' in genre_list or 'syns' in genre_list:
+            self.track_genres = 'edm'
+        elif 'black' in genre_list or 'rnb' in genre_list:
+            self.track_genres = 'black'
+        elif 'country' in genre_list:
+            self.track_genres = 'country'
+        elif 'newage' in genre_list:
+            self.track_genres = 'newage'
+        elif 'rap' in genre_list:
+            self.track_genres = 'rap'
         else : 
             # 여기에도 없는 태그일 경우 그냥 전부 pop으로 보기
-            return 'pop'
+            self.track_genres = 'pop'
 
-
-    def findYear(self, years):
-        if years>= 2021 :
-            years = 1
-        elif years >= 2019 :
-            years = 2
-        elif years >= 2017 :
-            years = 3
-        elif years >= 2015 :
-            years = 4    
-        elif years >= 2010 :
-            years = 5 
-        elif years >= 2000 :
-            years = 6 
-        elif years >= 1990 :
-            years = 7 
-        elif years >= 1980 :
-            years = 8 
-        elif years <= 1979 :
-            years = 9 
+    def findYear(self):
+        if self.track_year>= 2021 :
+            self.track_year = 1
+        elif self.track_year >= 2019 :
+            self.track_year = 2
+        elif self.track_year >= 2017 :
+            self.track_year = 3
+        elif self.track_year >= 2015 :
+            self.track_year = 4    
+        elif self.track_year >= 2010 :
+            self.track_year = 5 
+        elif self.track_year >= 2000 :
+            self.track_year = 6 
+        elif self.track_year >= 1990 :
+            self.track_year = 7 
+        elif self.track_year >= 1980 :
+            self.track_year = 8 
+        elif self.track_year <= 1979 :
+            self.track_year = 9 
         else :
-            years = 10
+            self.track_year = 10
 
 
-    def findIndie(self, artist_name, followers):
+    def findIndie(self):
         urls = 'https://en.wikipedia.org/wiki/'
-        response = requests.get(urls + artist_name)
+        response = requests.get(urls + self.artist_name)
         indie = None
-        if ('indie' in response.text) or ('on TikTok' in response.text) or ('Underground' in response.text) or ('minor hit' in response.text) or \
-            ('meme' in response.text) or ('Challenge' in response.text) or ('DJ' in response.text) or ('GYM' in response.text) :
-            indie = 1
-        else :
-            indie = 0
-        
-        if followers <= 300000:
-            indie = 1
-        
         not_indie_list = [
             'Taylor Swift','Lil Uzi Vert',  'The Weeknd', 'Juice WRLD', 'Pop Smoke', 'Dua Lipa',
             'Drake', 'Future', 'Lil Baby', 'Gunna', 'Polo G', 'Bad Bunny', 'DaBaby', 'Billie Eilish',
@@ -151,16 +192,84 @@ class Service:
             'Charlie Puth', 'Ed Sheeran', 'Roddy Ricch', 'Alicia Keys','Sia'
         ]
 
-        if artist_name in not_indie_list:
-            indie = 0       
-        else :
+        indie_wiki_list = ["indie", "on TikTok", "Underground", "minor hit", "meme", "Challenge", "DJ", "GYM"]
+        for i in indie_wiki_list:
+            if i in response.text:
+                indie = 1
+                break
+            else:
+                indie = 0
+
+        if self.artist_followers <= 300000:
             indie = 1
+
+        if self.artist_name in not_indie_list:
+            indie = 0
+
+        self.artist_indie = indie
+    
+    def createDataFrame(self, audio_features, post_data):
+        df1 = pd.DataFrame(audio_features)[['danceability', 'energy', 'loudness', 'mode', 'speechiness', 
+                                            'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo', 
+                                            'duration_ms']]
         
-        if indie == 0:
-            return "메이저 출신"
-        else :
-            return "인디 출신"
-            
+        new_dict_sp = {
+            'popularity_track' : self.track_popularity,
+            'popularity_artist': self.artist_popularity,
+            'followers': self.artist_followers,
+            'genres': self.track_genres,
+            'years' : self.track_year,
+            'indie' : self.artist_indie,
+            'gender': post_data["gender"],
+            'main_instr': post_data["main_instr"],
+            'bass_type' : post_data["bass_type"],
+            'rhythm' : post_data["rhythm"],
+            'lofi' : post_data["lofi"],
+            'english' : post_data["english"],
+            'retro' : post_data["retro"],
+            're_inst' : post_data["re_inst"],
+        }
+
+        df2 = pd.DataFrame([new_dict_sp])
+        concat_df = pd.concat([df1, df2],axis=1)
+
+        # tempo 전처리
+        concat_df['tempo'] = concat_df['tempo'].astype(int)
+        concat_df['half_tempo_check'] = concat_df[['genres','tempo']].apply(self.changeTempo,axis=1)
+        concat_df = concat_df.drop(columns=['tempo'])
+
+        df3 = pd.get_dummies(concat_df, columns=[
+            'bass_type', 'english', 'gender', 'indie', 'main_instr',
+            're_inst', 'retro', 'rhythm', 'years', 'lofi',
+            'genres',
+        ])
+
+        spoti_col = [
+            # 'score', 
+            'liveness', 'loudness', 'instrumentalness', 'mode', 'popularity', 
+            'popularity_artist', 'speechiness', 'valence', 'half_tempo_check', 
+            'duration_ms', 'energy', 'danceability', 'acousticness', 'followers', 
+            'bass_type_0', 'bass_type_1', 'bass_type_2', 'bass_type_3', 'bass_type_4',
+            'english_0', 'english_1',
+            'gender_1', 'gender_2', 'gender_3', 'gender_4', 'gender_5', 'gender_6',
+            'indie_0', 'indie_1',
+            'main_instr_0', 'main_instr_1', 'main_instr_4',
+            're_inst_0', 're_inst_1', 're_inst_2', 're_inst_3', 're_inst_4', 're_inst_5', 're_inst_6', 're_inst_7', 're_inst_8',
+            'retro_0', 'retro_1',
+            'rhythm_0', 'rhythm_1', 'rhythm_2', 'rhythm_3', 'rhythm_4',
+            'rhythm_5', 'rhythm_6', 'rhythm_7', 'rhythm_8', 'rhythm_9',
+            'rhythm_10', 'rhythm_11', 'rhythm_12', 'rhythm_13', 'rhythm_14',
+            'rhythm_15', 'rhythm_16', 'rhythm_17', 'rhythm_18', 
+            'years_1', 'years_2', 'years_3', 'years_4', 'years_5',
+            'years_6', 'years_7', 'years_8', 'years_9', 'years_10', 
+            'lofi_0', 'lofi_1', 
+            'genres_black', 'genres_country', 'genres_dance', 'genres_ect', 'genres_edm',
+            'genres_funk', 'genres_indie', 'genres_media', 'genres_newage', 'genres_pop',
+            'genres_rap', 'genres_retro', 'genres_rock',
+        ]
+
+        self.dataFrame = df3.reindex(columns=spoti_col, fill_value=0)
+
     # tempo 변경
     def changeTempo(self, x):
         if x[0] == 'rap':
@@ -170,12 +279,21 @@ class Service:
                 return x[1]
         else :
             return x[1]
-        
-    def serviceCheck(self, service):
-        if 1 in service:
+    
+    def runModel(self):
+        model = joblib.load('main\static\models\service1\serrvice_1_spotify_anlys_voting_all.pkl')
+        result = model.predict(self.dataFrame)
+
+        if 1 in result:
             return '빌보드 가능성 있음'
         else :
             return '빌보드 가능성 거의 없음'
-    
+        
+        
+    def getindie(self):
+        if self.artist_indie == 0:
+            return "메이저 출신"
+        else :
+            return "인디 출신"
 
     
