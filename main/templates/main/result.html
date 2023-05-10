@@ -10,14 +10,144 @@
     <div class = 'high'>
         <div class="container1">
 
+<<<<<<< HEAD
             <div class="item1">1</div>
             <div class="item2">2</div>
             <div class="item3">3</div>
+=======
+            <div class="item1">
+                <div class = 'img_div'>
+                    <img class = 'imgs_' src="{{album_img}}">
+                </div>
+                <h3>곡 : {{song_name}}</h3>
+                <h5>출시 : {{years}}년</h5>
+                <h5>곡 인기 : {{song_popularity}}</h5>
+                <h5>장르 : {{genres}}</h5>
+                
+            </div>
+            <div class="item2">
+                <div class = 'img_div'>
+                    <img class = 'imgs_' src="{{artist_img}}">
+                </div>
+                <h3>아티스트 : {{artist_name}}</h3>
+                <h5>팔로워 : {{followers}}명</h5>
+                <h5>노래 인기 : {{artist_popularity}}</h5>
+                <h5>인디분류 : {{indie_k}}</h5>
+
+            </div>
+
+
+            <div class="item3">
+                미리 듣기 <br>
+                <div class = 'emb_div'>
+                    <embed class = 'imgs_' src="{{src}}">
+                </div>
+            </div>
+>>>>>>> c7edc1144d03729a39f638bd708af46496d1e4d4
 
         </div>
         
         <div class="container2">
+<<<<<<< HEAD
             <div class='item4'>4</div>
+=======
+            <div class='item4'>
+                {% if check == 0 %}
+                <form action="{% url 'main:result' id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="id_gender">성별</label>
+                    <select name="gender" id="id_gender">
+                        <option value="1" selected>남자 솔로</option>
+                        <option value="2">여자 솔로</option>
+                        <option value="3">남자 그룹</option>
+                        <option value="4">여자 그룹</option>
+                        <option value="5">혼성 그룹</option>
+                        <option value="6">가수 없음</option>
+                    </select>
+                    
+                    <label for="id_re_inst">메인 악기 선택</label>
+                    <select name="re_inst" id="id_re_inst">
+                        <option value="0" selected>베이스</option>
+                        <option value="1">피아노/기타</option>
+                        <option value="2">스트링</option>
+                        <option value="3">멜로디 악기/보컬찹</option>
+                        <option value="4">신스</option>
+                        <option value="5">stab/brass</option>
+                        <option value="6">킥/스네어/드럼</option>
+                        <option value="7">보컬</option>
+                        <option value="8">노래가 아님</option>
+                    </select>
+
+                    <label for="id_bass_type">베이스 종류 선택</label>
+                    <select name="bass_type" id="id_bass_type">
+                        <option value="0" selected>일렉/리얼 베이스</option>
+                        <option value="1">신스 베이스</option>
+                        <option value="2">808 베이스</option>
+                        <option value="3">신스 + 808 베이스</option>
+                        <option value="4">베이스 없음</option>
+                    </select>
+
+                    <label for="id_rhythm">리듬 선택</label>
+                    <select name="rhythm" id="id_rhythm">
+                        <option value="0" selected>뭄바톤/레게</option>
+                        <option value="1">마이애미</option>
+                        <option value="2">펑크</option>
+                        <option value="3">디스코/하우스</option>
+                        <option value="4">락</option>
+                        <option value="5">컨트리</option>
+                        <option value="6">재즈</option>
+                        <option value="7">트랩/하프</option>
+                        <option value="8">반복되는 주제 리듬</option>
+                        <option value="9">4비트/논리듬</option>
+                        <option value="10">뽕짝</option>
+                        <option value="11">그루비</option>
+                        <option value="12">블루스/RNB</option>
+                        <option value="13">라틴</option>
+                        <option value="14">뉴잭스윙</option>
+                        <option value="15">아라비안/인디아</option>
+                        <option value="16">오리엔탈</option>
+                        <option value="17">셔플/트리플/3비트</option>
+                        <option value="18">뉴웨이브</option>
+                    </select>
+
+                    <label for="id_main_instr">singing 여부</label>
+                    <select name="main_instr" id="id_main_instr">
+                        <option value="0" selected>연주곡</option></option>
+                        <option value="1">목소리 있는 노래</option>
+                    </select>
+
+                    <label for="id_english">영어 여부</label>
+                    <select name="english" id="id_english">
+                        <option value="0" selected>Non 영어</option></option>
+                        <option value="1">영어 노래</option>
+                    </select>
+
+                    <label for="id_retro">레트로 여부</label>
+                    <select name="retro" id="id_retro">
+                        <option value="0" selected>Non 레트로</option></option>
+                        <option value="1">레트로</option>
+                    </select>
+
+                    
+                    <label for="id_lofi">로파이 여부</label>
+                    <select name="lofi" id="id_lofi">
+                        <option value="0" selected>Non 로파이</option></option>
+                        <option value="1">로파이</option>
+                    </select>
+                    
+                    
+
+                    <button type="submit" class="btn" style="margin-right:5px;">노래 분석 하러가기</button>
+                </form>
+                {% else %}
+                    <p>스포티파이와 각종 특징을 토대로 분석한 결과 : "{{service_1}}" 으로 판별됨니다.<br></p>
+                    _service 1
+                    <p>후렴구 16초 음원을 토대로 분석한 결과 : 틱톡에서 빌보드로 올라갈 확률이 "{{service_4}}" 으로 계산되었습니다.<br></p>
+                    _service 4
+                    <p>위의 최종적인 판별 결과 : 이 노래는 로 예상됩니다.</p>
+                {% endif %}
+            </div>
+>>>>>>> c7edc1144d03729a39f638bd708af46496d1e4d4
         </div>
     </div>
     <div class="container3">
