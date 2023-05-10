@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
 
 #사용자 정보 저장
 from datetime import datetime
@@ -141,7 +142,6 @@ def introduce(request):
 def result(request, id):
     
     # 노래 검색
-    ####################try문으로 처리해주기#########################
     track = sp.track(id)
     artist = sp.artist(track['artists'][0]['id'])
 
@@ -149,16 +149,17 @@ def result(request, id):
     service01.setMusicInfo(track, artist)
 
     service03 = s3.Service(id, track['preview_url'])
-
+    recommendation = sp.recommendations(seed_tracks=[id],limit=5)
     if request.method == "GET":
 
         context = service01.getMusicInfo()
         context["state"] = 0
-
+        context['recommendation'] = recommendation
+        
         return render(request, "main/result.html", context=context)
     
     elif request.method == 'POST':
-        #try :
+        try :
             # service_1 
             post_data = {
                 "gender" : request.POST['gender'],
@@ -191,13 +192,15 @@ def result(request, id):
             context["service01_result"] = service01_result
             context["service03_result"] = service03_result
             context["state"] = 1
+            context['recommendation'] = recommendation
             
             return render(request, "main/result.html", context=context)
-        # except TypeError as e:
-        #     print(e)
-        #     context = service01.getMusicInfo()
-        #     context["service01_result"] = '해당 노래는 거주 국가에서 분석이 안되는 노래입니다.'
-        #     context["state"] = 1
+        except TypeError as e:
+            print(e)
+            context = service01.getMusicInfo()
+            context["service01_result"] = '해당 노래는 거주 국가에서 분석이 안되는 노래입니다.'
+            context["state"] = 1
 
-        #     return render(request, "main/result.html", context=context)
-    
+            return render(request, "main/result.html", context=context)
+        
+

@@ -22,15 +22,7 @@
         {% include "main/nav.html" %}
 
         {% block content %}
-        <div class="search">
-            <div>
-                <h1>Search</h1>
-                <form method="post" action="{% url 'main:search' %}">
-                    {% csrf_token %}
-                    <input name="search" type="text">
-                </form>
-            </div>
-        </div>
+        {% include "main/search_bar.html" %}
         {% endblock content %}
         <h1>{{ sessionID }}</h1>
 

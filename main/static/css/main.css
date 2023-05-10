@@ -13,7 +13,12 @@ canvas,header,nav,section, footer{
     color: white;
     vertical-align: baseline;
 }
-
+.btn_act:hover {
+    background-color: gray;
+}
+.btn_act:active {
+    background-color: rgb(218, 216, 216);
+}
 body{
     background-color: rgb(31, 31, 31);
     padding: 0px 16.6vw 0px 16.6vw;
@@ -58,6 +63,23 @@ nav {
     border-radius: 10px;
     background-color: rgb(31, 31, 31);
 }
+.search .search_btn {
+	/* background-image: url("/static/imgs/btn_search.png"); */
+    /* border: none; */
+    background-color: rgb(31, 31, 31);
+    width: 50px;
+    height: 50px; 
+    cursor: pointer;
+    position: relative;
+}
+.search .search_btn > img  {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 50%;
+    max-height: 50%;
+}
 
 
 footer {
@@ -76,7 +98,15 @@ footer {
 hr {
     background-color: rgb(60, 60, 60);
 }
-
-
-
+#search_b {
+    /* position: relative; */
+    /* display : block; */
+    max-width: 200px;
+    min-width: 60px;
+    margin: 0 auto;
+    border-radius: 80px;
+    border: 1px solid #ffffff;
+    background-color: rgb(200, 200, 200);
+    z-index: 10;
+}
 

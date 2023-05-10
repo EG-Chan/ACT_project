@@ -6,7 +6,6 @@
 {% endblock static %}
 
 {% block content %}
-<<<<<<< HEAD
 <div>
     
     <div class="container">
@@ -32,10 +31,10 @@
 
 </div>
 {% endblock content %}
-=======
 <div class="wrapper">
     
     <div class="searchResult">
+        <span>-{{search_bar_category}}-</span>
         <h1>{{search}}의 검색결과입니다.</h1>
     </div>
     
@@ -73,9 +72,8 @@
     </div>
 
     {% endfor %}
-
+    {% include "main/search_bar.html" %}
 </div>
 {% endblock content %}
 
 <script>
->>>>>>> c7edc1144d03729a39f638bd708af46496d1e4d4
