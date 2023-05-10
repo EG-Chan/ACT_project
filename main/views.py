@@ -124,15 +124,32 @@ def userInfo(request):
 
 
 def search(request):
+
     if request.method == "GET":
         return render(request, "main/search.html")
-    
+
     elif request.method == "POST":
-        search = request.POST.get("search")
+        try:
+            search = request.POST.get("search")
+            search_bar_category = request.POST.get('search_bar')
+            if search_bar_category == 'all':
+                title = sp.search(q=f'{search}', type='track')
+            elif search_bar_category == 'search_title':
+                title = sp.search(q=f'title:{search}', type='track')
+            elif search_bar_category == 'search_artist':
+                title = sp.search(q=f'artist:{search}', type='track')
+            else :
+                return HttpResponse("<script>alert('카테고리를 선택해주세요');window.location.assign('/');</script>")
+            return render(request, "main/search.html", {"spotipyDatas":title,'search_bar_category':search_bar_category,'search':search})
+        except spoti.spotipy.exceptions.SpotifyException as se :
+            print(se)
+            return HttpResponse("<script>alert('검색어를 입력해주세요');window.location.assign('/');</script>")
+            
+        
 
-        artist = sp.search(q=f'{search}', type='track')
+        
 
-        return render(request, "main/search.html", {"spotipyDatas":artist})
+        
 
 
 def introduce(request):
@@ -198,9 +215,9 @@ def result(request, id):
         except TypeError as e:
             print(e)
             context = service01.getMusicInfo()
-            context["service01_result"] = '해당 노래는 거주 국가에서 분석이 안되는 노래입니다.'
+            context["service01_result"] = '해당국가에서는 검색이 안되는 노래입니다.'
             context["state"] = 1
 
-            return render(request, "main/result.html", context=context)
+            return HttpResponse(f"<script>alert('해당국가에서는 검색이 안되는 노래입니다.');window.location.assign('/result/{id}');</script>")
         
 
