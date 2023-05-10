@@ -152,13 +152,9 @@ def search(request):
         return render(request, "main/search.html", {"spotipyDatas":artist})
     return render(request, "main/search.html")
 
-<<<<<<< HEAD
-def result(request):
-    return render(request, "main/result.html")
 
 def introduce(request):
     return render(request, "main/introduce.html")
-=======
 
 
 def result(request, id):
@@ -382,4 +378,3 @@ def result(request, id):
             }
             return render(request, "main/result.html", context=context)
     
->>>>>>> c7edc1144d03729a39f638bd708af46496d1e4d4

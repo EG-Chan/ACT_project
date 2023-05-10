@@ -130,10 +130,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-<<<<<<< HEAD
-# nginx의 스태틱 경로 지정
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-=======
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
->>>>>>> c7edc1144d03729a39f638bd708af46496d1e4d4
