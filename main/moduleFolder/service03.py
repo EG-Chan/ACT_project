@@ -61,7 +61,7 @@ class Service:
     
     def paddingData(self, df):
         data = []
-        max_time_steps = 3001
+        max_time_steps = 5119
         # (samples, time_steps, features)
         # 샘플 수, 시간, 128
         signal = df.iloc[0]['signal']
@@ -92,7 +92,7 @@ class Service:
         return X
     
     def runModel(self):
-        model = tf.keras.models.load_model('main\static\models\service3\end_to_end_final32.h5')
+        model = tf.keras.models.load_model('main\static\models\service3\end_to_end_final512.h5')
         result = model.predict(self.dataFrame)
 
         return round(result[0][0],4)
