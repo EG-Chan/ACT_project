@@ -42,10 +42,14 @@ def login(request):
             #DB에서 email이 같은 레코드와 비교
             user = Account.objects.get(email=email)
             if email == user.email and password == user.password:
+                if not request.session.session_key:
+                    request.session.create()
                 request.session["email"] = email
                 request.session["userName"] = user.name
+
+                session_id = request.session.session_key
                 context = {
-                    "sessionID" : request.session.session_key,
+                    "sessionID" : session_id,
                     "userName" : request.session["userName"],
                 }
                 return render(request, "main/main.html", context=context)
@@ -88,6 +92,7 @@ def signup(request):
     elif request.method == "POST":
         context = None
         try:
+            
             email = request.POST.get("email")
             password = request.POST.get("password")
             name = request.POST.get("name")
@@ -117,11 +122,128 @@ def signup(request):
         
 
 def userInfo(request):
-    context = {
-        "email": request.session["email"]
-    }
-    return render(request, "main/userInfo.html", context=context)
+    try:
+        if not request.session.session_key:
+            return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
+        elif request.session.session_key:
+            user = Account.objects.get(email=request.session["email"])
+            context = {
+                'user':user,
+                'session_id' : request.session.session_key,
+            }
+            return render(request, "main/userInfo.html", context=context)
+    except ValueError as e :
+        print(e)
+        return HttpResponse("<script>alert('세션이 올바르지 않습니다.');window.location.assign('/login');</script>")
 
+import re
+def changeInfo(request):
+    password = request.POST.get("pw_name")
+    email = request.POST.get("email")
+    pattern = r'^[a-zA-Z0-9]{6,16}$'
+    if not request.session.session_key:
+        return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
+    else :
+        if password == '':
+            return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
+        elif re.match(pattern, password):
+            #비밀번호 암호화
+            hlib = hashlib.sha256()
+            hlib.update(password.encode("UTF-8"))
+            password = hlib.hexdigest()
+            user = Account.objects.get(email=email)
+            if password == user.password:
+                return render(request, "main/userInfo_modify.html", context={'user':user})
+            else :
+                return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
+        else :
+            return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
+        
+def modifyInfo(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        name = request.POST.get("name")
+        gender = request.POST.get("gender")
+        genre = request.POST.get("genre")
+
+        #비밀번호 암호화
+        hlib = hashlib.sha256()
+        hlib.update(password.encode("UTF-8"))
+        hlib.hexdigest()
+
+        #DB에 저장
+        user = Account.objects.get(email=email)
+        user.email = email
+        user.password = hlib.hexdigest()
+        user.name = name
+        user.gender = gender
+        user.genre = genre
+        user.save()
+        request.session.flush()
+        if not request.session.session_key:
+            request.session.create()
+        request.session["email"] = email
+        request.session["userName"] = user.name
+        return HttpResponse("<script>alert('수정이 완료되었습니다.');window.location.assign('/userInfo');</script>")
+
+def deleteInfo(request):
+    password = request.POST.get("pw_name")
+    email = request.POST.get("email")
+    pattern = r'^[a-zA-Z0-9]{6,16}$'
+    if not request.session.session_key:
+        return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
+    else :
+        if password == '':
+            return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
+        elif re.match(pattern, password):
+            #비밀번호 암호화
+            hlib = hashlib.sha256()
+            hlib.update(password.encode("UTF-8"))
+            password = hlib.hexdigest()
+            user = Account.objects.get(email=email)
+            if password == user.password:
+                return HttpResponse(
+                    '<script>\
+                        function realDelete() {\
+                                if (!confirm("정말로 아이디를 지우시겠습니까?")) {\
+                                    alert("아이디 삭제를 취소합니다.");\
+                                    window.location.assign("/userInfo");\
+                                } else {\
+                                    alert("아이디를 삭제합니다.");\
+                                    window.location.assign("/userInfo/delete/deleteid");\
+                                }\
+                            }\
+                        realDelete();\
+                    </script>'
+                    )
+            else :
+                return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
+        else :
+            return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
+
+def deleteID(request):
+    user = Account.objects.get(email=request.session["email"])
+    if request.method == "GET": 
+        context = {
+            "state" : 0,
+            'user':user,
+            }
+        return render(request, "main/deleteID.html", context=context)
+    
+    # 삭제버튼을 누른경우
+    elif request.method == "POST":
+        context = None
+        delete_ = request.POST.get("deleteID")
+
+        if delete_ == '아이디삭제':
+            user.delete()
+            request.session.flush()
+            context = {"state" : 1}
+            return render(request, "main/deleteID.html", context=context)
+        else :
+            return HttpResponse("<script>alert('확인문구를 정확히 입력해주세요.');window.location.assign('/userInfo/delete/deleteid');</script>")
+        
 
 def search(request):
 

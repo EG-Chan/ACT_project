@@ -5,6 +5,7 @@ p,a,img,ol,ul,
 li,form,label,table,
 tr,th,td,
 canvas,header,nav,section, footer{
+    /* background: linear-gradient(0deg, rgb(31, 31, 31), rgb(255, 255, 255)); */
     margin: 0;
     padding: 0;
     border: 0;

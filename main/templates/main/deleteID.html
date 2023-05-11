@@ -1,0 +1,60 @@
+{% extends "main/main.html" %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block title %}
+<title>회원가입</title>
+{% endblock %}
+
+{% block content %}
+{% if state == 0 %}
+<div class="signup_wrapper">
+    <header>
+        <h1>회원탈퇴</h1>
+    </header>
+    <form method="post" action="{% url 'main:deleteID' %}">
+        {% csrf_token %}
+        <div class="email">
+            <h1>Email</h1>
+            {{user.email}}
+            <p></p>
+        </div>
+        <div class="password">
+            <h1>Password : </h1>
+            <input id="password" name="password" type="password" placeholder="Password">
+            <p></p>
+        </div>
+        <div class="confirmPassword">
+            <h1>Confirm Password</h1>
+            <input id="confirmPassword" type="password" placeholder="Confirm Password">
+            <p></p>
+        </div>
+        <div class="confirmPassword">
+            <h1 style='color:red'>아이디삭제</h1>
+            <h5>라고 쳐주세요.</h5>
+            <input id="deleteID" name="deleteID" type="text" placeholder="아이디삭제">
+            <p></p>
+        </div>
+
+    </form>
+    <div class="signUp">
+        <button id="signUpButton">삭제하기</button>
+        <p></p>
+    </div>
+</div>
+
+<script src="/static/js/update.js"></script>
+{% elif state == 1 %}
+<div class="signup_wrapper">
+    <header>
+        <h1>아이디를 삭제했습니다.</h1>
+        <p>그 동안 감사했습니다.</p>
+        <a href = {% url 'main:main' %}>메인화면으로 이동</a>
+    </header>
+</div>
+{% endif %}
+
+{% endblock %}
