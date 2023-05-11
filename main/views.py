@@ -92,8 +92,10 @@ def signup(request):
     elif request.method == "POST":
         context = None
         try:
-            
             email = request.POST.get("email")
+            user = Account.objects.get(email=email)
+            context = {"state" : 3}
+        except Account.DoesNotExist as e:
             password = request.POST.get("password")
             name = request.POST.get("name")
             gender = request.POST.get("gender")
@@ -113,8 +115,7 @@ def signup(request):
             user.genre = genre
             user.registrationDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             user.save()
-
-            context = {"state" : 1}
+            context = {'state' : 1}
         except:
             context = {"state" : 2}
         finally:
