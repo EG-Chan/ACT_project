@@ -220,4 +220,6 @@ def result(request, id):
 
             return HttpResponse(f"<script>alert('해당국가에서는 검색이 안되는 노래입니다.');window.location.assign('/result/{id}');</script>")
         
+def notfound(request):
+    return render(request, "main/not_found.html")
 

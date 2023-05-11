@@ -13,4 +13,6 @@ urlpatterns = [
     path("result/<str:id>", views.result, name="result"),
     path("userInfo/", views.userInfo, name="userInfo"),
     path("introduce/", views.introduce, name="introduce"),
+
+    path("notfound/", views.notfound, name="404notfound"),
 ]
