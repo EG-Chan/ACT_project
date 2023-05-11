@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.paginator import Paginator
 
 #사용자 정보 저장
 from datetime import datetime
@@ -8,6 +9,8 @@ import hashlib
 #모델
 from main.models import Account
 
+# 
+import re
 
 #사용자 모듈 불러오기
 from main.moduleFolder import service01 as s1
@@ -137,7 +140,6 @@ def userInfo(request):
         print(e)
         return HttpResponse("<script>alert('세션이 올바르지 않습니다.');window.location.assign('/login');</script>")
 
-import re
 def changeInfo(request):
     password = request.POST.get("pw_name")
     email = request.POST.get("email")
@@ -247,34 +249,74 @@ def deleteID(request):
         
 
 def search(request):
-
     if request.method == "GET":
-        return render(request, "main/search.html")
-
+        if not 'offset' in request.GET:
+            return render(request, "main/search.html")
+        else :
+            try:
+                offset = request.GET.get('offset', 'offset')
+                search = request.GET.get('q', 'search')
+                search_bar_category = request.GET.get('sc', 'search_bar_category')
+                title = searchFunc(search,search_bar_category,offset)
+                
+                #raise 코드
+                title['tracks']['items'][0]
+                
+                context = {
+                    "spotipyDatas":title,
+                    'search_bar_category':search_bar_category,
+                    'search':search,
+                    'offset':int(offset)
+                    }
+                return render(request, "main/search.html",context )
+            except IndexError as ie:
+                print(ie)
+                context = {"state" : 0}
+                return render(request, "main/search.html",context)
+            except spoti.spotipy.exceptions.SpotifyException as se :
+                print(se)
+                return HttpResponse("<script>alert('검색 범위를 넘어갔습니다.');window.history.back();</script>")
     elif request.method == "POST":
+        offset = request.GET.get('offset', 'offset')
+        if not 'offset' in request.GET:
+            offset = 0
         try:
             search = request.POST.get("search")
             search_bar_category = request.POST.get('search_bar')
-            if search_bar_category == 'all':
-                title = sp.search(q=f'{search}', type='track')
-            elif search_bar_category == 'search_title':
-                title = sp.search(q=f'title:{search}', type='track')
-            elif search_bar_category == 'search_artist':
-                title = sp.search(q=f'artist:{search}', type='track')
+            if not search_bar_category in ['all', 'search_title', 'search_artist']:
+                return HttpResponse("<script>alert('카테고리를 선택해주세요');window.location.assign('/');</script>")  
+
             else :
-                return HttpResponse("<script>alert('카테고리를 선택해주세요');window.location.assign('/');</script>")
-            return render(request, "main/search.html", {"spotipyDatas":title,'search_bar_category':search_bar_category,'search':search})
+                title = searchFunc(search,search_bar_category,offset)
+                
+                #raise 코드
+                title['tracks']['items'][0]
+                
+                context = {
+                    "spotipyDatas":title,
+                    'search_bar_category':search_bar_category,
+                    'search':search,
+                    'offset':int(offset)
+                    }
+                return render(request, "main/search.html",context )
+        except IndexError as ie:
+            print(ie)
+            context = {"state" : 0}
+            return render(request, "main/search.html",context)
         except spoti.spotipy.exceptions.SpotifyException as se :
             print(se)
             return HttpResponse("<script>alert('검색어를 입력해주세요');window.location.assign('/');</script>")
-            
-        
+
+def searchFunc(search,search_bar_category,offset):
+    if search_bar_category == 'all':
+        title = sp.search(q=f'{search}', type='track', offset={offset})
+    elif search_bar_category == 'search_title':
+        title = sp.search(q=f'title:{search}', type='track', offset={offset})
+    elif search_bar_category == 'search_artist':
+        title = sp.search(q=f'artist:{search}', type='track', offset={offset})
+    return title
 
         
-
-        
-
-
 def introduce(request):
     return render(request, "main/introduce.html")
 

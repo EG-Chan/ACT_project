@@ -12,7 +12,13 @@
         <span>-{{search_bar_category}}-</span>
         <h1>{{search}}의 검색결과입니다.</h1>
     </div>
-    
+    {% if state == 0 %}
+    <div class="container">
+        <div class="inner">
+            <h1>검색 결과가 없습니다.</h1>
+        </div>
+    </div>
+    {% else %}
     {% for data in spotipyDatas.tracks.items %}
 
     <div class="container">
@@ -45,8 +51,25 @@
             🧡🤍
         </div>
     </div>
-
     {% endfor %}
+    <div class="center_lr">
+        {% endif %}
+        {% if offset == 0 %}
+        <div class="lr_bar">
+            <a href="/search?offset=1&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+        </div>
+        {% elif offset == 9 %}
+        <div class="lr_bar">
+            <a href="/search?offset=8&&q={{search}}&&sc={{search_bar_category}}">이전</a>
+        </div>
+        {% elif offset <= 8 %}
+        <div class="lr_bar">
+            <a href="/search?offset={{offset|add:'-1'}}&&q={{search}}&&sc={{search_bar_category}}">이전</a>
+            <a href="/search?offset={{offset|add:'1'}}&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+        </div>
+        {% else %}
+        {% endif %}
+    </div>
     {% include "main/search_bar.html" %}
 </div>
 {% endblock content %}
