@@ -336,7 +336,7 @@ def result(request, id):
     service02 = s2.Service({"title":track['name'],"artist":track['artists'][0]['name']})
 
     service03 = s3.Service(id, track['preview_url'])
-    recommendation = sp.recommendations(seed_tracks=[id],limit=5)
+    recommendation = sp.recommendations(seed_tracks=[id],limit=20)
     if request.method == "GET":
 
         context = service01.getMusicInfo()
@@ -347,30 +347,40 @@ def result(request, id):
     
     elif request.method == 'POST':
         try :
+            service_list = request.POST.getlist('service_list')
             # service 1 
-            post_data = {
-                "gender" : request.POST['gender'],
-                "re_inst" : request.POST['re_inst'],
-                "bass_type" : request.POST['bass_type'],
-                "rhythm" : request.POST['rhythm'],
-                "main_instr" : request.POST['main_instr'],
-                "english" : request.POST['english'],
-                "retro" : request.POST['retro'],
-                "lofi" : request.POST['lofi'],
-            }
+            service02_result = {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '검사X'}
+            context = service01.getMusicInfo()
+            if '1' in service_list :
+                post_data = {
+                    "gender" : request.POST['gender'],
+                    "re_inst" : request.POST['re_inst'],
+                    "bass_type" : request.POST['bass_type'],
+                    "rhythm" : request.POST['rhythm'],
+                    "main_instr" : request.POST['main_instr'],
+                    "english" : request.POST['english'],
+                    "retro" : request.POST['retro'],
+                    "lofi" : request.POST['lofi'],
+                }
 
-            audio_features = sp.audio_features(tracks=id)
-            service01.createDataFrame(audio_features, post_data)
-            service01_result = service01.runModel()
-
+                audio_features = sp.audio_features(tracks=id)
+                service01.createDataFrame(audio_features, post_data)
+                service01_result = service01.runModel()
+                context["service01_result"] = service01_result
+            if '2' in service_list:
             # service 2
-            service02_data = service02.getData()
-            service02_result = service02.runModel(service02_data)
-
-            # service 3
-            service03.createDataFrame()
-            service03_result = service03.runModel()
+                service02_data = service02.getData()
+                service02_result = service02.runModel(service02_data)
+                
+            if '3' in service_list:
+                # service 3
+                service03.createDataFrame()
+                service03_result = service03.runModel()
+                context["service03_result"] = service03_result
             
+            context["service02_result"] = service02_result
+            if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
+                pass
             # # 모델 자동 추가 학습
             # if service_4 >= 0.5:
             #     y4data = np.array([1])
@@ -379,13 +389,12 @@ def result(request, id):
             # model4.fit(X4data, y4data, epochs=10, verbose=2)
             # model4.save('main\static\models\service4\end_to_end_final32.h5')
             
-            context = service01.getMusicInfo()
-            context["service01_result"] = service01_result
-            context["service02_result"] = service02_result
-            context["service03_result"] = service03_result
+            
+            
+            
+            
             context["state"] = 1
             context['recommendation'] = recommendation
-            
             return render(request, "main/result.html", context=context)
         except TypeError as e:
             print(e)
@@ -393,7 +402,7 @@ def result(request, id):
             context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
             context["state"] = 1
 
-            return HttpResponse(f"<script>alert('스포티파이 정책에 의해 제한이 걸린 노래입니다.');window.location.assign('/result/{id}');</script>")
+            return HttpResponse(f"spofty_limit:{id}")
         
 def notfound(request):
     return render(request, "main/not_found.html")

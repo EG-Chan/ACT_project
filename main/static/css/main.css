@@ -27,16 +27,16 @@ button{
     padding: 8px 12px 8px 12px;
     margin: 10px 15px;
     min-height: 15px; 
-    min-width: 70px;
+    min-width: 40px;
     font-size: 0.9rem;
     box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
 }
-  
+
 button:hover{
     background-color: rgb(128, 128, 128);
     transition: 0.2s;
 }
-  
+
 button:active{
     position: relative;
     top: 1px;
@@ -44,7 +44,7 @@ button:active{
 }
 
 select{
-    width: 120px;
+    max-width: 120px;
     height: 35px;
     background: black;
     background-size: 20px;
@@ -54,7 +54,7 @@ select{
     outline: 0 none;
     font-size: 0.9rem;
 }
-  
+
 select option{
     background: black;
     color: white;
@@ -92,7 +92,7 @@ nav a:hover{
 
 .content{
     width: 1100px;
-    min-width: 800px;
+    min-width: 200px;
     padding: 0 10vw;
 }
 
@@ -129,7 +129,7 @@ nav {
 
 .search input[type=text] {
 	width: 33.3vw;
-    min-width: 350px;
+    max-width: 1600px;
 	height: 40px;
 
     padding: 0px 10px;
