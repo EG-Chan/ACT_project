@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator
 
@@ -385,4 +385,8 @@ def result(request, id):
 
             return HttpResponse(f"<script>alert('스포티파이 정책에 의해 제한이 걸린 노래입니다.');window.location.assign('/result/{id}');</script>")
         
+def notfound(request):
+    
+
+    return render(request, "main/not_found.html")
 

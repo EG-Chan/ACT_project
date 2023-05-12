@@ -17,4 +17,6 @@ urlpatterns = [
     path("userInfo/delete", views.deleteInfo, name="deleteInfo"),
     path("userInfo/delete/deleteid", views.deleteID, name="deleteID"),
     path("introduce/", views.introduce, name="introduce"),
+
+    path("notfound/", views.notfound, name="404notfound"),
 ]
