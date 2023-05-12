@@ -13,18 +13,18 @@ class Service:
     def __init__(self, id, src):
         self.id = id
         self.track_src = src
-        self.output_path = f'media\{self.id}.mp3'  
+        self.output_path = f'media\{self.id}.mp3' 
         self.dataFrame = None
 
     def createDataFrame(self):
         self.getMp3()
-
+        # print(os.listdir('media'))
         wav_info = {}
         # 0초 ~ 16초 : 최저 4마디 기준
         sound = AudioSegment.from_file(self.output_path)
-        start_time = 0 * 1000
-        end_time = (1*17.4) * 1000
-        sound = sound[start_time:end_time]
+        # start_time = 0 * 1000
+        # end_time = (1*17.4) * 1000
+        # sound = sound[start_time:end_time]
         
         input_wav = self.output_path[:-4] + '.wav'
         #wav 파일 생성
@@ -49,11 +49,15 @@ class Service:
         # LSTM input shape에 맞춰서 signal 변환
         df['signal'] = df['signal'].apply(lambda x : np.array(x.T.tolist()))
 
-        self.dataFrame = self.paddingData(df)
+        # y = np.array(df5['score'])
+        # X = np.stack(df['signal'].values)
 
         # 노래 삭제
         os.remove(self.output_path)
         os.remove(self.output_path[:-4]+'.wav')
+        
+        return self.paddingData(df)
+        # return X
 
     def getMp3(self):
         wget.download(self.track_src, out=self.output_path)
@@ -91,9 +95,10 @@ class Service:
             
         return X
     
-    def runModel(self):
-        model = tf.keras.models.load_model('main\static\models\service3\end_to_end_final512.h5')
-        result = model.predict(self.dataFrame)
+    def runModel(self, X):
+        model = tf.keras.models.load_model('main\static\models\service3\end_to_end_final1024.h5')
+        result = model.predict(X)
 
+        # return result
         return round(result[0][0],4)
     

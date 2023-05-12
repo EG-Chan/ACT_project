@@ -374,9 +374,12 @@ def result(request, id):
                 
             if '3' in service_list:
                 # service 3
-                service03.createDataFrame()
-                service03_result = service03.runModel()
+                service3_df = service03.createDataFrame()
+                service03_result = service03.runModel(service3_df)
                 context["service03_result"] = service03_result
+                print(len(service03_result)[0][0])
+                import numpy as np
+                print(np.where(service03_result > 0.5, 1, 0))
             
             context["service02_result"] = service02_result
             if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
