@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 
 #사용자 정보 저장
@@ -221,5 +221,7 @@ def result(request, id):
             return HttpResponse(f"<script>alert('해당국가에서는 검색이 안되는 노래입니다.');window.location.assign('/result/{id}');</script>")
         
 def notfound(request):
+    
+
     return render(request, "main/not_found.html")
 
