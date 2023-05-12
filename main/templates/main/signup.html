@@ -12,34 +12,34 @@
 {% block content %}
 {% if state == 0 %}
 <div class="signup_wrapper">
-    <header>
+    <div class="title">
         <h1>환영합니다</h1>
-    </header>
+    </div>
     <form method="post" action="{% url 'main:signup' %}">
         {% csrf_token %}
         <div class="email">
-            <h1>Email</h1>
+            <h1>이메일</h1>
             <input id="email" name="email" type="text" placeholder="Email">
             <p></p>
         </div>
         <div class="password">
-            <h1>Password</h1>
+            <h1>비밀번호</h1>
             <input id="password" name="password" type="password" placeholder="Password">
             <p></p>
         </div>
         <div class="confirmPassword">
-            <h1>Confirm Password</h1>
+            <h1>비밀번호 확인</h1>
             <input id="confirmPassword" type="password" placeholder="Confirm Password">
             <p></p>
         </div>
         <div class="name">
-            <h1>User Name</h1>
-            <input id="name" name="name"  type="text" placeholder="Name">
+            <h1>이름</h1>
+            <input id="name" name="name" type="text" placeholder="User Name">
         </div>
         <div class="gender">
             <h1>성별</h1>
-            <input type="radio" name="gender" value="male">남성  
-            <input type="radio" name="gender" value="female">여성
+            <input type="radio" name="gender" id="male" value="male"><label for="male">남성</label>
+            <input type="radio" name="gender" id="female" value="female"><label for="female">여성</label>
         </div>
         <div class="genre">
             <h1>선호장르</h1>
@@ -51,33 +51,38 @@
             </select>
         </div>
     </form>
+
     <div class="signUp">
         <button id="signUpButton">가입하기</button>
         <p></p>
     </div>
+
 </div>
 
 <script src="/static/js/signup.js"></script>
 {% elif state == 1 %}
 <div class="signup_wrapper">
-    <header>
-        <h1>ActProject 회원가입이 완료되었습니다.</h1>
+    <div class="complete">
+        <h1>회원가입이 완료되었습니다.</h1>
         <p>로그인이 완료되어야 서비스를 이용하실 수 있습니다.</p>
-        <a href="{% url 'main:login' %}">로그인 페이지로 이동</a>
-    </header>
+        <div>
+            <button><a href="{% url 'main:login' %}">로그인 페이지로 이동</a></button>
+        </div>
+    </div>
 </div>
 {% elif state == 2 %}
 <div class="signup_wrapper">
-    <header>
+    <div class="complete">
         <h1>일시적인 오류가 발생했습니다.</h1>
-    </header>
+        <button><a href="{% url 'main:signup' %}">회원가입 페이지로 이동</a></button>
+    </div>
 </div>
 {% elif state == 3 %}
 <div class="signup_wrapper">
-    <header>
+    <div class="complete">
         <h1>중복된 아이디가 있습니다.</h1>
-        <a href="{% url 'main:signup' %}">회원가입 페이지로 이동</a>
-    </header>
+        <button><a href="{% url 'main:signup' %}">회원가입 페이지로 이동</a></button>
+    </div>
 </div>
 {% endif %}
 

@@ -1,34 +1,62 @@
 .signup_wrapper{
-    min-width: 300;
-    max-width: 320;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 25vh 0vh 0vh 0vh;
+    padding: 15vh 0vw 15vh 0vw;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0px 0px 15px 0px;
 }
 
 form{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 form h1{
-    font-size: 16px;
-}
-.wrapper div{
-    margin: 5px 0px 5px 0px;
-}
-header{
-    font-size: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
-input[type=text] {
+.email{
+    margin: 0px 0px 20px 0px;
+}
+
+.password{
+    margin: 0px 0px 20px 0px;
+}
+
+.confirmPassword{
+    margin: 0px 0px 20px 0px;
+}
+
+.name{
+    margin: 0px 0px 20px 0px;
+}
+
+.gender{
+    margin: 0px 0px 20px 0px;
+}
+
+.genre{
+    margin: 0px 0px 20px 0px;
+}
+
+input[type=text]{
 	width: 25vw;
+    min-width: 250px;
     max-width: 350px;
 	height: 40px;
+
+    padding-left: 5px;
 
     font-size: 18px;
     color: white;
@@ -40,13 +68,50 @@ input[type=text] {
 
 input[type=password] {
 	width: 25vw;
+    min-width: 250px;
     max-width: 350px;
 	height: 40px;
+
+    padding-left: 5px;
 
     font-size: 18px;
     color: white;
     background-color: rgb(31, 31, 31);
-    
+
     border: 1;
     border-radius: 3px;
+}
+
+input[type=radio] ~ label{
+    margin: 0px 50px 0px 5px;
+}
+
+button {
+    font-size: 1.0rem;
+    margin: 0px 0px 20px 0px;
+}
+
+select{
+    width: 300px;
+}
+
+.complete h1{
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0px;
+}
+
+.complete p{
+    font-size: 1.0rem;
+    margin: 5px 0px;
+}
+
+.complete a{
+    text-decoration: none; 
+}
+
+.complete div{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
 }

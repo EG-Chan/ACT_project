@@ -11,30 +11,32 @@
 
 {% block content %}
 <div class="login_wrapper">
-    <header>
+    <div class="title">
         <h1>로그인</h1>
-    </header>
-    <form method="post" action="{% url 'main:login' %}">
-        {% csrf_token %}
-        <div class="email">
-            <h1>Email</h1>
-            <input id="email" name="email" type="text" placeholder="Email" value={% if state == 0 %}""{% elif state == 1 or state == 2 %}"{{email}}"{% endif %}>
-            {% if state == 0 or state == 1%}
-            <p></p>
-            {% elif state == 2 %}
-            <p>존재하지 않는 이메일 계정입니다.</p>
-            {% endif %}
-        </div>
-        <div class="password">
-            <h1>Password</h1>
-            <input id="password" name="password" type="password" placeholder="Password">
-            {% if state == 0 or state == 2 %}
-            <p></p>
-            {% elif state == 1 %}
-            <p>비밀번호를 다시 입력해주세요.</p>
-            {% endif %}
-        </div>
-        <button id="LoginButton">로그인</button>
-    </form>
+    </div>
+    <div class="content">
+        <form method="post" action="{% url 'main:login' %}">
+            {% csrf_token %}
+            <div class="email">
+                <h1>Email</h1>
+                <input id="email" name="email" type="text" placeholder="Email" value={% if state == 0 %}""{% elif state == 1 or state == 2 %}"{{email}}"{% endif %}>
+                {% if state == 0 or state == 1%}
+                <p></p>
+                {% elif state == 2 %}
+                <p>존재하지 않는 이메일 계정입니다.</p>
+                {% endif %}
+            </div>
+            <div class="password">
+                <h1>Password</h1>
+                <input id="password" name="password" type="password" placeholder="Password">
+                {% if state == 0 or state == 2 %}
+                <p></p>
+                {% elif state == 1 %}
+                <p>비밀번호를 다시 입력해주세요.</p>
+                {% endif %}
+            </div>
+            <button id="LoginButton">로그인</button>
+        </form>
+    </div>
 </div>
 {% endblock content %}

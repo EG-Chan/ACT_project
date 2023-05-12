@@ -3,15 +3,19 @@
         <a href="/">Logo</a>
     </div>
     <div>
-        <li><a href="{% url 'main:introduce' %}">소개</a></li>
+        <a href="{% url 'main:introduce' %}">소개</a>
     </div>
     <div>
         {% if request.session.userName %}
-        <li><a href="{% url 'main:userInfo' %}">{{ request.session.userName }}님 반갑습니다.</a></li>
-        <li><a href="{% url 'main:logout' %}">로그아웃</a></li>
+        <ul>
+            <li><a href="{% url 'main:userInfo' %}">{{ request.session.userName }}님 반갑습니다.</a></li>
+            <li><a href="{% url 'main:logout' %}">로그아웃</a></li>
+        </ul>
         {% else %}
-        <li><a href="{% url 'main:login' %}">로그인</a></li>
-        <li><a href="{% url 'main:signup' %}">회원가입</a></li>
+        <ul>
+            <li><a href="{% url 'main:login' %}">로그인</a></li>
+            <li><a href="{% url 'main:signup' %}">회원가입</a></li>
+        </ul>
         {% endif %}
     </div>
 </nav>

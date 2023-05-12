@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404, render_to_response
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator
 
@@ -21,7 +21,12 @@ from main.moduleFolder import spoti
 sp = spoti.Spoti().getSpotiData()
 
 def main(request):
-    return render(request, "main/main.html")
+    if request.method == "GET":
+        return render(request, "main/main.html")
+
+    elif request.method == "POST":
+        pass
+    
 
 
 def login(request):
@@ -281,24 +286,31 @@ def search(request):
         if not 'offset' in request.GET:
             offset = 0
         try:
-            search = request.POST.get("search")
-            search_bar_category = request.POST.get('search_bar')
-            if not search_bar_category in ['all', 'search_title', 'search_artist']:
+            search_text = request.POST.get("search_text")
+            search_select = request.POST.get('search_select')
+            if not search_select in ['all', 'search_title', 'search_artist']:
                 return HttpResponse("<script>alert('카테고리를 선택해주세요');window.location.assign('/');</script>")  
 
             else :
-                title = searchFunc(search,search_bar_category,offset)
-                
+                title = None
+
+                if search_select == 'all':
+                    title = sp.search(q=f'{search_text}', type='track', offset={offset})
+                elif search_select == 'search_title':
+                    title = sp.search(q=f'title:{search_text}', type='track', offset={offset})
+                elif search_select == 'search_artist':
+                    title = sp.search(q=f'artist:{search_text}', type='track', offset={offset})
+
                 #raise 코드
                 title['tracks']['items'][0]
                 
                 context = {
                     "spotipyDatas":title,
-                    'search_bar_category':search_bar_category,
-                    'search':search,
+                    'search_bar_category':search_select,
+                    'search':search_text,
                     'offset':int(offset)
                     }
-                return render(request, "main/search.html",context )
+                return render(request, "main/search.html", context)
         except IndexError as ie:
             print(ie)
             context = {"state" : 0}
@@ -306,17 +318,8 @@ def search(request):
         except spoti.spotipy.exceptions.SpotifyException as se :
             print(se)
             return HttpResponse("<script>alert('검색어를 입력해주세요');window.location.assign('/');</script>")
-
-def searchFunc(search,search_bar_category,offset):
-    if search_bar_category == 'all':
-        title = sp.search(q=f'{search}', type='track', offset={offset})
-    elif search_bar_category == 'search_title':
-        title = sp.search(q=f'title:{search}', type='track', offset={offset})
-    elif search_bar_category == 'search_artist':
-        title = sp.search(q=f'artist:{search}', type='track', offset={offset})
-    return title
-
         
+
 def introduce(request):
     return render(request, "main/introduce.html")
 
@@ -393,7 +396,5 @@ def result(request, id):
             return HttpResponse(f"<script>alert('스포티파이 정책에 의해 제한이 걸린 노래입니다.');window.location.assign('/result/{id}');</script>")
         
 def notfound(request):
-    
-
     return render(request, "main/not_found.html")
 

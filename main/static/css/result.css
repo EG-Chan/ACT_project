@@ -96,8 +96,6 @@
   overflow: hidden;
 }
 
-
-
 input[type="radio"] ~ span:nth-of-type(1){
   width: 120px;
 }
@@ -106,8 +104,6 @@ input[type="radio"] ~ span:nth-of-type(1){
   display: flex;
   justify-content: flex-end;
 }
-
-
 
 .container2 .title{
   display: flex;
@@ -141,4 +137,8 @@ input[type="radio"] ~ span:nth-of-type(1){
 .img_act:hover{
   cursor: pointer;
   filter: opacity(0.5) drop-shadow(0 0 0 #ffffff);
+}
+
+select{
+  width: 200px;
 }

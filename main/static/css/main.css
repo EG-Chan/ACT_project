@@ -2,9 +2,9 @@
 
 html,body,div,span,
 p,a,img,ol,ul,
-li,form,label,table,
+li,form,label,table,button
 tr,th,td,h1,h2,h3,h4,h5,
-canvas,header,nav,section, footer{
+canvas,header,nav,section,footer{
     /* background: linear-gradient(0deg, rgb(31, 31, 31), rgb(255, 255, 255)); */
     margin: 0;
     padding: 0;
@@ -14,16 +14,80 @@ canvas,header,nav,section, footer{
     color: white;
     vertical-align: baseline;
 }
-.btn_act:hover {
-    background-color: gray;
+
+/*
+    버튼, 라디오, 셀렉트 css 일괄적용
+*/
+
+button{
+    color: white;
+    background-color: rgb(79, 79, 79);
+    border: none;
+    border-radius: 15px;
+    padding: 8px 12px 8px 12px;
+    margin: 10px 15px;
+    min-height: 15px; 
+    min-width: 70px;
+    font-size: 0.9rem;
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
 }
-.btn_act:active {
-    background-color: rgb(218, 216, 216);
+  
+button:hover{
+    background-color: rgb(128, 128, 128);
+    transition: 0.2s;
 }
+  
+button:active{
+    position: relative;
+    top: 1px;
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+}
+
+select{
+    width: 120px;
+    height: 35px;
+    background: black;
+    background-size: 20px;
+    color: white;
+    padding: 5px 30px 5px 10px;
+    border-radius: 4px;
+    outline: 0 none;
+    font-size: 0.9rem;
+}
+  
+select option{
+    background: black;
+    color: white;
+    padding: 3px 0;
+}
+
+/*
+    main에 적용될 css
+*/
+
 body{
     background-color: rgb(31, 31, 31);
     display: flex;
     justify-content: center;
+}
+
+nav {
+    padding: 10px 0px 8px 0px;
+}
+
+nav ul{
+    list-style-type: none;
+}
+
+nav a{
+    font-size: 1.1rem;
+    text-decoration: none; 
+}
+
+nav a:hover{
+    color:rgb(210, 255, 198);
+    font-size: 1.1rem;
+    transition: 0.3s;
 }
 
 .content{
@@ -54,11 +118,13 @@ nav {
     justify-content: center;
     align-items: center;
 
+    height: 62vh;
+    min-height: 100px;
     margin: 50px 0px;
 }
 
 .search h1{
-    font-size: 15px;
+    font-size: 1.7rem;
 }
 
 .search input[type=text] {
@@ -66,6 +132,7 @@ nav {
     min-width: 350px;
 	height: 40px;
 
+    padding: 0px 10px;
     font-size: 18px;
     color: white;
 
@@ -73,22 +140,25 @@ nav {
     border-radius: 10px;
     background-color: rgb(31, 31, 31);
 }
-.search .search_btn {
-	/* background-image: url("/static/imgs/btn_search.png"); */
-    /* border: none; */
-    background-color: rgb(31, 31, 31);
-    width: 50px;
-    height: 50px; 
-    cursor: pointer;
-    position: relative;
+
+.search .search_button {
+    padding: 10px;
+    margin: 0px;
+    min-height: 0px; 
+    min-width: 0px;
+
+    background-color: none;
+    border: none;
+    border-radius: 15px;
+
+    font-size: 0.9rem;
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
 }
-.search .search_btn > img  {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 50%;
-    max-height: 50%;
+
+.search .search_button > img  {
+    width: 20px;
+    height: 20px; 
+    object-fit: fill;
 }
 
 
@@ -109,56 +179,4 @@ footer {
 hr {
     background-color: rgb(60, 60, 60);
 }
-#search_b {
-    /* position: relative; */
-    /* display : block; */
-    max-width: 200px;
-    min-width: 60px;
-    margin: 0 auto;
-    border-radius: 80px;
-    border: 1px solid #ffffff;
-    background-color: rgb(200, 200, 200);
-    z-index: 10;
-}
 
-button{
-    color: white;
-    background-color: rgb(79, 79, 79);
-    border: none;
-    border-radius: 15px;
-    padding: 8px 12px 8px 12px;
-    margin: 10px 15px;
-    min-height: 15px; 
-    min-width: 70px;
-    font-size: 0.9rem;
-    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
-  }
-  
-  button:hover{
-    background-color: rgb(128, 128, 128);
-    transition: 0.2s;
-  }
-  
-  button:active{
-    position: relative;
-    top: 1px;
-    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
-  }
-
-  select{
-    width: 180px;
-    height: 35px;
-    background: black;
-    background-size: 20px;
-    color: white;
-    padding: 5px 30px 5px 10px;
-    border-radius: 4px;
-    outline: 0 none;
-    font-size: 0.9rem;
-  }
-  
-  select option{
-    background: black;
-    color: white;
-    padding: 3px 0;
-  }

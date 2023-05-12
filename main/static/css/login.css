@@ -1,11 +1,17 @@
 .login_wrapper{
-    min-width: 300;
-    max-width: 320;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 25vh 0vh 0vh 0vh;
+    padding: 25vh 0vw 0vh 0vw;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0px 0px 15px 0px;
 }
 
 form{
@@ -18,15 +24,18 @@ form{
 form h1{
     font-size: 16px;
 }
-.wrapper div{
-    margin: 5px 0px 5px 0px;
-}
-header{
-    font-size: 20px;
+
+.email{
+    margin: 0px 0px 20px 0px;
 }
 
-input[type=text] {
+.password{
+    margin: 0px 0px 20px 0px;
+}
+
+input[type=text]{
 	width: 25vw;
+    min-width: 250px;
     max-width: 350px;
 	height: 40px;
 
@@ -38,15 +47,20 @@ input[type=text] {
     border-radius: 3px;
 }
 
-input[type=password] {
+input[type=password]{
 	width: 25vw;
+    min-width: 250px;
     max-width: 350px;
 	height: 40px;
 
     font-size: 18px;
     color: white;
     background-color: rgb(31, 31, 31);
-    
+
     border: 1;
     border-radius: 3px;
+}
+
+button {
+    font-size: 1.0rem;
 }

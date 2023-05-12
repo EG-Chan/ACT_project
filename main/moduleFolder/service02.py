@@ -26,7 +26,6 @@ class Service:
 
             title = self.title
             artist = self.artist
-            time.sleep(2)
             
             # 해당 동영상으로 접속
             wd.find_element(By.CSS_SELECTOR, 'form > #q').send_keys(title + ' ' + artist)

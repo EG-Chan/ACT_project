@@ -3,16 +3,16 @@
       <h1>Search</h1>
       <form method="post" action="{% url 'main:search' %}">
           {% csrf_token %}
-          <select name='search_bar' id="search_b">
+          <select name='search_select'>
             <option value="all" selected>전체검색</option>
             <option value="search_title">제목</option>
             <option value="search_artist">가수</option>
           </select>
           
-          <input name="search" type="text" placeholder='search'>
+          <input name="search_text" type="text" placeholder='search'>
           
-          <button class='search_btn ' type="submit" title="Search">
-            <img class='btn_act' src="/static/imgs/btn_search.png" alt="Button image"> 
+          <button class="search_button" type="submit" title="Search">
+            <img src="/static/imgs/btn_search.png" alt="Button image"> 
           </button>
       </form>
   </div>
