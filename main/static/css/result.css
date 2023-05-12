@@ -55,7 +55,7 @@
   margin: 10px;
 }
 
-.column2 > p{
+.column2 > span{
   font-size: 1.2rem;
   font-weight: 600;
   margin: 15px 0px;
@@ -130,3 +130,15 @@ input[type="radio"] ~ span:nth-of-type(1){
   justify-content: center;
 }
 
+.img_act{
+  width: 30px;
+  height: 30px;
+  filter: opacity(0.5) drop-shadow(0 0 0 #e6e6e6e6);
+  vertical-align: middle;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.img_act:hover{
+  cursor: pointer;
+  filter: opacity(0.5) drop-shadow(0 0 0 #ffffff);
+}

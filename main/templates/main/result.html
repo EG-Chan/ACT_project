@@ -24,116 +24,174 @@
             </div>
         </div>
         <div class="column2">
+            
             {% if state == 0 %}
-            <p>노래의 추가 정보를 입력 후 <b>'노래 분석'</b> 을 눌러주세요.</p>
-            <form action="{% url 'main:result' id %}" method="post">
-                {% csrf_token %}
-                
-                <div class="item">
-                    <div class="row">
-                        <p>유형</p>
-                    </div>
-                    <select name="gender" id="id_gender">
-                        <option value="1" selected>남자 솔로</option>
-                        <option value="2">여자 솔로</option>
-                        <option value="3">남자 그룹</option>
-                        <option value="4">여자 그룹</option>
-                        <option value="5">혼성 그룹</option>
-                        <option value="6">가수 없음</option>
-                    </select>
-                </div>
-                
-                <div class="item">
-                    <div class="row">
-                        <p>메인 악기</p>
-                    </div>
-                    <select name="re_inst" id="id_re_inst">
-                        <option value="0" selected>베이스</option>
-                        <option value="1">피아노/기타</option>
-                        <option value="2">스트링</option>
-                        <option value="3">멜로디 악기/보컬찹</option>
-                        <option value="4">신스</option>
-                        <option value="5">stab/brass</option>
-                        <option value="6">킥/스네어/드럼</option>
-                        <option value="7">보컬</option>
-                        <option value="8">노래가 아님</option>
-                    </select>
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <p>베이스 종류 선택<p>
-                    </div>
-                    <select name="bass_type" id="id_bass_type">
-                        <option value="0" selected>일렉/리얼 베이스</option>
-                        <option value="1">신스 베이스</option>
-                        <option value="2">808 베이스</option>
-                        <option value="3">신스 + 808 베이스</option>
-                        <option value="4">베이스 없음</option>
-                    </select>
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <p>리듬 선택<p>
-                    </div>
-                    <select name="rhythm" id="id_rhythm">
-                        <option value="0" selected>뭄바톤/레게</option>
-                        <option value="1">마이애미</option>
-                        <option value="2">펑크</option>
-                        <option value="3">디스코/하우스</option>
-                        <option value="4">락</option>
-                        <option value="5">컨트리</option>
-                        <option value="6">재즈</option>
-                        <option value="7">트랩/하프</option>
-                        <option value="8">반복되는 주제 리듬</option>
-                        <option value="9">4비트/논리듬</option>
-                        <option value="10">뽕짝</option>
-                        <option value="11">그루비</option>
-                        <option value="12">블루스/RNB</option>
-                        <option value="13">라틴</option>
-                        <option value="14">뉴잭스윙</option>
-                        <option value="15">아라비안/인디아</option>
-                        <option value="16">오리엔탈</option>
-                        <option value="17">셔플/트리플/3비트</option>
-                        <option value="18">뉴웨이브</option>
-                    </select>
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <p>singing 여부</p>
-                    </div>
-                    <input type="radio" name="main_instr" value="0"><span>only 악기</span> 
-                    <input type="radio" name="main_instr" value="1" checked="checked"><span>악기 + 목소리</span> 
-                    
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <p>영어 여부</p>
-                    </div>
-                    <input type="radio" name="english" value="0"><span>Non 영어</span> 
-                    <input type="radio" name="english" value="1" checked="checked"><span>영어</span> 
-                    
-                </div>
-                <div class="item">
-                    <div class="row">
-                        <p>레트로 여부</p>
-                    </div>
-                    <input type="radio" name="retro" value="0" checked="checked"><span>Non 레트로</span> 
-                    <input type="radio" name="retro" value="1"><span>레트로</span> 
-                </div>
+            
+            <span>노래의 추가 정보를 입력 후 <b>'노래 분석'</b> 을 눌러주세요.</span>
+            <img class='img_act' src="/static/imgs/question.png" alt="Question image"> 
+            <div class="explanation" sytle ='display:none'>
+                <span>
+                    분석시 노래의 feature과 함께 추가로 제공되어야 하는 정보 입니다.  
 
-                <div class="item">
-                    <div class="row">
-                        <p>로파이 여부</p>
-                    </div>
-                    <input type="radio" name="lofi" value="0" checked="checked"><span>Non 로파이</span> 
-                    <input type="radio" name="lofi" value="1"><span>로파이</span> 
-                </div>
+                    유형은 노래를 부른 가수의 성별을 의미합니다. 피처링이 있을 경우 그룹으로 들어가며, 연주자의 성별은 신경쓰지 않고 오직 목소리만 체크해야 합니다.
+                    더블링된 소리는 신경쓰지 않습니다.
 
-                <div class="buttonSection">
-                    <button class="submit" type="submit">노래 분석</button>
-                </div>
-                
-            </form>
+                    메인악기는 후렴 30초간 주제로 사용한 악기입니다.
+                    주관적으로 선택하셔도 괜찮습니다.
+
+                    베이스 종류 선택은 베이스의 type을 선택하시면 됩니다.  
+                    더블베이스, 콘트라 베이스의 경우에는 일반베이스를 선택하시면 됩니다.
+                    혼합베이스는 808+신스, 808+일렉 등을 섞어 사용하거나, 후렴에 둘 다 존재하는 경우입니다.
+                    잘 모르겠으면 신스베이스로 선택하시면 됩니다.
+
+                    리듬은 후렴 30초간의 주요 리듬을 의미합니다.
+                    뭄바톤/레게는 트로피컬을 포함하여 주로 스페인계에서 사용하는 레게리듬을 선택하시면 됩니다.,
+                    마이애미는 행진곡 리듬,
+                    하우스/디스코는 킥이 4박자 정박에 맞춰 쿵쿵쿵쿵 하는 리듬,
+                    락은 펑크를 제외한 모든 락 리듬을 선택하시면 됩니다.
+                    펑크는 분석 곡들에 이 카테고리가 많아서 따로 빼놨습니다.
+                    락과 펑크를 구분 못하겠으면 락을 선택하시면 됩니다.
+                    컨트리는 통기타 리듬을 의미합니다.
+                    트랩/하프는 스네어를 3박에 치는 리듬입니다. 
+                    장르가 rap인데 잘 모르겠으면 트랩/하프를 선택하시면 됩니다.
+                    반복되는 리듬은 'Meghan Trainor'의 'Made You Look'이나, 
+                    'Lizzo'의 'Good As Hell', 처럼 같은 리듬을 아이덴티티삼아 반복하는 곡입니다.
+                    순수 발라드나 특별한 리듬이 없이 흐르는 노래는 4비트/논리듬을 선택하시면 됩니다.
+                    쿵짝쿵짝하는 리듬은 뽕짝을 선택하시면 됩니다. 90후반~10초반 노래나 B급감성 노래면 선택하시면 됩니다.
+                    그루비와 블루스는 리듬을 듣고 한번에 따라부르기 어려우면 선택하시면 됩니다. 
+                    소울, 알앤비등 흑인 음악이거나 발라드적인 요소가 있으면 블루스로 선택하시면 되고,
+                    템포가 발라드보다는 빠르면 그루비를 선택하시면 됩니다.
+                    라틴은 룸바, 맘보, 삼바 등의 리듬을 고르시면 됩니다.
+                    뉴잭스윙은 'Micheal Jackson'의 'Dangerous' 같은 곡들을 선택하시면 됩니다. 
+                    아라비안/인디아은 중동이나 인도쪽 리듬을 선택하시면 됩니다. 
+                    오리엔탈은 동아시아나 동남아시아 쪽 리듬이나, 몽환적인 리듬을 선택하시면 됩니다. 
+                    셔플/트리플/3비트은 컴퓨터가 비슷하게 인식하기 때문에 같이 모아놨습니다. 
+                    6/8, 12/8 곡이나 3/4곡, 셔플곡등 4/4가 아니면 여기를 선택하시면 됩니다.
+                    뉴웨이브는 분석 곡들에 카테고리가 많아서 따로 뺴놨습니다. 
+                    뉴웨이브에 유로댄스, 고딕 신스, 시티팝 등의 장르도 같이 넣어주시면 됩니다.
+                    이에 없거나 애매하면 4비트를 선택하시면 됩니다.
+
+                    singing은 가수의 목소리가 들어갔는지의 여부입니다. 
+                    보컬찹이나 악기에 가까운 목소리는 Only 악기로 선택하시면 됩니다. 
+
+                    영어 여부는 가사가 전부 영어인지 아닌지를 체크해야합니다.  
+                    영어와 다른 언어(한글,스페인어) 등이 섞이면 Non 영어로 체크해주시고, 
+                    가사 없으면 Non 영어로 체크하시면 됩니다.
+
+                    레트로는 노래가 복고주의, 과거 향수를 느끼게 하는지 여부입니다. 
+                    로파이는 빈티지 한지, 일부로 빈약한 소리가 나게 했는지를 체크하시면 됩니다.
+                </span>
+            </div>
+            <div class="non_explanation" sytle ='display:block' >
+                <form action="{% url 'main:result' id %}" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="item">
+                        <div class="row">
+                            <p>유형</p>
+                        </div>
+                        <select name="gender" id="id_gender">
+                            <option value="1" selected>남자 솔로</option>
+                            <option value="2">여자 솔로</option>
+                            <option value="3">남자 그룹</option>
+                            <option value="4">여자 그룹</option>
+                            <option value="5">혼성 그룹</option>
+                            <option value="6">가수 없음</option>
+                        </select>
+                    </div>
+                    
+                    <div class="item">
+                        <div class="row">
+                            <p>메인 악기</p>
+                        </div>
+                        <select name="re_inst" id="id_re_inst">
+                            <option value="0">베이스</option>
+                            <option value="1">피아노/기타</option>
+                            <option value="2">스트링</option>
+                            <option value="3" selected>멜로디 악기/보컬찹</option>
+                            <option value="4">신스</option>
+                            <option value="5">stab/brass</option>
+                            <option value="6">킥/스네어/드럼</option>
+                            <option value="7">보컬</option>
+                            <option value="8">노래가 아님</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <p>베이스 종류 선택<p>
+                        </div>
+                        <select name="bass_type" id="id_bass_type">
+                            <option value="0">일렉/리얼 베이스</option>
+                            <option value="1" selected>신스 베이스</option>
+                            <option value="2">808 베이스</option>
+                            <option value="3">혼합 베이스</option>
+                            <option value="4">베이스 없음</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <p>리듬 선택<p>
+                        </div>
+                        <select name="rhythm" id="id_rhythm">
+                            <option value="0">뭄바톤/레게</option>
+                            <option value="1">마이애미</option>
+                            <option value="2">펑크</option>
+                            <option value="3">디스코/하우스</option>
+                            <option value="4">락</option>
+                            <option value="5">컨트리</option>
+                            <option value="6">재즈</option>
+                            <option value="7">트랩/하프</option>
+                            <option value="8">반복되는 주제 리듬</option>
+                            <option value="9" selected>4비트/논리듬</option>
+                            <option value="10">뽕짝</option>
+                            <option value="11">그루비</option>
+                            <option value="12">블루스/RNB</option>
+                            <option value="13">라틴</option>
+                            <option value="14">뉴잭스윙</option>
+                            <option value="15">아라비안/인디아</option>
+                            <option value="16">오리엔탈</option>
+                            <option value="17">셔플/트리플/3비트</option>
+                            <option value="18">뉴웨이브</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <p>singing 여부</p>
+                        </div>
+                        <input type="radio" name="main_instr" value="0"><span>only 악기</span> 
+                        <input type="radio" name="main_instr" value="1" checked="checked"><span>악기 + 목소리</span> 
+                        
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <p>영어 여부</p>
+                        </div>
+                        <input type="radio" name="english" value="0"><span>Non 영어</span> 
+                        <input type="radio" name="english" value="1" checked="checked"><span>영어</span> 
+                        
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <p>레트로 여부</p>
+                        </div>
+                        <input type="radio" name="retro" value="0" checked="checked"><span>Non 레트로</span> 
+                        <input type="radio" name="retro" value="1"><span>레트로</span> 
+                    </div>
+
+                    <div class="item">
+                        <div class="row">
+                            <p>로파이 여부</p>
+                        </div>
+                        <input type="radio" name="lofi" value="0" checked="checked"><span>Non 로파이</span> 
+                        <input type="radio" name="lofi" value="1"><span>로파이</span> 
+                    </div>
+
+                    <div class="buttonSection">
+                        <button class="submit" type="submit">노래 분석</button>
+                    </div>
+                    
+                </form>
+            </div>
             {% else %}
                 <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
                 <p>후렴구 16초 음원을 토대로 분석한 결과 : 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
@@ -164,11 +222,13 @@
                     </div>
                 </div>
             </div>
+            
             {% endfor %}
         </div>
+        
     </div>
     {% include "main/search_bar.html" %}
 </section>
-
+<script src="/static/js/result_question.js"></script>
 {% endblock content %}
 

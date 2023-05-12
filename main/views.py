@@ -380,9 +380,9 @@ def result(request, id):
         except TypeError as e:
             print(e)
             context = service01.getMusicInfo()
-            context["service01_result"] = '해당국가에서는 검색이 안되는 노래입니다.'
+            context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
             context["state"] = 1
 
-            return HttpResponse(f"<script>alert('해당국가에서는 검색이 안되는 노래입니다.');window.location.assign('/result/{id}');</script>")
+            return HttpResponse(f"<script>alert('스포티파이 정책에 의해 제한이 걸린 노래입니다.');window.location.assign('/result/{id}');</script>")
         
 
