@@ -1,9 +1,40 @@
-.input_class {
-  width: 400px;
+.container{
+  margin: 50px 0px;
 }
 
-.nline_input{
-  border : none;
-  background-color: rgb(31, 31, 31);
-  color: aliceblue;
+.container .title{
+  margin: 15px 10px;
+}
+
+.container .title h1{
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+.container .item{
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.container .item div{
+  background-color: rgb(45, 45, 45);
+}
+
+.container .item div:nth-of-type(1){
+  width: 200px;
+
+  padding: 6px 10px;
+  margin-right: 2px;
+}
+
+.container .item div:nth-of-type(2){
+  width: 300px;
+
+  padding: 5px 10px;
+}
+
+.container .button_div{
+  display: flex;
+  justify-content: flex-start;
 }

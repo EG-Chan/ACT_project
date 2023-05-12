@@ -9,8 +9,36 @@
 {% block content %}
 <div>
     <div class="container">
-        <h1>내 정보</h1>
-        <button onclick="checkPassword();">수정하기</button>
+        <div class="title">
+            <h1>내 정보</h1>
+        </div>
+        <div class="item">
+            <div>이름</div>
+            <div>{{request.session.userName}}</div>
+        </div>
+        <div class="item">
+            <div>이메일</div>
+            <div>{{request.session.email}}</div>
+        </div>
+        <div class="item">
+            <div>성별</div>
+            <div>{{user.gender}}</div>
+        </div>
+        <div class="item">
+            <div>선호장르</div>
+            <div>{{user.genre}}</div>
+        </div>
+
+        <div class="button_div">
+            <button onclick="checkPassword();">수정하기</button>
+            <button onclick="checkPassword2();">탈퇴하기</button>
+        </div>
+        <div>
+            <h1>선호 노래 목록</h1>
+        </div>
+        <div>
+        </div>
+
         <form action="{% url 'main:changeInfo' %}" method="post"> 
             {% csrf_token %}
             <div name='modify_id'>
@@ -18,7 +46,7 @@
             </div>
             <input type="hidden" value={{request.session.email}} name="email">
         </form>
-        <button onclick="checkPassword2();">탈퇴하기</button>
+        
         <form action="{% url 'main:deleteInfo' %}" method="post"> 
             {% csrf_token %}
             <div name='delete_id'>
@@ -26,18 +54,10 @@
             </div>
             <input type="hidden" value={{request.session.email}} name="email">
         </form>
-        <div>
-            <p>별명 : {{request.session.userName}}</p>
-            <p>이메일 주소 : {{request.session.email}}</p>
-            <p>성별 : {{user.gender}}</p>
-            <p>선호장르 : {{user.genre}}</p>
-            
-        </div>
-        <h1>선호 노래 목록</h1>
+        
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/js-sha256@latest"></script>
 <script type="text/javascript" src="/static/js/password_check.js"></script>
 
 {% endblock content %}
