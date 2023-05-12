@@ -25,11 +25,6 @@ function checkPassword() {
   }
 }
 function checkPassword2() {
-  // let password = prompt("패스워드를 입력해주세요.");
-  // if (password) {
-  //   const hash = sha256(password);
-  //   console.log(hash)
-  // }
   let div_input2 =  div2.querySelector('input');
   if (div_input2) {
     div2.removeChild(div_input2);
