@@ -3,16 +3,41 @@
 {% load static %}
 {% block static %}
 <link rel="stylesheet" href="{% static 'css/userinfo.css' %}">
+
 {% endblock static %}
 
 {% block content %}
 <div>
-    
     <div class="container">
         <h1>내 정보</h1>
-        <p>{{request.session.email}}</p>
+        <button onclick="checkPassword();">수정하기</button>
+        <form action="{% url 'main:changeInfo' %}" method="post"> 
+            {% csrf_token %}
+            <div name='modify_id'>
+                <p></p>
+            </div>
+            <input type="hidden" value={{request.session.email}} name="email">
+        </form>
+        <button onclick="checkPassword2();">탈퇴하기</button>
+        <form action="{% url 'main:deleteInfo' %}" method="post"> 
+            {% csrf_token %}
+            <div name='delete_id'>
+                
+            </div>
+            <input type="hidden" value={{request.session.email}} name="email">
+        </form>
+        <div>
+            <p>별명 : {{request.session.userName}}</p>
+            <p>이메일 주소 : {{request.session.email}}</p>
+            <p>성별 : {{user.gender}}</p>
+            <p>선호장르 : {{user.genre}}</p>
+            
+        </div>
         <h1>선호 노래 목록</h1>
     </div>
-
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/js-sha256@latest"></script>
+<script type="text/javascript" src="/static/js/password_check.js"></script>
+
 {% endblock content %}

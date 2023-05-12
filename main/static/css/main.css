@@ -3,8 +3,9 @@
 html,body,div,span,
 p,a,img,ol,ul,
 li,form,label,table,
-tr,th,td,
+tr,th,td,h1,h2,h3,h4,h5,
 canvas,header,nav,section, footer{
+    /* background: linear-gradient(0deg, rgb(31, 31, 31), rgb(255, 255, 255)); */
     margin: 0;
     padding: 0;
     border: 0;
@@ -21,7 +22,14 @@ canvas,header,nav,section, footer{
 }
 body{
     background-color: rgb(31, 31, 31);
-    padding: 0px 16.6vw 0px 16.6vw;
+    display: flex;
+    justify-content: center;
+}
+
+.content{
+    width: 1100px;
+    min-width: 800px;
+    padding: 0 10vw;
 }
 
 nav {
@@ -45,6 +53,8 @@ nav {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    margin: 50px 0px;
 }
 
 .search h1{
@@ -92,6 +102,7 @@ footer {
     justify-content: space-around;
     align-items: center;
 
+    min-height: 130px;
     height: 12.5vh;
 }
 
@@ -110,3 +121,44 @@ hr {
     z-index: 10;
 }
 
+button{
+    color: white;
+    background-color: rgb(79, 79, 79);
+    border: none;
+    border-radius: 15px;
+    padding: 8px 12px 8px 12px;
+    margin: 10px 15px;
+    min-height: 15px; 
+    min-width: 70px;
+    font-size: 0.9rem;
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+  }
+  
+  button:hover{
+    background-color: rgb(128, 128, 128);
+    transition: 0.2s;
+  }
+  
+  button:active{
+    position: relative;
+    top: 1px;
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+  }
+
+  select{
+    width: 180px;
+    height: 35px;
+    background: black;
+    background-size: 20px;
+    color: white;
+    padding: 5px 30px 5px 10px;
+    border-radius: 4px;
+    outline: 0 none;
+    font-size: 0.9rem;
+  }
+  
+  select option{
+    background: black;
+    color: white;
+    padding: 3px 0;
+  }

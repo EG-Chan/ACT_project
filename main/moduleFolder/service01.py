@@ -13,6 +13,7 @@ class Service:
         self.track_popularity = None
         self.track_img = None
         self.track_year = None
+        self.track_date = None
         self.track_src = None
         self.artist = None
         self.artist_name = None
@@ -35,6 +36,7 @@ class Service:
         self.track_name = track['name']
         self.track_popularity = track['popularity']
         self.track_img = track['album']['images'][1]['url']
+        self.track_date = track['album']['release_date']
         self.track_year = int(track['album']['release_date'].split('-')[0])
         self.track_src = track['preview_url']
 
@@ -55,7 +57,7 @@ class Service:
             "track_genres" : self.track_genres,
             "track_popularity" : self.track_popularity,
             "track_img" : self.track_img,
-            "track_year" : self.track_year,
+            "track_date" : self.track_date,
             "track_src" : self.track_src,
             "artist_name" : self.artist_name,
             "artist_id" : self.artist_id,

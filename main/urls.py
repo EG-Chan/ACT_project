@@ -12,6 +12,10 @@ urlpatterns = [
     
     path("result/<str:id>", views.result, name="result"),
     path("userInfo/", views.userInfo, name="userInfo"),
+    path("userInfo/change", views.changeInfo, name="changeInfo"),
+    path("userInfo/change/modify", views.modifyInfo, name="modifyInfo"),
+    path("userInfo/delete", views.deleteInfo, name="deleteInfo"),
+    path("userInfo/delete/deleteid", views.deleteID, name="deleteID"),
     path("introduce/", views.introduce, name="introduce"),
 
     path("notfound/", views.notfound, name="404notfound"),

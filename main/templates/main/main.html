@@ -17,18 +17,19 @@
     
 </head>
 <body>
-    <div class="wrapper">
-        
-        {% include "main/nav.html" %}
+    <div class="content">
+        <div class="wrapper">
+            
+            {% include "main/nav.html" %}
 
-        {% block content %}
-        {% include "main/search_bar.html" %}
-        {% endblock content %}
-        <h1>{{ sessionID }}</h1>
+            {% block content %}
+            {% include "main/search_bar.html" %}
+            {% endblock content %}
 
+        </div>
+
+        {% include "main/footer.html" %}
     </div>
-
-    {% include "main/footer.html" %}
     
 </body>
 </html>
