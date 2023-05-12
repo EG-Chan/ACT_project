@@ -249,11 +249,11 @@
         <div class="title">
             <h2>이 노래와 유사한 곡</h2>
         </div>
+        <button class="prev_button">◀</button>
+        <button class="next_button">▶</button>
         <div class="inner">
-            {% for data in recommendation.tracks %}
-            {% if forloop.counter0|divisibleby:5 %}
             <div class='five_recommendation'>
-                {% endif %}
+            {% for data in recommendation.tracks %}
                 <div class="ooooo">
 
                     <a href="{% url 'main:result' data.id %}">
@@ -270,11 +270,9 @@
                     </div>
 
                 </div>
-                {% if forloop.counter|divisibleby:5 and not forloop.last %}
-            </div>
-            {% endif %}
             {% endfor %}
         </div>
+        
     </div>
 
     </div>
@@ -282,4 +280,5 @@
 </section>
 <script src="/static/js/result_question.js"></script>
 <script src="/static/js/progress_bar.js"></script>
+<script src="/static/js/slider_bar.js"></script>
 {% endblock content %}
