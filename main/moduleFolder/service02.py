@@ -2,7 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime, timedelta
+import joblib
 import time
+import pandas as pd
 
 class Service:
 
@@ -92,10 +94,10 @@ class Service:
                 s = datetime.today() - timedelta(i)
                 date.append(s.strftime("%m-%d"))
 
-            
             variance_comments = 0
             variance_likes = 0
             variance_views = 0
+
             for data in views_list:
                 if data["date"] in date:
                     variance_comments += int(data["comments"].replace(",", ""))
@@ -112,11 +114,21 @@ class Service:
             wd.quit()
             return {
                 "data":{
-                    "title":self.title,
-                    "artist":self.artist,
                     "comments":self.comments,
                     "likes":self.likes,
                     "views":self.views,
                 },
                 "error":self.error
             }
+    
+    def runModel(self, data):
+        dataFrame = pd.DataFrame([data["data"]])
+        model = joblib.load('main\static\models\service2\serrvice_2_issue_all.pkl')
+        result = model.predict(dataFrame)
+        
+        if result[0] == 0:
+            data["result"] = "가능성 없음"
+        else:
+            data["result"] = "가능성 있음"
+
+        return data

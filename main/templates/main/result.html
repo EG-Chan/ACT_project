@@ -194,7 +194,13 @@
             </div>
             {% else %}
                 <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
+                <p>조회수, 댓글수, 좋아요수의 변화량<br></p>
+                <p>조회수:{{service02_result.data.views}}<br></p>
+                <p>댓글수:{{service02_result.data.comments}}<br></p>
+                <p>좋아요수:{{service02_result.data.likes}}<br></p>
+                <p>{{service02_result.result}}" 으로 나왔습니다.<br></p>
                 <p>후렴구 16초 음원을 토대로 분석한 결과 : 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
+                
                 <p>위의 최종적인 판별 결과 : 이 노래는 로 예상됩니다.</p>
             {% endif %}
         </div>

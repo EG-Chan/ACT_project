@@ -330,6 +330,8 @@ def result(request, id):
     service01 = s1.Service(id)
     service01.setMusicInfo(track, artist)
 
+    service02 = s2.Service({"title":track['name'],"artist":track['artists'][0]['name']})
+
     service03 = s3.Service(id, track['preview_url'])
     recommendation = sp.recommendations(seed_tracks=[id],limit=5)
     if request.method == "GET":
@@ -342,7 +344,7 @@ def result(request, id):
     
     elif request.method == 'POST':
         try :
-            # service_1 
+            # service 1 
             post_data = {
                 "gender" : request.POST['gender'],
                 "re_inst" : request.POST['re_inst'],
@@ -358,6 +360,10 @@ def result(request, id):
             service01.createDataFrame(audio_features, post_data)
             service01_result = service01.runModel()
 
+            # service 2
+            service02_data = service02.getData()
+            service02_result = service02.runModel(service02_data)
+
             # service 3
             service03.createDataFrame()
             service03_result = service03.runModel()
@@ -372,6 +378,7 @@ def result(request, id):
             
             context = service01.getMusicInfo()
             context["service01_result"] = service01_result
+            context["service02_result"] = service02_result
             context["service03_result"] = service03_result
             context["state"] = 1
             context['recommendation'] = recommendation
