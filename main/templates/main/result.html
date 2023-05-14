@@ -226,8 +226,8 @@
             {% elif service02_result.error == True %}
             <p>트렌드 지수 파악을 위한 일일 트래픽이 초과됐습니다.<br></p>
             <br><br><br>
-            {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and
-            service02_result.data.views == 0 %}
+
+            {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and service02_result.data.views == 0 %}
             <p>너무 인기가 없어 트렌드 지수를 파악할 수 없거나, 출시된지 하루도 안된 곡입니다.<br></p>
             <p>적어도 하루가 지나야 수집됩니다.<br></p>
             <br><br><br>
