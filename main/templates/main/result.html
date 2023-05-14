@@ -20,7 +20,12 @@
             <h3>{{artist_name}}</h3>
             <h5>장르 : {{track_genres}}</h5>
             <div class='emb_div'>
+                {% if track_src == None %}
+                <img class='imgs_2' src="/static/imgs/noMusic.png">
+                <p>(19금 노래)</p>
+                {% else %}
                 <embed class='imgs_' src="{{track_src}}">
+                {% endif %}
             </div>
         </div>
         <div class="column2">

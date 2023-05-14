@@ -75,7 +75,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <img class='imgs_' src="{{ track_imgs }}">
+                                    <img class='imgs_3' src="{{ track_imgs }}">
                                 </div>
                             </td>
                             <td>
@@ -86,7 +86,14 @@
                                 </div>
                             </td>
                             <td class='emb_div2' >
+                                {% if track_previews == None %}
+                                <div class = 'imgs_22'>
+                                    <img class='imgs_2' src="/static/imgs/noMusic.png">
+                                    <p>19禁</p>
+                                </div>
+                                {% else %}
                                 <embed class='imgs_' src="{{track_previews}}">
+                                {% endif %}
                             </td>
                             <td>
                                 <div>

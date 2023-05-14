@@ -65,8 +65,11 @@
   background-color: #f2f2f2;
   color: rgb(0, 0, 0);
 }
-
-.search_record  img {
+.imgs_2{
+  left:0;
+  max-width: 30px;
+}
+.search_record  .imgs_3 {
   max-width: 100px;
   height: auto;
 }
@@ -76,11 +79,17 @@
 .search_record embed {
     clip: rect(70px, 50px, 100px, 5px);
     max-width: 150px;
-    max-width: 150px;
     position: absolute;
     border-radius: 50%;
     overflow: hidden; 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.imgs_22{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 60px;
 }
