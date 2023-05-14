@@ -7,7 +7,7 @@ from datetime import datetime
 import hashlib
 
 #모델
-from main.models import Account
+from main.models import Account, SearchHistory
 
 # 
 import re
@@ -129,15 +129,42 @@ def signup(request):
         finally:
             return render(request, "main/signup.html", context=context)
         
+def searchHistory(user_id):
+    search_history = SearchHistory.objects.filter(user_id=user_id).order_by('-timestamp')
+    return search_history
 
 def userInfo(request):
+    artists=[]
+    track_imgs=[]
+    track_names=[]
+    track_dates=[]
+    track_previews=[]
+    idxs = []
+
     try:
         if not request.session.session_key:
             return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
         elif request.session.session_key:
             user = Account.objects.get(email=request.session["email"])
+            history = searchHistory(user)
+            for idx, data in enumerate(history):
+                track = sp.track(data.query)
+                artist = track['album']['artists'][0]['name']
+                track_img = track['album']['images'][1]['url']
+                track_name = track['name']
+                track_date = track['album']['release_date']
+                track_preview = track['preview_url']
+                
+                track_dates.append(track_date)
+                track_names.append(track_name)
+                track_imgs.append(track_img)
+                track_previews.append(track_preview)
+                artists.append(artist)
+                idxs.append(idx)
+            history_list = zip(idxs, history, track_names,track_imgs,track_dates, artists,track_previews)
             context = {
                 'user':user,
+                'history':history_list,
                 'session_id' : request.session.session_key,
             }
             return render(request, "main/userInfo.html", context=context)
@@ -251,8 +278,30 @@ def deleteID(request):
             return render(request, "main/deleteID.html", context=context)
         else :
             return HttpResponse("<script>alert('확인문구를 정확히 입력해주세요.');window.location.assign('/userInfo/delete/deleteid');</script>")
-        
 
+def saveHistory(user_id, query):
+    # 연속 새로고침 에러 방지
+    recent_history = SearchHistory.objects.filter(user_id=user_id).order_by('-id').first()
+    if recent_history and recent_history.query == query:
+        return
+    search_history = SearchHistory(user_id=user_id, query=query)
+    search_history.save()
+
+def deleteRecord(request, id):
+    user = Account.objects.get(email=request.session["email"])
+    history_to_delete = SearchHistory.objects.filter(user_id=user, query=id)
+    history_to_delete.delete()
+    return redirect('main:userInfo')
+
+def searchFunc(search,search_bar_category,offset):
+    if search_bar_category == 'all':
+        title = sp.search(q=f'{search}', type='track', offset={offset})
+    elif search_bar_category == 'search_title':
+        title = sp.search(q=f'title:{search}', type='track', offset={offset})
+    elif search_bar_category == 'search_artist':
+        title = sp.search(q=f'artist:{search}', type='track', offset={offset})
+    return title
+    
 def search(request):
     if request.method == "GET":
         if not 'offset' in request.GET:
@@ -293,13 +342,13 @@ def search(request):
 
             else :
                 title = None
-
-                if search_select == 'all':
-                    title = sp.search(q=f'{search_text}', type='track', offset={offset})
-                elif search_select == 'search_title':
-                    title = sp.search(q=f'title:{search_text}', type='track', offset={offset})
-                elif search_select == 'search_artist':
-                    title = sp.search(q=f'artist:{search_text}', type='track', offset={offset})
+                title = searchFunc(search_text,search_select,offset)
+                # if search_select == 'all':
+                #     title = sp.search(q=f'{search_text}', type='track', offset={offset})
+                # elif search_select == 'search_title':
+                #     title = sp.search(q=f'title:{search_text}', type='track', offset={offset})
+                # elif search_select == 'search_artist':
+                #     title = sp.search(q=f'artist:{search_text}', type='track', offset={offset})
 
                 #raise 코드
                 title['tracks']['items'][0]
@@ -321,11 +370,20 @@ def search(request):
         
 
 def introduce(request):
-    return render(request, "main/introduce.html")
+    introduceID = request.GET.get('id')
+    if not introduceID:
+        introduceID=0
+    context = {
+        'introduceID':int(introduceID)
+    }
+    return render(request, "main/introduce.html",context=context)
 
 
 def result(request, id):
-    
+    # 노래 검색 기록 저장
+    user = Account.objects.get(email=request.session["email"])
+    if request.session.session_key:
+        saveHistory(user, id)
     # 노래 검색
     track = sp.track(id)
     artist = sp.artist(track['artists'][0]['id'])
@@ -346,7 +404,7 @@ def result(request, id):
         return render(request, "main/result.html", context=context)
     
     elif request.method == 'POST':
-        try :
+        # try :
             service_list = request.POST.getlist('service_list')
             # service 1 
             service02_result = {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '검사X'}
@@ -376,10 +434,15 @@ def result(request, id):
                 # service 3
                 service3_df = service03.createDataFrame()
                 service03_result = service03.runModel(service3_df)
+                
+                # print(len(service03_result)[0][0])
+                if service03_result >= 0.5:
+                    service03_result = '빌보드 올라갈 가능성이 높음'
+                else :
+                    service03_result = '빌보드 올라갈 가능성이 낮음'
+                # import numpy as np
                 context["service03_result"] = service03_result
-                print(len(service03_result)[0][0])
-                import numpy as np
-                print(np.where(service03_result > 0.5, 1, 0))
+                # print(np.where(service03_result > 0.5, 1, 0))
             
             context["service02_result"] = service02_result
             if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
@@ -399,13 +462,13 @@ def result(request, id):
             context["state"] = 1
             context['recommendation'] = recommendation
             return render(request, "main/result.html", context=context)
-        except TypeError as e:
-            print(e)
-            context = service01.getMusicInfo()
-            context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
-            context["state"] = 1
+        # except TypeError as e:
+        #     print(e)
+        #     context = service01.getMusicInfo()
+        #     context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
+        #     context["state"] = 1
 
-            return HttpResponse(f"spofty_limit:{id}")
+        #     return HttpResponse(f"spofty_limit:{id}")
         
 def notfound(request):
     return render(request, "main/not_found.html")

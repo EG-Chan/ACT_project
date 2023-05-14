@@ -151,6 +151,12 @@ input[type="radio"] ~ span:nth-of-type(1){
   height: 250px;
   overflow: hidden;
 }
+@media screen and (max-width: 600px) {
+  .five_recommendation {
+    flex-direction: column;
+    justify-content:center;
+  }
+}
 .five_recommendation{
   display: flex;
   /* justify-content:center; */
@@ -179,4 +185,7 @@ input[type="radio"] ~ span:nth-of-type(1){
 
 select{
   max-width: 200px;
+}
+.li_inner_q{
+  font-size: 0.8rem;
 }

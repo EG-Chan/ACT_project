@@ -7,5 +7,14 @@ function moveToSlide(n) {
   slides[0].style.marginLeft = -currentSlide * slideWidth + 'px';
 }
 
-document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 5));
-document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 5));
+// 5개씩 보여주기가 css에 뭔가 꼬여있는데 시간없어서 1개씩 검색으로 바꿈
+if (window.matchMedia('(min-width: 600px)').matches) {
+  document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 5));
+  document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 5));
+} else {
+  console.log('작동되는중?')
+  document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 1));
+  document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 1));
+}
+// document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 5));
+// document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 5));

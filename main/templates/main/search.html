@@ -8,10 +8,7 @@
 {% block content %}
 <div class="wrapper">
     
-    <div class="searchResult">
-        <span>-{{search_bar_category}}-</span>
-        <h1>{{search}}의 검색결과입니다.</h1>
-    </div>
+    
     {% if state == 0 %}
     <div class="container">
         <div class="inner">
@@ -19,6 +16,13 @@
         </div>
     </div>
     {% else %}
+    <div class="searchResult">
+        <!-- <span>-{{search_bar_category}}-</span> -->
+        <h1>::{{search_bar_category}} 카테고리::<br>
+            ::<b>{{search}}</b>의 검색결과입니다. :: <br> 
+            ::현재페이지 : {{offset}}::
+        </h1>
+    </div>
     {% for data in spotipyDatas.tracks.items %}
 
     <div class="container">
@@ -52,8 +56,9 @@
         </div>
     </div>
     {% endfor %}
+    {% endif %}
     <div class="center_lr">
-        {% endif %}
+        
         {% if offset == 0 %}
         <div class="lr_bar">
             <a href="/search?offset=1&&q={{search}}&&sc={{search_bar_category}}">다음</a>

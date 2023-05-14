@@ -12,31 +12,221 @@
 {% block content %}
 
 </head>
+
 <body>
-    <div class="introduce_wrapper">
+    <div>
         <div class="title">
             ACT PROJECT
         </div>
-        <div>
-            <p class = comment_1>
-                ACT는 뭐하는 사이트인가요?
-                <div class = comment_image_1>
-                    <img src = "./image/검색결과.PNG">
-                    <p>ppdnpidfneifopenfp</p>
+        <div class="introduce_wrapper">
+            {% if introduceID == 0 %}
+            <video class="in_img_or_video" src="/static/video/tiktok.mp4" muted autoplay loop></video>
+            <!-- <img class="in_img_or_video" src="/static/imgs/tiktok.jpg" alt="Tiktok Img"> -->
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 뭐하는 사이트인가요?
+                    </p>
+                    <ul>
+                        <li class="background_text">
+                            ACT는 한가람 아카데미 빅데이터 분석기사 2기 교육과정으로 신찬희, 은경찬, 황예찬이 모여 만든 프로젝트입니다.<br>
+                        </li>
+                        <li class="background_text">
+                            ACT는 4개의 분석을 통해 '틱톡에서 인기있는 노래가 빌보드에 진입할 수 있을지 없을지'를 분석합니다.<br>
+                        </li>
+                    </ul>
                 </div>
-            </p>
-            <p class = comment_2>
-                ACT는 어떻게 써야 하나요?
-                <div class = comment_image_2>
-                    <img src ="./image/검색결과.PNG">
-                    <p>설명</p>
+                <div class="center_img" onclick="location.href='/introduce/?id=1'">
+                    <div class=comment_image_1>
+                        <!-- <img class="door_img" src="/static/imgs/NEXT.png"> -->
+                        <p>NEXT</p>
+                    </div>
+                    <!-- <p>NEXT</p> -->
                 </div>
-            </p>
+
+            </div>
+            {% elif introduceID == 1 %}
+            <video class="in_img_or_video" src="/static/video/spotify.mp4" muted autoplay loop></video>
+            <!-- <img class="in_img_or_video" src="/static/imgs/spotify.jpg" alt="Spotify Img"> -->
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 어떤 원리로 작성하나요?
+                    </p>
+                    <ul>
+                        <li>
+                            ACT의 첫 번째 분석과제는 스포티파이의 feature와 함께 logistic regression으로 연관성이 높게 잡힌 여러 특징을 label하여 분석한 분류과제입니다.
+                        </li>
+                        <li>
+                            최근 틱톡에서 인기있던 900곡과 그 중 빌보드에 진입한 약 450곡을 분류하여 knn, rforest, svm 등으로 분류 후 
+                        </li>
+                        <li>
+                            이를 soft voting하여 최종 모델을 만들었습니다.
+                        </li>
+                    </ul>
+                </div>
+                <div class="center_img" onclick="location.href='/introduce/?id=2'">
+                    <div class=comment_image_1>
+                        <!-- <img class="door_img" src="/static/imgs/door.jpg"> -->
+                        <p>NEXT</p>
+                    </div>
+                    
+                </div>
+            </div>
+            {% elif introduceID == 2 %}
+            <video class="in_img_or_video" src="/static/video/youtube.mp4" muted autoplay loop></video>
+            <!-- <img class="in_img_or_video" src="/static/imgs/youtube.jpg" alt="Youtube Img"> -->
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 어떤 원리로 작성하나요?
+                    </p>
+                    <ul>
+                        <li>
+                            ACT의 두 번째 분석과제는 유튜브 1주일간의 변화량을 통한 트렌드 분석입니다.
+                        </li>
+                        <li>
+                            최근 틱톡에서 인기있는 곡들의 1주일간 조회수, 좋아요수, 댓글수를 수집하고 그 다음 주에 빌보드 진입에 성공했는지를 분류한 모델입니다.
+                        </li>
+                        <li>
+                            이를 통해 트렌드만 따졌을 때 당장 다음 주에 빌보드에 진입할 가능성이 있는지를 파악합니다.
+                        </li>
+                        <li>
+                            이 과제는 이슈들을 수집해 knn과 svm으로 stacking하여 최종 모델을 만들었습니다.
+                        </li>
+                        <li>
+                            직접적인 데이터 수집 알고리즘을 짜기에는 시간 한계가 있어 playboard 사이트를 이용했습니다.
+                        </li>
+                        <li>
+                            다만 이 사이트를 무료로 수집하다보니 일일 트래픽제한과 수집시간에 제약이 생겼습니다.
+                        </li>
+                    </ul>
+                    <div class="center_img" onclick="location.href='/introduce/?id=3'">
+                        <div class=comment_image_1>
+                            <!-- <img class="door_img" src="/static/imgs/door.jpg"> -->
+                            <p>NEXT</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            {% elif introduceID == 3 %}
+            <img class="in_img_or_video" src="/static/imgs/music.jpg" alt="Music Img">
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 어떤 원리로 작성하나요?
+                    </p>
+                    <ul>
+                        <li>
+                            ACT의 세 번째 분석과제는 음원 분석입니다.
+                        </li>
+                        <li>
+                            음원을 end to end 방식으로 스포티파이에서 후렴구 30초를 가져와(30초보다 짧은 경우 전곡) melspectrogram을 만들고
+                        </li>
+                        <li>
+                            이를 직접 분류해 lstm으로 학습한 모델입니다.
+                        </li>
+                        <li>
+                            이 모델 결과가 틀렸을 경우 클라이언트에게 수정사항을 받아 더 학습하게끔 했습니다.
+                        </li>
+                    </ul>
+                    <div class="center_img" onclick="location.href='/introduce/?id=4'">
+                        <div class=comment_image_1>
+                            <!-- <img class="door_img" src="/static/imgs/door.jpg"> -->
+                            <p>NEXT</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            {% elif introduceID == 4 %}
+            <img class="in_img_or_video" src="/static/imgs/music2.jpg" alt="Music Img">
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 어떤 원리로 작성하나요?
+                    </p>
+                    <ul>
+                        <li>
+                            ACT의 네 번째 분석과제 역시 음원 분석입니다.
+                        </li>
+                        <li>
+                            음원을 모든 곡, 4개의 stem으로 나누어 (bass, drums, vocals, other), 'stfm, amplitude_to_db, 
+                        </li>
+                        <li>
+                            zero_crossings, harmonic, perc, spectral_centroid, spectral_bandwidth, spectral_rolloff,
+                        </li>
+                        <li>
+                            rms, chromagram, MFCC, 등 24개의 vector를 만들고
+                        </li>
+                        <li>
+                            각각 따로따로 lstm으로 학습하여 모델을 만들고 이중 accuracy가 높은 vector들만 종합 해 soft voting하여 만든 모델입니다.
+                        </li>
+                        <li>
+                            총 67개의 model을 이용했는데 결과가 아주 높은편이지만, 곡을 뽑아 전처리하는 과정이 aws서버의 메모리가 감당할 수 없고,
+                        </li>
+                        <li>
+                            시간 역시 오래걸려 일단 서비스에서는 제거했습니다만,
+                        </li>
+                        <li>
+                            향후 좋은 서버로 옮기고 클라이언트가 원할 경우 분석 후 메일로 보내는 방식을 개발예정에 있습니다.
+                        </li>
+                    </ul>
+                    <div class="center_img" onclick="location.href='/introduce/?id=5'">
+                        <div class=comment_image_1>
+                            <!-- <img class="door_img" src="/static/imgs/door.jpg"> -->
+                            <p>NEXT</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            {% elif introduceID == 5 %}
+            <video class="in_img_or_video" src="/static/video/howuse.mp4" muted autoplay loop></video>
+            <!-- <img src="/static/imgs/music3.jpg" alt="Music Img"> -->
+            <div class="text">
+                <div>
+                    <p class='comment_1 background_text'>
+                        ACT는 어떻게 써야 하나요?
+                    </p>
+                    
+                    <ul>
+                        <li>
+                            ACT는 크게 두 가지 과정을 거칩니다.
+                        </li>
+                        <li>
+                            우선 검색을 통해 원하는 곡을 찾습니다.
+                        </li>
+                        <li>
+                            이 후 곡을 들으면서 필요한 카테고리를 선택 후 분석을 누릅니다.
+                        </li>                        
+                        <li>
+                            잠시 기다리면 결과가 출력됩니다.
+                        </li>
+                    </ul>
+                    <div onclick="location.href='/'">
+                        <p style="color: red; font-size : 1.6rem; font-weight: bold;">
+                            아래의 <ins>'지금 검색하기'</ins>로 눌러주세요!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div>
+                작업 중인 페이지입니다.
+                <a href="/introduce/?id=0">돌아가기</a>
+            </div>
+            {% endif %}
         </div>
-        <div class = search_button>
-            <button><a href="{% url 'main:main' %}">지금 검색하기</a></button> 
+        <script>window.scrollTo(0, document.body.scrollHeight);</script>
+
+        <div class=search_button>
+            <button><a href="{% url 'main:main' %}">지금 검색하기</a></button>
         </div>
     </div>
+    
 </body>
+
 </html>
 {% endblock content %}

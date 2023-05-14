@@ -171,7 +171,6 @@ footer {
     display: flex;
     justify-content: space-around;
     align-items: center;
-
     min-height: 130px;
     height: 12.5vh;
 }
