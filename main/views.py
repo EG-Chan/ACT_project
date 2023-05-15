@@ -282,8 +282,9 @@ def deleteID(request):
 def saveHistory(user_id, query):
     # 연속 새로고침 에러 방지
     recent_history = SearchHistory.objects.filter(user_id=user_id).order_by('-id').first()
-    if recent_history.query == None:
-        return
+    if not recent_history == None:
+        if recent_history.query == None:
+            return
     if recent_history and recent_history.query == query:
         return
     search_history = SearchHistory(user_id=user_id, query=query)
@@ -384,8 +385,8 @@ def introduce(request):
 
 def result(request, id):
     # 노래 검색 기록 저장
-    user = Account.objects.get(email=request.session["email"])
     if request.session.session_key:
+        user = Account.objects.get(email=request.session["email"])
         saveHistory(user, id)
     # 노래 검색
     track = sp.track(id)
