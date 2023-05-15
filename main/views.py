@@ -41,49 +41,53 @@ def login(request):
     
     #로그인 버튼을 누른경우
     elif request.method == "POST":
-        context = None
-        email = None
-        password = None
-        
-        #비밀번호 암호화
-        hlib = hashlib.sha256()
-        hlib.update(password.encode("UTF-8"))
-        password = hlib.hexdigest()
-
         try:
-            email = request.POST.get("email")
-            password = request.POST.get("password")
+            # context = None
+            # email = None
+            # password = None
+            
 
-            #DB에서 email이 같은 레코드와 비교            
-            user = Account.objects.get(email=email)
-            if email == user.email and password == user.password:
-                if not request.session.session_key:
-                    request.session.create()
-                request.session["email"] = email
-                request.session["userName"] = user.name
 
-                session_id = request.session.session_key
+            try:
+                email = request.POST.get("email")
+                password = request.POST.get("password")
+
+                #비밀번호 암호화
+                hlib = hashlib.sha256()
+                hlib.update(password.encode("UTF-8"))
+                password = hlib.hexdigest()
+                #DB에서 email이 같은 레코드와 비교            
+                user = Account.objects.get(email=email)
+                if email == user.email and password == user.password:
+                    if not request.session.session_key:
+                        request.session.create()
+                    request.session["email"] = email
+                    request.session["userName"] = user.name
+
+                    session_id = request.session.session_key
+                    context = {
+                        "sessionID" : session_id,
+                        "userName" : request.session["userName"],
+                    }
+                    return render(request, "main/main.html", context=context)
+                else:
+                    context = {
+                        "state" : 1,
+                        "email" : email,
+                    }
+                    return render(request, "main/login.html", context=context)
+            
+            #없는 이메일을 입력한 경우
+            except:
                 context = {
-                    "sessionID" : session_id,
-                    "userName" : request.session["userName"],
-                }
-                return render(request, "main/main.html", context=context)
-            else:
-                context = {
-                    "state" : 1,
+                    "state" : 2,
                     "email" : email,
                 }
                 return render(request, "main/login.html", context=context)
+        except AttributeError as ae:
+            print(ae)
+            return redirect("main:invalidRequest")
         
-        #없는 이메일을 입력한 경우
-        except:
-            context = {
-                "state" : 2,
-                "email" : email,
-            }
-            return render(request, "main/login.html", context=context)
-
-
 def logout(request):
     #세션정보 모두 삭제
     request.session.flush()
@@ -402,7 +406,7 @@ def introduce(request):
 
 
 def result(request, id):
-    try:
+    # try:
         # 노래 검색 기록 저장
         if request.session.session_key:
             user = Account.objects.get(email=request.session["email"])
@@ -506,8 +510,8 @@ def result(request, id):
                 context["state"] = 1
 
                 return HttpResponse(f"spofty_limit:{id}")
-    except:
-        return redirect("main:invalidRequest")
+    # except:
+    #     return redirect("main:invalidRequest")
 
 def notfound(request):
     return render(request, "main/not_found.html")

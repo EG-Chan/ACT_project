@@ -232,40 +232,43 @@
             </div>
             {% else %}
 
-            {% if not service01_result == '' %}
-            <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
-            <br><br><br>
-            {% endif %}
 
-            {% if service02_result.result == '검사X' %}
+                {% if not service01_result == '' %}
+                <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
+                <br><br><br>
+                {% endif %}
 
-            {% elif service02_result.error == True %}
-            <p>트렌드 지수 파악을 위한 일일 트래픽이 초과됐습니다.<br></p>
-            <br><br><br>
+                {% if service02_result.result == '검사X' %}
 
-            {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and service02_result.data.views == 0 %}
-            <p>너무 인기가 없어 트렌드 지수를 파악할 수 없거나, 출시된지 하루도 안된 곡입니다.<br></p>
-            <p>적어도 하루가 지나야 수집됩니다.<br></p>
-            <br><br><br>
-            {% else %}
-            <p>조회수, 댓글수, 좋아요수의 변화량<br></p>
-            <p>조회수 : {{service02_result.data.views}}<br></p>
-            <p>댓글수 : {{service02_result.data.comments}}<br></p>
-            <p>좋아요수 : {{service02_result.data.likes}}<br></p>
-            <p>분석 결과 : {{service02_result.result}} 으로 나왔습니다.<br></p>
-            <br><br><br>
-            {% endif %}
+                {% elif service02_result.error == True %}
+                <p>트렌드 지수 파악을 위한 일일 트래픽이 초과됐습니다.<br></p>
+                <br><br><br>
 
-            {% if not service03_result == '' %}
-            <p>후렴구 음원을 토대로 확률을 계산한 결과 : <br> 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
-            <br><br><br>
-            {% else %}
-            {% endif %}
-            
-            {% if update_model_result %}
-            <p>모델 추가 학습이 완료되었습니다.</p>
-            <p>감사합니다.</p>
-            <br><br><br>
+                {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and service02_result.data.views == 0 %}
+                <p>너무 인기가 없어 트렌드 지수를 파악할 수 없거나, 출시된지 하루도 안된 곡입니다.<br></p>
+                <p>적어도 하루가 지나야 수집됩니다.<br></p>
+                <br><br><br>
+                {% else %}
+                <p>조회수, 댓글수, 좋아요수의 변화량<br></p>
+                <p>조회수 : {{service02_result.data.views}}<br></p>
+                <p>댓글수 : {{service02_result.data.comments}}<br></p>
+                <p>좋아요수 : {{service02_result.data.likes}}<br></p>
+                <p>분석 결과 : {{service02_result.result}} 으로 나왔습니다.<br></p>
+                <br><br><br>
+                {% endif %}
+
+                {% if not service03_result == '' %}
+                <p>후렴구 음원을 토대로 확률을 계산한 결과 : <br> 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
+                <br><br><br>
+                {% else %}
+                {% endif %}
+                
+                {% if update_model_result %}
+                <p>모델 추가 학습이 완료되었습니다.</p>
+                <p>감사합니다.</p>
+                <br><br><br>
+                {% endif %}
+                
             {% endif %}
         </div>
     </div>

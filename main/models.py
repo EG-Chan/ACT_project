@@ -6,8 +6,8 @@ class Account(models.Model): # 아이디 패스워드 모델
     email = models.CharField(max_length = 50, unique=True)
     password = models.CharField(max_length = 64, null=False)
     name = models.CharField(max_length = 10)
-    gender = models.CharField(max_length = 6)
-    genre = models.CharField(max_length = 10)
+    gender = models.CharField(max_length = 6, null=True)
+    genre = models.CharField(max_length = 10, null=True)
     registrationDate = models.CharField(max_length = 20)
     
 
