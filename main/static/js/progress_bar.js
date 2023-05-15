@@ -29,7 +29,7 @@ form.addEventListener('submit', (e) => {
     let progressTime = 10
     if (trendCheckBox.checked){
         intervalTime = 1000
-        progressTime = 4
+        progressTime = 2
     }
 
     // bar 보여주기

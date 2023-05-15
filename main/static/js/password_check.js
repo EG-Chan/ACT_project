@@ -53,6 +53,4 @@ document.querySelector("#pw_id_modify").addEventListener("blur", (e) => {
       isPasswordValid = false;
       pTag.innerHTML = "영문,숫자 6~16글자";
   }
-
-  
 });

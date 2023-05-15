@@ -49,39 +49,36 @@ class Service:
             views_list = None
             for i in t_path_list:
                 try:
-                    views_tbody = wd.find_element_by_xpath(i)
+                    views_tbody = wd.find_element(By.XPATH, i)
                     views_list = list()
-
-                    for tr in views_tbody.find_elements_by_tag_name("tr"):
+                    
+                    for tr in views_tbody.find_elements(By.TAG_NAME, "tr"):
                         temp_dict = dict()
-                        temp_dict["date"] = tr.find_elements_by_tag_name("td")[0].get_attribute("innerText")
-                        temp_dict["total_views"] = tr.find_elements_by_tag_name("td")[1].get_attribute("innerText")
-                        temp_dict["increase_views"] = tr.find_elements_by_tag_name("td")[2].get_attribute("innerText")
+                        temp_dict["date"] = tr.find_elements(By.TAG_NAME, "td")[0].get_attribute("innerText")
+                        temp_dict["total_views"] = tr.find_elements(By.TAG_NAME, "td")[1].get_attribute("innerText")
+                        temp_dict["increase_views"] = tr.find_elements(By.TAG_NAME, "td")[2].get_attribute("innerText")
                         views_list.append(temp_dict)
-
                     break
                 except:
                     order = 1
                     pass
-                
             # 정보 추출하기 (일당 좋아요 댓글 증가량)
             f_path_list = '//*[@id="app"]/div[1]/div/main/article/div[{0}]/div/section/div[2]/div/div/div[1]/div/div/table/tbody'.format(6+order)
-
             feedback_list = None           
             try:
-                feedback_tbody = wd.find_element_by_xpath(f_path_list)
+                feedback_tbody = wd.find_element(By.XPATH, f_path_list)
                 feedback_list = list()
 
-                for tr in feedback_tbody.find_elements_by_tag_name("tr"):
+                for tr in feedback_tbody.find_elements(By.TAG_NAME, "tr"):
                     temp_dict = dict()
-                    temp_dict["date"] = tr.find_elements_by_tag_name("td")[0].get_attribute("innerText")
-                    temp_dict["likes"] = tr.find_elements_by_tag_name("td")[2].get_attribute("innerText")
-                    temp_dict["comments"] = tr.find_elements_by_tag_name("td")[4].get_attribute("innerText")
+                    temp_dict["date"] = tr.find_elements(By.TAG_NAME, "td")[0].get_attribute("innerText")
+                    temp_dict["likes"] = tr.find_elements(By.TAG_NAME, "td")[2].get_attribute("innerText")
+                    temp_dict["comments"] = tr.find_elements(By.TAG_NAME, "td")[4].get_attribute("innerText")
                     feedback_list.append(temp_dict)
 
             except:
                 pass
-            
+
             # view_list에 feedback_list 병합
             for i, data in enumerate (views_list):
                 data.update(feedback_list[i])

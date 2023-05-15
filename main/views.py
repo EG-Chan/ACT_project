@@ -433,7 +433,6 @@ def result(request, id):
             # service 2
                 service02_data = service02.getData()
                 service02_result = service02.runModel(service02_data)
-                
             if '3' in service_list:
                 # service 3
                 service3_df = service03.createDataFrame()
