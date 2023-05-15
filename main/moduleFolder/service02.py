@@ -119,7 +119,7 @@ class Service:
     
     def runModel(self, data):
         dataFrame = pd.DataFrame([data["data"]])
-        model = joblib.load('\models\service2\serrvice_2_issue_all.pkl')
+        model = joblib.load('static\models\service2\serrvice_2_issue_all.pkl')
         result = model.predict(dataFrame)
         
         if result[0] == 0:
