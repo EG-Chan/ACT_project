@@ -33,7 +33,6 @@ def main(request):
         pass
     
 
-
 def login(request):
     # 일반적인 접속인 경우
     if request.method == "GET":
@@ -43,16 +42,19 @@ def login(request):
     #로그인 버튼을 누른경우
     elif request.method == "POST":
         context = None
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-
+        email = None
+        password = None
+        
         #비밀번호 암호화
         hlib = hashlib.sha256()
         hlib.update(password.encode("UTF-8"))
         password = hlib.hexdigest()
 
         try:
-            #DB에서 email이 같은 레코드와 비교
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+
+            #DB에서 email이 같은 레코드와 비교            
             user = Account.objects.get(email=email)
             if email == user.email and password == user.password:
                 if not request.session.session_key:
@@ -80,11 +82,6 @@ def login(request):
                 "email" : email,
             }
             return render(request, "main/login.html", context=context)
-        # except:
-
-        #     context = {"state" : 3}
-        #     print("실행2")
-        #     return render(request, "main/login.html", context=context)
 
 
 def logout(request):
@@ -139,11 +136,11 @@ def searchHistory(user_id):
     return search_history
 
 def userInfo(request):
-    artists=[]
-    track_imgs=[]
-    track_names=[]
-    track_dates=[]
-    track_previews=[]
+    artists = []
+    track_imgs = []
+    track_names = []
+    track_dates = []
+    track_previews = []
     idxs = []
 
     try:
@@ -178,111 +175,123 @@ def userInfo(request):
         return HttpResponse("<script>alert('세션이 올바르지 않습니다.');window.location.assign('/login');</script>")
 
 def changeInfo(request):
-    password = request.POST.get("pw_name")
-    email = request.POST.get("email")
-    pattern = r'^[a-zA-Z0-9]{6,16}$'
-    if not request.session.session_key:
-        return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
-    else :
-        if password == '':
-            return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
-        elif re.match(pattern, password):
-            #비밀번호 암호화
-            hlib = hashlib.sha256()
-            hlib.update(password.encode("UTF-8"))
-            password = hlib.hexdigest()
-            user = Account.objects.get(email=email)
-            if password == user.password:
-                return render(request, "main/userInfo_modify.html", context={'user':user})
-            else :
-                return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
-        else :
-            return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
-        
-def modifyInfo(request):
-    if request.method == "POST":
+    try:
+        password = request.POST.get("pw_name")
         email = request.POST.get("email")
-        password = request.POST.get("password")
-        name = request.POST.get("name")
-        gender = request.POST.get("gender")
-        genre = request.POST.get("genre")
-
-        #비밀번호 암호화
-        hlib = hashlib.sha256()
-        hlib.update(password.encode("UTF-8"))
-        hlib.hexdigest()
-
-        #DB에 저장
-        user = Account.objects.get(email=email)
-        user.email = email
-        user.password = hlib.hexdigest()
-        user.name = name
-        user.gender = gender
-        user.genre = genre
-        user.save()
-        request.session.flush()
+        pattern = r'^[a-zA-Z0-9]{6,16}$'
         if not request.session.session_key:
-            request.session.create()
-        request.session["email"] = email
-        request.session["userName"] = user.name
-        return HttpResponse("<script>alert('수정이 완료되었습니다.');window.location.assign('/userInfo');</script>")
+            return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
+        else :
+            if password == '':
+                return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
+            elif re.match(pattern, password):
+                #비밀번호 암호화
+                hlib = hashlib.sha256()
+                hlib.update(password.encode("UTF-8"))
+                password = hlib.hexdigest()
+                user = Account.objects.get(email=email)
+                if password == user.password:
+                    return render(request, "main/userInfo_modify.html", context={'user':user})
+                else :
+                    return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
+            else :
+                return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
+            
+    except:
+        return redirect("main:invalidRequest")
+    
+def modifyInfo(request):
+    try:
+        if request.method == "POST":
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            name = request.POST.get("name")
+            gender = request.POST.get("gender")
+            genre = request.POST.get("genre")
 
-def deleteInfo(request):
-    password = request.POST.get("pw_name")
-    email = request.POST.get("email")
-    pattern = r'^[a-zA-Z0-9]{6,16}$'
-    if not request.session.session_key:
-        return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
-    else :
-        if password == '':
-            return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
-        elif re.match(pattern, password):
             #비밀번호 암호화
             hlib = hashlib.sha256()
             hlib.update(password.encode("UTF-8"))
-            password = hlib.hexdigest()
+            hlib.hexdigest()
+
+            #DB에 저장
             user = Account.objects.get(email=email)
-            if password == user.password:
-                return HttpResponse(
-                    '<script>\
-                        function realDelete() {\
-                                if (!confirm("정말로 아이디를 지우시겠습니까?")) {\
-                                    alert("아이디 삭제를 취소합니다.");\
-                                    window.location.assign("/userInfo");\
-                                } else {\
-                                    alert("아이디를 삭제합니다.");\
-                                    window.location.assign("/userInfo/delete/deleteid");\
-                                }\
-                            }\
-                        realDelete();\
-                    </script>'
-                    )
-            else :
-                return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
-        else :
-            return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
-
-def deleteID(request):
-    user = Account.objects.get(email=request.session["email"])
-    if request.method == "GET": 
-        context = {
-            "state" : 0,
-            'user':user,
-            }
-        return render(request, "main/deleteID.html", context=context)
-    
-    # 삭제버튼을 누른경우
-    elif request.method == "POST":
-        context = None
-        delete_ = request.POST.get("deleteID")
-
-        if delete_ == '아이디삭제':
-            user.delete()
+            user.email = email
+            user.password = hlib.hexdigest()
+            user.name = name
+            user.gender = gender
+            user.genre = genre
+            user.save()
             request.session.flush()
-            context = {"state" : 1}
-            return render(request, "main/deleteID.html", context=context)
+            if not request.session.session_key:
+                request.session.create()
+            request.session["email"] = email
+            request.session["userName"] = user.name
+            return HttpResponse("<script>alert('수정이 완료되었습니다.');window.location.assign('/userInfo');</script>")
+    except:
+        return redirect("main:invalidRequest")
+    
+def deleteInfo(request):
+    try:
+        password = request.POST.get("pw_name")
+        email = request.POST.get("email")
+        pattern = r'^[a-zA-Z0-9]{6,16}$'
+        if not request.session.session_key:
+            return HttpResponse("<script>alert('세션이 만료되었습니다.');window.location.assign('/login');</script>")
         else :
-            return HttpResponse("<script>alert('확인문구를 정확히 입력해주세요.');window.location.assign('/userInfo/delete/deleteid');</script>")
+            if password == '':
+                return HttpResponse("<script>alert('비밀번호를 입력해주세요..');window.location.assign('/userInfo');</script>")
+            elif re.match(pattern, password):
+                #비밀번호 암호화
+                hlib = hashlib.sha256()
+                hlib.update(password.encode("UTF-8"))
+                password = hlib.hexdigest()
+                user = Account.objects.get(email=email)
+                if password == user.password:
+                    return HttpResponse(
+                        '<script>\
+                            function realDelete() {\
+                                    if (!confirm("정말로 아이디를 지우시겠습니까?")) {\
+                                        alert("아이디 삭제를 취소합니다.");\
+                                        window.location.assign("/userInfo");\
+                                    } else {\
+                                        alert("아이디를 삭제합니다.");\
+                                        window.location.assign("/userInfo/delete/deleteid");\
+                                    }\
+                                }\
+                            realDelete();\
+                        </script>'
+                        )
+                else :
+                    return HttpResponse("<script>alert('비밀번호가 틀렸습니다.');window.location.assign('/userInfo');</script>")
+            else :
+                return HttpResponse("<script>alert('비밀번호는 영어 숫자만 사용하여 6자리부터 16자리까지만 가능합니다.');window.location.assign('/userInfo');</script>")
+    except:
+        return redirect("main:invalidRequest")
+def deleteID(request):
+    try:
+        user = Account.objects.get(email=request.session["email"])
+        if request.method == "GET": 
+            context = {
+                "state" : 0,
+                'user':user,
+                }
+            return render(request, "main/deleteID.html", context=context)
+        
+        # 삭제버튼을 누른경우
+        elif request.method == "POST":
+            context = None
+            delete_ = request.POST.get("deleteID")
+
+            if delete_ == '아이디삭제':
+                user.delete()
+                request.session.flush()
+                context = {"state" : 1}
+                return render(request, "main/deleteID.html", context=context)
+            else :
+                return HttpResponse("<script>alert('확인문구를 정확히 입력해주세요.');window.location.assign('/userInfo/delete/deleteid');</script>")
+    except:
+        return redirect("main:invalidRequest")
 
 def saveHistory(user_id, query):
     # 연속 새로고침 에러 방지
@@ -297,9 +306,13 @@ def saveHistory(user_id, query):
 
         
 def deleteRecord(request, id):
-    user = Account.objects.get(email=request.session["email"])
-    history_to_delete = SearchHistory.objects.filter(user_id=user, query=id)
-    history_to_delete.delete()
+    try:
+        user = Account.objects.get(email=request.session["email"])
+        history_to_delete = SearchHistory.objects.filter(user_id=user, query=id)
+        history_to_delete.delete()
+    except:
+        return redirect("main:invalidRequest")
+    
     return redirect('main:userInfo')
 
 def searchFunc(search,search_bar_category,offset):
@@ -389,117 +402,115 @@ def introduce(request):
 
 
 def result(request, id):
-    # 노래 검색 기록 저장
-    if request.session.session_key:
-        user = Account.objects.get(email=request.session["email"])
-        saveHistory(user, id)
-    # 노래 검색
-    track = sp.track(id)
-    artist = sp.artist(track['artists'][0]['id'])
+    try:
+        # 노래 검색 기록 저장
+        if request.session.session_key:
+            user = Account.objects.get(email=request.session["email"])
+            saveHistory(user, id)
+            
+        # 노래 검색
+        track = sp.track(id)
+        artist = sp.artist(track['artists'][0]['id'])
 
-    service01 = s1.Service(id)
-    service01.setMusicInfo(track, artist)
+        service01 = s1.Service(id)
+        service01.setMusicInfo(track, artist)
+        service02 = s2.Service({"title":track['name'],"artist":track['artists'][0]['name']})
+        service03 = s3.Service(id, track['preview_url'])
+        # service04 = s4.oneClick(id, track['preview_url'], title = track['name'] ,artist = track['artists'][0]['name'])
+        df = pd.read_csv('main/static/models/bilboard/bilborad_in_score1.csv')
+        # print(track['name'], track['artists'][0]['name'])
+        update_model = um.UpdateModel(df, track['name'], track['artists'][0]['name'])
+        recommendation = sp.recommendations(seed_tracks=[id],limit=20)
 
-    service02 = s2.Service({"title":track['name'],"artist":track['artists'][0]['name']})
+        if request.method == "GET":
 
-    service03 = s3.Service(id, track['preview_url'])
-    
-    # service04 = s4.oneClick(id, track['preview_url'], title = track['name'] ,artist = track['artists'][0]['name'])
-    df = pd.read_csv('main/static/models/bilboard/bilborad_in_score1.csv')
-    # print(track['name'], track['artists'][0]['name'])
-    update_model = um.UpdateModel(df, track['name'], track['artists'][0]['name'])
-    
-    recommendation = sp.recommendations(seed_tracks=[id],limit=20)
-    if request.method == "GET":
-
-        context = service01.getMusicInfo()
-        context["state"] = 0
-        context['recommendation'] = recommendation
-        
-        return render(request, "main/result.html", context=context)
-    
-    elif request.method == 'POST':
-        try :
-            service_list = request.POST.getlist('service_list')
-            # service 1 
-            service02_result = {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '검사X'}
             context = service01.getMusicInfo()
-            # print(service_list)
-            if '1' in service_list :
-                post_data = {
-                    "gender" : request.POST['gender'],
-                    "re_inst" : request.POST['re_inst'],
-                    "bass_type" : request.POST['bass_type'],
-                    "rhythm" : request.POST['rhythm'],
-                    "main_instr" : request.POST['main_instr'],
-                    "english" : request.POST['english'],
-                    "retro" : request.POST['retro'],
-                    "lofi" : request.POST['lofi'],
-                }
-
-                audio_features = sp.audio_features(tracks=id)
-                service01.createDataFrame(audio_features, post_data)
-                service01_result = service01.runModel()
-                context["service01_result"] = service01_result
-            if '2' in service_list:
-            # service 2
-                service02_data = service02.getData()
-                service02_result = service02.runModel(service02_data)
-            if '3' in service_list:
-                # service 3
-                service3_df = service03.createDataFrame()
-                service03_result = service03.runModel(service3_df)
-                
-                print(service03_result)
-                if service03_result >= 0.53:
-                    service03_result = '빌보드 올라갈 가능성이 높음'
-                else :
-                    service03_result = '빌보드 올라갈 가능성이 낮음'
-                # import numpy as np
-                context["service03_result"] = service03_result
-                # print(np.where(service03_result > 0.5, 1, 0))
-                
-                if '5' in service_list:
-                    update_model.modelFit(service3_df)
-                    update_model_result = 1
-                    context["update_model_result"] = update_model_result
-                    
-            # # service 4는 ram과 시간 문제로 서비스 X
-            # if '4' in service_list:
-            #     # service 4
-            #     service04.oneClick()
-            #     service04_y = service04.votingModel()
-            #     service04_result = service04.scoreBy4(service04_y)
-            #     context["service04_result"] = service04_result
-            
-
-            
-            context["service02_result"] = service02_result
-            if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
-                pass
-            # # 모델 자동 추가 학습
-            # if service_4 >= 0.5:
-            #     y4data = np.array([1])
-            # else :
-            #     y4data = np.array([0])
-            # model4.fit(X4data, y4data, epochs=10, verbose=2)
-            # model4.save('main\static\models\service4\end_to_end_final32.h5')
-            
-            
-            
-            
-            
-            context["state"] = 1
+            context["state"] = 0
             context['recommendation'] = recommendation
+            
             return render(request, "main/result.html", context=context)
-        except TypeError as e:
-            print(e)
-            context = service01.getMusicInfo()
-            context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
-            context["state"] = 1
-
-            return HttpResponse(f"spofty_limit:{id}")
         
+        elif request.method == 'POST':
+            try :
+                service_list = request.POST.getlist('service_list')
+                # service 1 
+                service02_result = {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '검사X'}
+                context = service01.getMusicInfo()
+                # print(service_list)
+                if '1' in service_list :
+                    post_data = {
+                        "gender" : request.POST['gender'],
+                        "re_inst" : request.POST['re_inst'],
+                        "bass_type" : request.POST['bass_type'],
+                        "rhythm" : request.POST['rhythm'],
+                        "main_instr" : request.POST['main_instr'],
+                        "english" : request.POST['english'],
+                        "retro" : request.POST['retro'],
+                        "lofi" : request.POST['lofi'],
+                    }
+
+                    audio_features = sp.audio_features(tracks=id)
+                    service01.createDataFrame(audio_features, post_data)
+                    service01_result = service01.runModel()
+                    context["service01_result"] = service01_result
+                if '2' in service_list:
+                # service 2
+                    service02_data = service02.getData()
+                    service02_result = service02.runModel(service02_data)
+                if '3' in service_list:
+                    # service 3
+                    service3_df = service03.createDataFrame()
+                    service03_result = service03.runModel(service3_df)
+                    
+                    print(service03_result)
+                    if service03_result >= 0.53:
+                        service03_result = '빌보드 올라갈 가능성이 높음'
+                    else :
+                        service03_result = '빌보드 올라갈 가능성이 낮음'
+                    # import numpy as np
+                    context["service03_result"] = service03_result
+                    # print(np.where(service03_result > 0.5, 1, 0))
+                    
+                    if '5' in service_list:
+                        update_model.modelFit(service3_df)
+                        update_model_result = 1
+                        context["update_model_result"] = update_model_result
+                        
+                # # service 4는 ram과 시간 문제로 서비스 X
+                # if '4' in service_list:
+                #     # service 4
+                #     service04.oneClick()
+                #     service04_y = service04.votingModel()
+                #     service04_result = service04.scoreBy4(service04_y)
+                #     context["service04_result"] = service04_result
+                
+                context["service02_result"] = service02_result
+                if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
+                    pass
+                # # 모델 자동 추가 학습
+                # if service_4 >= 0.5:
+                #     y4data = np.array([1])
+                # else :
+                #     y4data = np.array([0])
+                # model4.fit(X4data, y4data, epochs=10, verbose=2)
+                # model4.save('main\static\models\service4\end_to_end_final32.h5')
+                
+                context["state"] = 1
+                context['recommendation'] = recommendation
+                
+                return render(request, "main/result.html", context=context)
+            except TypeError as e:
+                print(e)
+                context = service01.getMusicInfo()
+                context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
+                context["state"] = 1
+
+                return HttpResponse(f"spofty_limit:{id}")
+    except:
+        return redirect("main:invalidRequest")
+
 def notfound(request):
     return render(request, "main/not_found.html")
 
+def invalidRequest(request):
+    return render(request, "main/invalidRequest.html")

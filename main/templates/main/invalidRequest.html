@@ -1,0 +1,23 @@
+{% extends "main/main.html" %}
+
+{% load static %}
+{% block static %}
+{% endblock static %}
+
+{% block content %}
+{% include "main/search_bar.html" %}
+<div class="notfound">
+	<div class="notfound">
+		<div class="notfound-404">
+			<h1>404</h1>
+		</div>
+		<h2>유효하지 않은 요청입니다.</h2>
+            
+		<div class="back_to_the_ACT">
+            <a href="#">Return to Main</a></p>
+		</div>
+	</div>
+</div>
+
+
+{% endblock content %}

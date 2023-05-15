@@ -13,51 +13,54 @@ class Service:
     def __init__(self, id, src):
         self.id = id
         self.track_src = src
-        self.output_path = f'media\{self.id}.mp3' 
+        self.output_path = f'media/{self.id}.mp3' 
         self.dataFrame = None
 
     def createDataFrame(self):
-        self.getMp3()
-        # print(os.listdir('media'))
-        wav_info = {}
-        # 0초 ~ 16초 : 최저 4마디 기준
-        sound = AudioSegment.from_file(self.output_path)
-        # start_time = 0 * 1000
-        # end_time = (1*17.4) * 1000
-        # sound = sound[start_time:end_time]
-        
-        input_wav = self.output_path[:-4] + '.wav'
-        #wav 파일 생성
-        sound.export(input_wav, format='wav')
+        try:
+            self.getMp3()
+            # print(os.listdir('media'))
+            wav_info = {}
+            # 0초 ~ 16초 : 최저 4마디 기준
+            sound = AudioSegment.from_file(self.output_path)
+            # start_time = 0 * 1000
+            # end_time = (1*17.4) * 1000
+            # sound = sound[start_time:end_time]
+            
+            input_wav = self.output_path[:-4] + '.wav'
+            #wav 파일 생성
+            sound.export(input_wav, format='wav')
 
-        # signal 뽑기
-        _, signal = scipy.io.wavfile.read(input_wav)
+            # signal 뽑기
+            _, signal = scipy.io.wavfile.read(input_wav)
 
-        # preEmp 필터 통과
-        pre_emphasis = 0.97 # 또는 0.95 0.9357
-        signal = np.append(signal[0], signal[1:] - pre_emphasis * signal[:-1])
-        wav_info = {
-            'signal' : signal
-        }
-        
-        # dataframe으로 생성
-        df = pd.DataFrame([wav_info])
-        
-        # 멜스펙트럼으로 바꾸기
-        df['signal'] = df['signal'].apply(lambda x : librosa.feature.melspectrogram(y=x, sr=44100//2))
-        
-        # LSTM input shape에 맞춰서 signal 변환
-        df['signal'] = df['signal'].apply(lambda x : np.array(x.T.tolist()))
+            # preEmp 필터 통과
+            pre_emphasis = 0.97 # 또는 0.95 0.9357
+            signal = np.append(signal[0], signal[1:] - pre_emphasis * signal[:-1])
+            wav_info = {
+                'signal' : signal
+            }
+            
+            # dataframe으로 생성
+            df = pd.DataFrame([wav_info])
+            
+            # 멜스펙트럼으로 바꾸기
+            df['signal'] = df['signal'].apply(lambda x : librosa.feature.melspectrogram(y=x, sr=44100//2))
+            
+            # LSTM input shape에 맞춰서 signal 변환
+            df['signal'] = df['signal'].apply(lambda x : np.array(x.T.tolist()))
 
-        # y = np.array(df5['score'])
-        # X = np.stack(df['signal'].values)
+            # y = np.array(df5['score'])
+            # X = np.stack(df['signal'].values)
 
-        # 노래 삭제
-        os.remove(self.output_path)
-        os.remove(self.output_path[:-4]+'.wav')
+            # 노래 삭제
+            os.remove(self.output_path)
+            os.remove(self.output_path[:-4]+'.wav')
+            
+            return self.paddingData(df)
         
-        return self.paddingData(df)
-        # return X
+        except:
+            pass
 
     def getMp3(self):
         wget.download(self.track_src, out=self.output_path)

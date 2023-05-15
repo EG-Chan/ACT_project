@@ -20,4 +20,5 @@ urlpatterns = [
     path("introduce/", views.introduce, name="introduce"),
 
     path("notfound/", views.notfound, name="404notfound"),
+    path("invalidRequest/", views.invalidRequest, name="invalidRequest"),
 ]
