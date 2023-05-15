@@ -96,7 +96,7 @@ class Service:
         return X
     
     def runModel(self, X):
-        model = tf.keras.models.load_model('main\\static\\models\\service3\\end_to_end_final1024.h5')
+        model = tf.keras.models.load_model('models\service3\end_to_end_final1024.h5')
         result = model.predict(X)
 
         # return result
