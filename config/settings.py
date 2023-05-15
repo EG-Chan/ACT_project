@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+    # schedule 추가
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CRONJOBS = [
+    ('0 13 * * 2', 'main.cron.tuesdayBilboard')
 ]
 
 ROOT_URLCONF = "config.urls"

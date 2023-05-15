@@ -77,7 +77,12 @@
   display: flex;
   align-items: center;
   height: 35px;
-  margin: 10px 0px;
+  margin: 10px 0px 20px;
+}
+@media (max-width: 1000px) {
+  .item {
+    margin: 20px 0px 40px;
+  }
 }
 
 .item .row{
@@ -93,6 +98,7 @@
   font-weight: 600;
   margin: 0px 10px;
 }
+
 
 .img_div{
   margin: 0 auto;

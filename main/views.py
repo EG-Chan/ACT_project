@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator
 
-#사용자 정보 저장
+
 from datetime import datetime
+import pandas as pd
+
+#사용자 정보 저장
 import hashlib
 
 #모델
@@ -16,6 +19,8 @@ import re
 from main.moduleFolder import service01 as s1
 from main.moduleFolder import service02 as s2
 from main.moduleFolder import service03 as s3
+# from main.moduleFolder import service04 as s4
+from main.moduleFolder import updatemodel as um
 from main.moduleFolder import spoti
 
 sp = spoti.Spoti().getSpotiData()
@@ -398,6 +403,12 @@ def result(request, id):
     service02 = s2.Service({"title":track['name'],"artist":track['artists'][0]['name']})
 
     service03 = s3.Service(id, track['preview_url'])
+    
+    # service04 = s4.oneClick(id, track['preview_url'], title = track['name'] ,artist = track['artists'][0]['name'])
+    df = pd.read_csv('main/static/models/bilboard/bilborad_in_score1.csv')
+    # print(track['name'], track['artists'][0]['name'])
+    update_model = um.UpdateModel(df, track['name'], track['artists'][0]['name'])
+    
     recommendation = sp.recommendations(seed_tracks=[id],limit=20)
     if request.method == "GET":
 
@@ -408,11 +419,12 @@ def result(request, id):
         return render(request, "main/result.html", context=context)
     
     elif request.method == 'POST':
-        # try :
+        try :
             service_list = request.POST.getlist('service_list')
             # service 1 
             service02_result = {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '검사X'}
             context = service01.getMusicInfo()
+            # print(service_list)
             if '1' in service_list :
                 post_data = {
                     "gender" : request.POST['gender'],
@@ -438,14 +450,29 @@ def result(request, id):
                 service3_df = service03.createDataFrame()
                 service03_result = service03.runModel(service3_df)
                 
-                # print(len(service03_result)[0][0])
-                if service03_result >= 0.5:
+                print(service03_result)
+                if service03_result >= 0.53:
                     service03_result = '빌보드 올라갈 가능성이 높음'
                 else :
                     service03_result = '빌보드 올라갈 가능성이 낮음'
                 # import numpy as np
                 context["service03_result"] = service03_result
                 # print(np.where(service03_result > 0.5, 1, 0))
+                
+                if '5' in service_list:
+                    update_model.modelFit(service3_df)
+                    update_model_result = 1
+                    context["update_model_result"] = update_model_result
+                    
+            # # service 4는 ram과 시간 문제로 서비스 X
+            # if '4' in service_list:
+            #     # service 4
+            #     service04.oneClick()
+            #     service04_y = service04.votingModel()
+            #     service04_result = service04.scoreBy4(service04_y)
+            #     context["service04_result"] = service04_result
+            
+
             
             context["service02_result"] = service02_result
             if service02_result == {'data': {'comments': 0, 'likes': 0, 'views': 0}, 'error': True, 'result': '가능성 없음'}:
@@ -465,13 +492,13 @@ def result(request, id):
             context["state"] = 1
             context['recommendation'] = recommendation
             return render(request, "main/result.html", context=context)
-        # except TypeError as e:
-        #     print(e)
-        #     context = service01.getMusicInfo()
-        #     context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
-        #     context["state"] = 1
+        except TypeError as e:
+            print(e)
+            context = service01.getMusicInfo()
+            context["service01_result"] = '스포티파이 정책에 의해 제한이 걸린 노래입니다..'
+            context["state"] = 1
 
-        #     return HttpResponse(f"spofty_limit:{id}")
+            return HttpResponse(f"spofty_limit:{id}")
         
 def notfound(request):
     return render(request, "main/not_found.html")
