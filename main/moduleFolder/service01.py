@@ -283,7 +283,7 @@ class Service:
             return x[1]
     
     def runModel(self):
-        model = joblib.load('main\static\models\service1\serrvice_1_spotify_anlys_voting_all.pkl')
+        model = joblib.load('main\\static\\models\\service1\\serrvice_1_spotify_anlys_voting_all.pkl')
         result = model.predict(self.dataFrame)
 
         if 1 in result:
