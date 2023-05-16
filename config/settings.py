@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     
     # schedule 추가
     'django_crontab',
+    
+    #test
+    #'django_seed',
 ]
 
 MIDDLEWARE = [

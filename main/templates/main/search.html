@@ -6,25 +6,23 @@
 {% endblock static %}
 
 {% block content %}
-<div class="wrapper">
-    
-    
+<div>
+
     {% if state == 0 %}
+
     <div class="container">
         <div class="inner">
             <h1>검색 결과가 없습니다.</h1>
         </div>
     </div>
-    {% else %}
-    <div class="searchResult">
-        <!-- <span>-{{search_bar_category}}-</span> -->
-        <h1>::{{search_bar_category}} 카테고리::<br>
-            ::<b>{{search}}</b>의 검색결과입니다. :: <br> 
-            ::현재페이지 : {{offset}}::
-        </h1>
-    </div>
-    {% for data in spotipyDatas.tracks.items %}
 
+    {% else %}
+
+    <div class="searchResult">
+        <h1> {{search}}의 검색결과입니다. </h1>
+    </div>
+
+    {% for data in spotipyDatas.tracks.items %}
     <div class="container">
         <div class="inner">
             <div class="number">
@@ -36,23 +34,22 @@
                     <img src="{{data.album.images.1.url}}">
                 </a>
             </div>
-            <div class="content">
-                <div>
+
+            <div class="searchContent">
+                <div class="title">
                     <a href="{% url 'main:result' data.id %}">
-                        <span id="title">{{ data.album.name }}</span>
+                        <span>{{ data.album.name }}</span>
                     </a>
                 </div>
-                <div>
-                    <span id="artist">{{ data.album.artists.0.name }}</span>
-                </div>
-                <div>
-                    <span></span>
+                <div class="artist">
+                    <span>{{ data.album.artists.0.name }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="heart">
-            🧡🤍
+        <div class="heart desktop">
+            <span>🤍</span>
+            <span>🧡</span>
         </div>
     </div>
     {% endfor %}
@@ -61,16 +58,24 @@
         
         {% if offset == 0 %}
         <div class="lr_bar">
-            <a href="/search?offset=1&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+            <button>
+                <a href="/search?offset=1&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+            </button>
         </div>
         {% elif offset == 9 %}
         <div class="lr_bar">
-            <a href="/search?offset=8&&q={{search}}&&sc={{search_bar_category}}">이전</a>
+            <button>
+                <a href="/search?offset=8&&q={{search}}&&sc={{search_bar_category}}">이전</a>
+            </button>
         </div>
         {% elif offset <= 8 %}
         <div class="lr_bar">
-            <a href="/search?offset={{offset|add:'-1'}}&&q={{search}}&&sc={{search_bar_category}}">이전</a>
-            <a href="/search?offset={{offset|add:'1'}}&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+            <button>
+                <a href="/search?offset={{offset|add:'-1'}}&&q={{search}}&&sc={{search_bar_category}}">이전</a>
+            </button>
+            <button>
+                <a href="/search?offset={{offset|add:'1'}}&&q={{search}}&&sc={{search_bar_category}}">다음</a>
+            </button>
         </div>
         {% else %}
         {% endif %}

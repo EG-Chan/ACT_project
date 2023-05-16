@@ -74,6 +74,6 @@ class UpdateModel:
   
   def modelFit(self, X):
     self.searchDF()
-    model = tf.keras.models.load_model('main/static/models/service3/end_to_end_final8192.h5')
+    model = tf.keras.models.load_model('static/models/service3/end_to_end_final8192.h5')
     model.fit(X, np.array([self.score]), epochs=1, verbose=2)
-    model.save('main/static/models/service3/end_to_end_final8192.h5')
+    model.save('static/models/service3/end_to_end_final8192.h5')

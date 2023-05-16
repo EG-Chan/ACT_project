@@ -12,7 +12,6 @@ if (window.matchMedia('(min-width: 600px)').matches) {
   document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 5));
   document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 5));
 } else {
-  console.log('작동되는중?')
   document.querySelector('.next_button').addEventListener('click', () => moveToSlide(currentSlide + 1));
   document.querySelector('.prev_button').addEventListener('click', () => moveToSlide(currentSlide - 1));
 }

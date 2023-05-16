@@ -8,7 +8,9 @@
 {% block content %}
 <section>
     <div class="title">
-        <h1>{{track_name}} - {{artist_name}}</h1>
+        <h1 class="desktop">{{track_name}} - {{artist_name}}</h1>
+        <h1 class="mobile">{{track_name}}</h1>
+        <h2 class="mobile">{{artist_name}}</h2>
     </div>
     <div class="container1">
         <div class="column1">
@@ -134,10 +136,10 @@
                             <option value="8">노래가 아님</option>
                         </select>
                     </div>
+
                     <div class="item">
                         <div class="row">
-                            <p>베이스 종류 선택
-                            <p>
+                            <p>베이스 종류 선택</p>
                         </div>
                         <select name="bass_type" id="id_bass_type">
                             <option value="0">일렉/리얼 베이스</option>
@@ -147,10 +149,10 @@
                             <option value="4">베이스 없음</option>
                         </select>
                     </div>
+                    
                     <div class="item">
                         <div class="row">
-                            <p>리듬 선택
-                            <p>
+                            <p>리듬 선택</p>
                         </div>
                         <select name="rhythm" id="id_rhythm">
                             <option value="0">뭄바톤/레게</option>
@@ -174,102 +176,100 @@
                             <option value="18">뉴웨이브</option>
                         </select>
                     </div>
+
                     <div class="item">
                         <div class="row">
                             <p>singing 여부</p>
                         </div>
-                        <input type="radio" name="main_instr" value="0"><span>only 악기</span>
-                        <input type="radio" name="main_instr" value="1" checked="checked"><span>악기 + 목소리</span>
-
+                        <input type="radio" name="main_instr" id="main_instr0" value="0"><label for="main_instr0">only 악기</label>
+                        <input type="radio" name="main_instr" id="main_instr1" value="1" checked="checked"><label for="main_instr1">악기 + 목소리</label>
                     </div>
+
                     <div class="item">
                         <div class="row">
                             <p>영어 여부</p>
                         </div>
-                        <input type="radio" name="english" value="0"><span>Non 영어</span>
-                        <input type="radio" name="english" value="1" checked="checked"><span>영어</span>
-
+                        <input type="radio" name="english" id="english0" value="0"><label for="english0">Non 영어</label>
+                        <input type="radio" name="english" id="english1" value="1" checked="checked"><label for="english1">영어</label>
                     </div>
+
                     <div class="item">
                         <div class="row">
                             <p>레트로 여부</p>
                         </div>
-                        <input type="radio" name="retro" value="0" checked="checked"><span>Non 레트로</span>
-                        <input type="radio" name="retro" value="1"><span>레트로</span>
+                        <input type="radio" name="retro" id="retro0" value="0" checked="checked"><label for="retro0">Non 레트로</label>
+                        <input type="radio" name="retro" id="retro1" value="1"><label for="retro1">레트로</label>
                     </div>
 
                     <div class="item">
                         <div class="row">
                             <p>로파이 여부</p>
                         </div>
-                        <input type="radio" name="lofi" value="0" checked="checked"><span>Non 로파이</span>
-                        <input type="radio" name="lofi" value="1"><span>로파이</span>
+                        <input type="radio" name="lofi" id="lofi0" value="0" checked="checked"><label for="lofi0">Non 로파이</label>
+                        <input type="radio" name="lofi" id="lofi1" value="1"><label for="lofi1">로파이</label>
                     </div>
+
                     <div class="item">
                         <div class="row">
                             <p>분석 선택</p>
                         </div>
-                        <table>
-                            <tr>
-                                <td><input type="checkbox" name="service_list" value="1" checked> 스포티파이 & 특징</td>
-                                <td><input id='trend_check_box' type="checkbox" name="service_list" value="2"> 최근 트렌드</td>
-                            </tr>
-                            <tr>
-                                <td><input id='end_to_end_any' type="checkbox" name="service_list" value="3" checked> 음원 분석</td>
-                                <td><input id='service04_prohibition' type="checkbox" name="service_list" value="4"> 4stem, 25 feature 분석
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><input id='auto_fit' type="checkbox" name="service_list" value="5"> 모델 자동 학습</td>
-                            </tr>
-                        </table>
+                        <div class="checkboxList">
+                            <input type="checkbox" name="service_list" value="1" checked><label>노래 특징 분석</label>
+                            <input type="checkbox" id='trend_check_box' name="service_list" value="2"><label>최근 트렌드</label>
+                            <input type="checkbox" id='end_to_end_any' name="service_list" value="3" checked><label>음원 분석</label>
+                            <input type="checkbox" id='service04_prohibition'  name="service_list" value="4"><label>4stem, 25 feature 분석</label>
+                            <input type="checkbox" id='auto_fit' name="service_list" value="5"><label>모델 자동 학습</label>
+                        </div>        
                     </div>
+
                     <div class="buttonSection">
                         <button class="submit" type="submit">노래 분석</button>
                     </div>
                     <div id="progress_bar" style="display:none;">Loading...</div>
-                    </form>
+                </form>
             </div>
             {% else %}
 
-            {% if not service01_result == '' %}
-            <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
-            <br><br><br>
-            {% endif %}
 
-            {% if service02_result.result == '검사X' %}
+                {% if not service01_result == '' %}
+                <p>스포티파이API와 입력하신 추가 정보로 분석한 결과 : "{{service01_result}}" 으로 판별됩니다.<br></p>
+                <br><br><br>
+                {% endif %}
 
-            {% elif service02_result.error == True %}
-            <p>트렌드 지수 파악을 위한 일일 트래픽이 초과됐습니다.<br></p>
-            <br><br><br>
+                {% if service02_result.result == '검사X' %}
 
-            {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and service02_result.data.views == 0 %}
-            <p>너무 인기가 없어 트렌드 지수를 파악할 수 없거나, 출시된지 하루도 안된 곡입니다.<br></p>
-            <p>적어도 하루가 지나야 수집됩니다.<br></p>
-            <br><br><br>
-            {% else %}
-            <p>조회수, 댓글수, 좋아요수의 변화량<br></p>
-            <p>조회수 : {{service02_result.data.views}}<br></p>
-            <p>댓글수 : {{service02_result.data.comments}}<br></p>
-            <p>좋아요수 : {{service02_result.data.likes}}<br></p>
-            <p>분석 결과 : {{service02_result.result}} 으로 나왔습니다.<br></p>
-            <br><br><br>
-            {% endif %}
+                {% elif service02_result.error == True %}
+                <p>트렌드 지수 파악을 위한 일일 트래픽이 초과됐습니다.<br></p>
+                <br><br><br>
 
-            {% if not service03_result == '' %}
-            <p>후렴구 음원을 토대로 확률을 계산한 결과 : <br> 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
-            <br><br><br>
-            {% else %}
-            {% endif %}
-            
-            {% if update_model_result %}
-            <p>모델 추가 학습이 완료되었습니다.</p>
-            <p>감사합니다.</p>
-            <br><br><br>
+                {% elif service02_result.data.comments == 0 and service02_result.data.likes == 0 and service02_result.data.views == 0 %}
+                <p>너무 인기가 없어 트렌드 지수를 파악할 수 없거나, 출시된지 하루도 안된 곡입니다.<br></p>
+                <p>적어도 하루가 지나야 수집됩니다.<br></p>
+                <br><br><br>
+                {% else %}
+                <p>조회수, 댓글수, 좋아요수의 변화량<br></p>
+                <p>조회수 : {{service02_result.data.views}}<br></p>
+                <p>댓글수 : {{service02_result.data.comments}}<br></p>
+                <p>좋아요수 : {{service02_result.data.likes}}<br></p>
+                <p>분석 결과 : {{service02_result.result}} 으로 나왔습니다.<br></p>
+                <br><br><br>
+                {% endif %}
+
+                {% if service03_result %}
+                <p>후렴구 음원을 토대로 확률을 계산한 결과 : <br> 틱톡에서 빌보드로 올라갈 확률이 "{{service03_result}}" 으로 계산되었습니다.<br></p>
+                <br><br><br>
+                {% endif %}
+                
+                {% if update_model_result %}
+                <p>모델 추가 학습이 완료되었습니다.</p>
+                <p>감사합니다.</p>
+                <br><br><br>
+                {% endif %}
+                
             {% endif %}
         </div>
     </div>
-    <div class="container2">
+    <div class="container2 desktop">
         <div class="title">
             <h2>이 노래와 유사한 곡</h2>
         </div>

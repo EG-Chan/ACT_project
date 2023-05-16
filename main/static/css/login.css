@@ -1,4 +1,4 @@
-.login_wrapper{
+.login_wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,7 +6,7 @@
     padding: 25vh 0vw 0vh 0vw;
 }
 
-.title{
+.title {
     display: flex;
     justify-content: center;
     font-size: 2.2rem;
@@ -14,7 +14,7 @@
     margin: 0px 0px 15px 0px;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -32,6 +32,7 @@
             <button onclick="checkPassword();">수정하기</button>
             <button onclick="checkPassword2();">탈퇴하기</button>
         </div>
+
         <form action="{% url 'main:changeInfo' %}" method="post"> 
             {% csrf_token %}
             <div name='modify_id'>
@@ -47,14 +48,16 @@
             </div>
             <input type="hidden" value={{request.session.email}} name="email">
         </form>
+
         <div>
             <hr>
             <h1>선호 노래 목록</h1>
         </div>
-        <div class='search_record'>
-            <hr>
-            <h1>검색 기록</h1>
-            <br>
+        <div class='search_record desktop'>
+            <div>
+                <hr>
+                <h1>검색 기록</h1>
+            </div>
             <table>
                 <tr>
                     <th>최근기록</th>
@@ -64,56 +67,87 @@
                     <th>Url</th>
                     <th>기록 삭제</th>
                 </tr>
-                
-                    
-                    {% for idxs, track_id, track_names,track_imgs,track_date, artists,track_previews in history %}
-                    <form method="post" action="{% url 'main:deleteRecord' track_id.query %}">
-                        {% csrf_token %}
-                        <tr>
-                            <td>
-                                <p>{{ idxs }}</p>
-                            </td>
-                            <td>
-                                <div>
-                                    <img class='imgs_3' src="{{ track_imgs }}">
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <p> Singer : {{ artists }}</p>
-                                    <p> Title : {{ track_names }} </p>
-                                    <p> Date : {{ track_date }} </p>
-                                </div>
-                            </td>
-                            <td class='emb_div2' >
-                                {% if track_previews == None %}
-                                <div class = 'imgs_22'>
-                                    <img class='imgs_2' src="/static/imgs/noMusic.png">
-                                    <p>19禁</p>
-                                </div>
-                                {% else %}
-                                <embed class='imgs_' src="{{track_previews}}">
-                                {% endif %}
-                            </td>
-                            <td>
-                                <div>
-                                    <a href = "{% url 'main:result' track_id.query %}">이동</a>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <button>기록 삭제</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </form>
-                    {% endfor %}
-                
+                {% for idxs, track_id, track_names,track_imgs,track_date, artists,track_previews in history %}
+                <form method="post" action="{% url 'main:deleteRecord' track_id.query %}">
+                    {% csrf_token %}
+                    <tr>
+                        <td>
+                            <p>{{ idxs }}</p>
+                        </td>
+                        <td>
+                            <div>
+                                <img class='imgs_3' src="{{ track_imgs }}">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p> Singer : {{ artists }}</p>
+                                <p> Title : {{ track_names }} </p>
+                                <p> Date : {{ track_date }} </p>
+                            </div>
+                        </td>
+                        <td class='emb_div2' >
+                            {% if track_previews == None %}
+                            <div class = 'imgs_22'>
+                                <img class='imgs_2' src="/static/imgs/noMusic.png">
+                                <p>19禁</p>
+                            </div>
+                            {% else %}
+                            <embed class='imgs_' src="{{track_previews}}">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div>
+                                <a href = "{% url 'main:result' track_id.query %}">이동</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button>기록 삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
             </table>
         </div>
-
-
-        
+        <div class='search_record mobile'>
+            <div>
+                <hr>
+                <h1>검색 기록</h1>
+            </div>
+            <table>
+                <tr>
+                    <th>Track Img</th>
+                    <th>Track Info</th>
+                    <th>기록 삭제</th>
+                </tr>
+                {% for idxs, track_id, track_names,track_imgs,track_date, artists,track_previews in history %}
+                <form method="post" action="{% url 'main:deleteRecord' track_id.query %}">
+                    {% csrf_token %}
+                    <tr>
+                        <td>
+                            <div>
+                                <img class='imgs_3' src="{{ track_imgs }}">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p> Singer : {{ artists }}</p>
+                                <p> Title : {{ track_names }} </p>
+                                <p> Date : {{ track_date }} </p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button>기록 삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 

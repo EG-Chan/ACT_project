@@ -1,62 +1,181 @@
-.searchResult {
-    display: flex;
-    justify-content: center;
+/*스마트폰 화면일떄*/
+@media (max-width: 600px) {
+    
+    .searchResult {
+        display: flex;
+        justify-content: center;
+        margin: 40px 0px 40px 0px;
+    }
+
+    .searchResult h1{
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .container {
+        margin: 10px 0px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 60vw;
+    }
+
+    .inner {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .number {
+        margin: 0px 15px 0px 0px;
+
+        display: flex;
+        justify-content: center;
+        width: 30px;
+    }
+
+    .number span {
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .image {
+        margin: 0px 30px 0px 0px;
+    }
+
+    .image img {
+        width: 80px;
+        height: 80px;
+        object-fit: fill;
+    }
+
+    .searchContent {
+        width: 35vw;
+    }
+
+    .title {
+        font-size: 0.9rem;
+        font-weight: 800;
+    }
+
+    .artist {
+        font-size: 0.7rem;
+    }
+
+    .heart.desktop{
+        display: none;
+    }
+
+    .center_lr {
+        text-align: center;
+    }
+
+    .lr_bar a{
+        font-size: 1.0rem;
+        font-weight: 500;
+    }
+
+    a {
+        text-decoration: none; 
+    }
+
+    .search {
+        height: 30vh;
+        min-height: 100px;
+        margin: 50px 0px;
+    }
 }
 
-.container {
-    margin: 20px 0px;
+/*데스크탑 화면일떄*/
+@media (min-width: 600px) {
+    
+    .searchResult {
+        display: flex;
+        justify-content: center;
+        margin: 40px 0px 40px 0px;
+    }
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .searchResult h1{
+        font-size: 2.5rem;
+        font-weight: 600;
+    }
 
-    width: 60vw;
-    height: 165px;
-}
+    .container {
+        margin: 20px 0px;
 
-.inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-.number {
-    margin: 0px 15px 0px 0px;
-    width: 40px;
+        width: 60vw;
+        height: 165px;
+    }
 
-    display: flex;
-    justify-content: center;
-}
+    .inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.number span {
-    font-size: 1.5rem;
-    font-weight: 600;
-}
+    .number {
+        margin: 0px 15px 0px 0px;
+        width: 40px;
 
-.image {
-    margin: 0px 15px 0px 0px;
-}
+        display: flex;
+        justify-content: center;
+    }
 
-.image img {
-    width: 165px;
-    height: 165px;
-    object-fit: fill;
-}
+    .number span {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
 
-#title {
-    font-size: 1.6rem;
-    font-weight: 700;
-}
+    .image {
+        margin: 0px 30px 0px 0px;
+    }
 
-#artist {
-    font-size: 1.2rem;
-}
-.center_lr{
-    text-align: center;
-}
-.lr_bar{
-    display: table; 
-    margin-left: auto; 
-    margin-right: auto; 
-    display: inline-block;
+    .image img {
+        width: 165px;
+        height: 165px;
+        object-fit: fill;
+    }
+
+    .searchContent {
+        margin-right: 10vw;
+    }
+
+    #title {
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+
+    #artist {
+        font-size: 1.2rem;
+    }
+
+    .heart {
+        display: flex;
+        justify-content: center;
+    }
+
+    .center_lr {
+        text-align: center;
+    }
+
+    .lr_bar a{
+        font-size: 1.0rem;
+        font-weight: 500;
+    }
+
+    a {
+        text-decoration: none; 
+    }
+
+    .search {
+        height: 30vh;
+        min-height: 100px;
+        margin: 50px 0px;
+    }
 }
