@@ -1,12 +1,12 @@
-.login_wrapper {
+.userInfo_modify_wrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 25vh 0vw 25vh 0vw;
+    padding: 15vh 0vw 15vh 0vw;
 }
 
-.title {
+.title{
     display: flex;
     justify-content: center;
     font-size: 2.2rem;
@@ -14,15 +14,16 @@
     margin: 0px 0px 15px 0px;
 }
 
-form {
+form{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 form h1{
-    font-size: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .email{
@@ -33,12 +34,30 @@ form h1{
     margin: 0px 0px 20px 0px;
 }
 
+.confirmPassword{
+    margin: 0px 0px 20px 0px;
+}
+
+.name{
+    margin: 0px 0px 20px 0px;
+}
+
+.gender{
+    margin: 0px 0px 20px 0px;
+}
+
+.genre{
+    margin: 0px 0px 20px 0px;
+}
+
 input[type=text]{
 	width: 25vw;
     min-width: 250px;
     max-width: 350px;
 	height: 40px;
 
+    padding-left: 5px;
+
     font-size: 18px;
     color: white;
     background-color: rgb(31, 31, 31);
@@ -47,12 +66,14 @@ input[type=text]{
     border-radius: 3px;
 }
 
-input[type=password]{
+input[type=password] {
 	width: 25vw;
     min-width: 250px;
     max-width: 350px;
 	height: 40px;
 
+    padding-left: 5px;
+
     font-size: 18px;
     color: white;
     background-color: rgb(31, 31, 31);
@@ -61,6 +82,38 @@ input[type=password]{
     border-radius: 3px;
 }
 
+input[type=radio] ~ label{
+    margin: 0px 50px 0px 5px;
+}
+
 button {
     font-size: 1.0rem;
+    margin: 0px 0px 20px 0px;
+}
+
+select{
+    width: 25vw;
+    min-width: 250px;
+    max-width: 350px;
+}
+
+.complete h1{
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0px;
+}
+
+.complete p{
+    font-size: 1.0rem;
+    margin: 5px 0px;
+}
+
+.complete a{
+    text-decoration: none; 
+}
+
+.complete div{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
 }

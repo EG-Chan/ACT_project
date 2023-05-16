@@ -41,6 +41,20 @@
         margin-bottom: 50px;
     }
 
+    input[type=password]{
+        width: 25vw;
+        min-width: 250px;
+        max-width: 350px;
+        height: 40px;
+    
+        font-size: 18px;
+        color: white;
+        background-color: rgb(31, 31, 31);
+    
+        border: 1;
+        border-radius: 3px;
+    }
+
     .search_record.desktop{
         display: none;
     }
@@ -143,6 +157,20 @@
     .container .button_div {
         display: flex;
         justify-content: flex-start;
+    }
+
+    input[type=password]{
+        width: 25vw;
+        min-width: 250px;
+        max-width: 350px;
+        height: 40px;
+    
+        font-size: 18px;
+        color: white;
+        background-color: rgb(31, 31, 31);
+    
+        border: 1;
+        border-radius: 3px;
     }
 
     .search_record.mobile{

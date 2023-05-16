@@ -213,13 +213,19 @@
                         <div class="row">
                             <p>분석 선택</p>
                         </div>
-                        <div class="checkboxList">
-                            <input type="checkbox" name="service_list" value="1" checked><label>노래 특징 분석</label>
-                            <input type="checkbox" id='trend_check_box' name="service_list" value="2"><label>최근 트렌드</label>
-                            <input type="checkbox" id='end_to_end_any' name="service_list" value="3" checked><label>음원 분석</label>
-                            <input type="checkbox" id='service04_prohibition'  name="service_list" value="4"><label>4stem, 25 feature 분석</label>
-                            <input type="checkbox" id='auto_fit' name="service_list" value="5"><label>모델 자동 학습</label>
-                        </div>        
+                        <div class="list">
+                            <div class="checkboxList">
+                                <input type="checkbox" name="service_list" value="1" checked><label>노래 특징 분석</label>
+                                <input type="checkbox" id='trend_check_box' name="service_list" value="2"><label>최근 트렌드</label>
+                            </div>
+                            <div class="checkboxList">
+                                <input type="checkbox" id='end_to_end_any' name="service_list" value="3" checked><label>음원 분석</label>
+                                <input type="checkbox" id='service04_prohibition'  name="service_list" value="4"><label>4stem, 25 feature 분석</label>
+                            </div>
+                            <div class="checkboxList">
+                                <input type="checkbox" id='auto_fit' name="service_list" value="5"><label>모델 자동 학습</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="buttonSection">
@@ -297,10 +303,8 @@
 
                 </div>
             {% endfor %}
+            </div>    
         </div>
-        
-    </div>
-
     </div>
     {% include "main/search_bar.html" %}
 </section>

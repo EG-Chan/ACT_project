@@ -76,7 +76,27 @@ canvas,header,nav,section,footer {
     }
 
     nav {
+        height: 50px;
+        background-color: rgb(31, 31, 31);
+
+        font-family: "Noto Sans KR", sans-serif;
+        color: white;
+        
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         padding: 10px 0px 8px 0px;
+    }
+
+    nav .navImage {
+        display: flex;
+        align-items: center;
+    }
+    
+    nav img {
+        width: 110px;
+        padding-top: 15px;
+        object-fit: fill;
     }
 
     nav ul {
@@ -98,18 +118,6 @@ canvas,header,nav,section,footer {
         width: 90vw;
         min-width: 200px;
         padding: 0 10vw;
-    }
-
-    nav {
-        height: 50px;
-        background-color: rgb(31, 31, 31);
-
-        font-family: "Noto Sans KR", sans-serif;
-        color: white;
-        
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
     }
 
     .wrapper {
@@ -238,7 +246,28 @@ canvas,header,nav,section,footer {
     }
 
     nav {
+        height: 70px;
+        background-color: rgb(31, 31, 31);
+
+        font-family: "Noto Sans KR", sans-serif;
+        color: white;
+        
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
         padding: 10px 0px 8px 0px;
+    }
+
+    nav .navImage {
+        display: flex;
+        align-items: center;
+    }
+    
+    nav img {
+        width: 200px;
+        padding-top: 15px;
+        object-fit: fill;
     }
 
     nav ul {
@@ -260,18 +289,6 @@ canvas,header,nav,section,footer {
         width: 90vw;
         min-width: 200px;
         padding: 0 10vw;
-    }
-
-    nav {
-        height: 50px;
-        background-color: rgb(31, 31, 31);
-
-        font-family: "Noto Sans KR", sans-serif;
-        color: white;
-        
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
     }
 
     .wrapper {

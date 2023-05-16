@@ -2,75 +2,80 @@
 
 {% load static %}
 {% block static %}
-<link rel="stylesheet" href="{% static 'css/userinfo.css' %}">
+<link rel="stylesheet" href="{% static 'css/userInfo_modify.css' %}">
 
 {% endblock static %}
 {% block content %}
-<form method="post" action="{% url 'main:modifyInfo' %}">
-    {% csrf_token %}
-    <div class="email">
-        <h1>Email</h1>
-        email :
-        <input class='nline_input' value='{{user.email}}' type="Email" readonly>
-        <input id="email" name="email" value={{user.email}} type="hidden" placeholder="Email" readonly>
-        <p></p>
+<div class="userInfo_modify_wrapper">
+    <div class="title">
+        <h1>회원정보 수정</h1>
     </div>
-    <div class="password">
-        <h1>Password</h1>
-        <input id="password" name="password" type="password" placeholder="Password">
-        <p></p>
-    </div>
-    <div class="confirmPassword">
-        <h1>Confirm Password</h1>
-        <input id="confirmPassword" type="password" placeholder="Confirm Password">
-        <p></p>
-    </div>
-    <div class="name">
-        <h1>User Name</h1>
-        <input class='nline_input' value='name : {{user.name}}' type="text" readonly>
-        <input id="name" name="name" value='{{user.name}}' type="text" placeholder="Name">
-    </div>
-    <div class="gender">
+    <form method="post" action="{% url 'main:modifyInfo' %}">
+        {% csrf_token %}
+            <div class="email">
+                <h1>Email(수정불가)</h1>
+                <input class='nline_input' value='{{user.email}}' type="text" readonly>
+                <input id="email" name="email" value={{user.email}} type="hidden" placeholder="Email" readonly>
+                <p></p>
+            </div>
+            <div class="password">
+                <h1>Password</h1>
+                <input id="password" name="password" type="password" placeholder="Password">
+                <p></p>
+            </div>
+            <div class="confirmPassword">
+                <h1>Confirm Password</h1>
+                <input id="confirmPassword" type="password" placeholder="Confirm Password">
+                <p></p>
+            </div>
+            <div class="name">
+                <h1>User Name</h1>
+                <input id="name" name="name" value='{{user.name}}' type="text" placeholder="Name">
+            </div>
+            <div class="gender">
 
-        <h1>성별</h1>
-        {% if user.gender == 'male'%}
-        <input type="radio" name="gender" value="male" checked>남성  
-        <input type="radio" name="gender" value="female">여성
-        {% else %}
-        <input type="radio" name="gender" value="male" >남성  
-        <input type="radio" name="gender" value="female" checked>여성
-        {% endif %}
+                <h1>성별</h1>
+                {% if user.gender == 'male'%}
+                <input type="radio" name="gender" value="male" checked>남성  
+                <input type="radio" name="gender" value="female">여성
+                {% else %}
+                <input type="radio" name="gender" value="male" >남성  
+                <input type="radio" name="gender" value="female" checked>여성
+                {% endif %}
 
+            </div>
+            <div class="genre">
+                <h1>선호장르</h1>
+                {% if user.genre == '힙합'%}
+                <select id="genre" name="genre">
+                    <option selected disabled>관심있는 음악을 선택하세요.</option>
+                    <option value="힙합" selected>힙합</option>
+                    <option value="락">락</option>
+                    <option value="팝">팝</option>
+                </select>
+                {% elif user.genre == '락'%}
+                <select id="genre" name="genre">
+                    <option selected disabled>관심있는 음악을 선택하세요.</option>
+                    <option value="힙합">힙합</option>
+                    <option value="락" selected>락</option>
+                    <option value="팝">팝</option>
+                </select>
+                {% else %}
+                <select id="genre" name="genre">
+                    <option selected disabled>관심있는 음악을 선택하세요.</option>
+                    <option value="힙합">힙합</option>
+                    <option value="락">락</option>
+                    <option value="팝" selected>팝</option>
+                </select>
+                {% endif %}
+            </div>
+    </form>
+
+    <div class="signUp">
+        <button id="signUpButton">수정하기</button>
     </div>
-    <div class="genre">
-        <h1>선호장르</h1>
-        {% if user.genre == '힙합'%}
-        <select id="genre" name="genre">
-            <option selected disabled>관심있는 음악을 선택하세요.</option>
-            <option value="힙합" selected>힙합</option>
-            <option value="락">락</option>
-            <option value="팝">팝</option>
-        </select>
-        {% elif user.genre == '락'%}
-        <select id="genre" name="genre">
-            <option selected disabled>관심있는 음악을 선택하세요.</option>
-            <option value="힙합">힙합</option>
-            <option value="락" selected>락</option>
-            <option value="팝">팝</option>
-        </select>
-        {% else %}
-        <select id="genre" name="genre">
-            <option selected disabled>관심있는 음악을 선택하세요.</option>
-            <option value="힙합">힙합</option>
-            <option value="락">락</option>
-            <option value="팝" selected>팝</option>
-        </select>
-        {% endif %}
-    </div>
-</form>
-<div class="signUp">
-    <button id="signUpButton">수정하기</button>
-    <p></p>
+    
 </div>
-<script src="/static/js/update.js"></script>
+
+<script src="/static/js/userInfo_modify.js"></script>
 {% endblock content %}

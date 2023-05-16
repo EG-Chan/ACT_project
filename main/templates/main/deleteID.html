@@ -12,9 +12,9 @@
 {% block content %}
 {% if state == 0 %}
 <div class="signup_wrapper">
-    <header>
+    <div class="title">
         <h1>회원탈퇴</h1>
-    </header>
+    </div>
     <form method="post" action="{% url 'main:deleteID' %}">
         {% csrf_token %}
         <div class="email">

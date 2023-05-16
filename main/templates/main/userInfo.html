@@ -63,7 +63,6 @@
                     <th>최근기록</th>
                     <th>Track Img</th>
                     <th>Track Info</th>
-                    <th></th>
                     <th>Url</th>
                     <th>기록 삭제</th>
                 </tr>
@@ -85,16 +84,6 @@
                                 <p> Title : {{ track_names }} </p>
                                 <p> Date : {{ track_date }} </p>
                             </div>
-                        </td>
-                        <td class='emb_div2' >
-                            {% if track_previews == None %}
-                            <div class = 'imgs_22'>
-                                <img class='imgs_2' src="/static/imgs/noMusic.png">
-                                <p>19禁</p>
-                            </div>
-                            {% else %}
-                            <embed class='imgs_' src="{{track_previews}}">
-                            {% endif %}
                         </td>
                         <td>
                             <div>
@@ -151,6 +140,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/static/js/password_check.js"></script>
+<script type="text/javascript" src="/static/js/userInfo.js"></script>
 
 {% endblock content %}

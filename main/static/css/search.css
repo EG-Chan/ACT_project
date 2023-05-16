@@ -6,7 +6,7 @@
         justify-content: center;
         margin: 40px 0px 40px 0px;
     }
-
+ 
     .searchResult h1{
         font-size: 1.4rem;
         font-weight: 600;
@@ -143,15 +143,15 @@
     }
 
     .searchContent {
-        margin-right: 10vw;
+        width: 50vw;
     }
 
-    #title {
+    .title {
         font-size: 1.6rem;
         font-weight: 800;
     }
 
-    #artist {
+    .artist {
         font-size: 1.2rem;
     }
 
