@@ -95,8 +95,7 @@
                         end to end 형식으로 확률을 분석하는 모델이 있습니다. 원하시는 것을 선택하시면 됩니다.
                         자동 학습을 체크하시면 새로 추가 학습하여 보다 모델 정확도를 높일 수 있습니다.
 
-                        최근 트렌드 분석은 개발자가 가난하여 데이터 수집에 10초가 걸릴 수 있으며, 일일 트래픽 용량이 제한됩니다.
-
+                        최근 트렌드 분석은 playboard에서 직접 데이터수집 하기때문에 오래 걸릴 수 있습니다.
 
                         현재 노래들을 4stem으로 나누어 각각 특징 벡터 25개로 변환하여 보다 정밀한 분석을 추가 중에 있습니다.
                     </ul>
@@ -213,19 +212,13 @@
                         <div class="row">
                             <p>분석 선택</p>
                         </div>
-                        <div class="list">
-                            <div class="checkboxList">
-                                <input type="checkbox" name="service_list" value="1" checked><label>노래 특징 분석</label>
-                                <input type="checkbox" id='trend_check_box' name="service_list" value="2"><label>최근 트렌드</label>
-                            </div>
-                            <div class="checkboxList">
-                                <input type="checkbox" id='end_to_end_any' name="service_list" value="3" checked><label>음원 분석</label>
-                                <input type="checkbox" id='service04_prohibition'  name="service_list" value="4"><label>4stem, 25 feature 분석</label>
-                            </div>
-                            <div class="checkboxList">
-                                <input type="checkbox" id='auto_fit' name="service_list" value="5"><label>모델 자동 학습</label>
-                            </div>
-                        </div>
+                        <div class="checkboxList">
+                            <input type="checkbox" name="service_list" value="1" checked><label>노래 특징 분석</label>
+                            <input type="checkbox" id='trend_check_box' name="service_list" value="2"><label>최근 트렌드</label>
+                            <input type="checkbox" id='end_to_end_any' name="service_list" value="3" checked><label>음원 분석</label>
+                            <input type="checkbox" id='service04_prohibition'  name="service_list" value="4"><label>4stem, 25 feature 분석</label>
+                            <input type="checkbox" id='auto_fit' name="service_list" value="5"><label>모델 자동 학습</label>
+                        </div>        
                     </div>
 
                     <div class="buttonSection">
@@ -303,8 +296,10 @@
 
                 </div>
             {% endfor %}
-            </div>    
         </div>
+        
+    </div>
+
     </div>
     {% include "main/search_bar.html" %}
 </section>

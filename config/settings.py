@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-zzm(^kn1w(y)-%p!0+0knr^ag%m(h*^eoe^=6ci4*p+5xblosy"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    "127.0.0.1", #최종 배포때 제거하기
+    "127.0.0.1",
     ".ap-northeast-2.compute.amazonaws.com",
     ".predicup.store",
 ]
